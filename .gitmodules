@@ -22,9 +22,6 @@
 [submodule "lisp/f"]
 	path = lisp/f
 	url = https://github.com/rejeep/f.el.git
-[submodule "lisp/elpy"]
-	path = lisp/elpy
-	url = https://github.com/jorgenschaefer/elpy.git
 [submodule "lisp/pyvenv"]
 	path = lisp/pyvenv
 	url = https://github.com/jorgenschaefer/pyvenv.git
