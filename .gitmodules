@@ -1,0 +1,36 @@
+[submodule "lisp/company-mode"]
+	path = lisp/company-mode
+	url = https://github.com/company-mode/company-mode.git
+[submodule "lisp/emacs-which-key"]
+	path = lisp/emacs-which-key
+	url = https://github.com/justbur/emacs-which-key.git
+[submodule "lisp/evil"]
+	path = lisp/evil
+	url = https://github.com/emacs-evil/evil.git
+[submodule "themes/vscode-dark-plus-emacs-theme"]
+	path = themes/vscode-dark-plus-emacs-theme
+	url = https://github.com/ianpan870102/vscode-dark-plus-emacs-theme.git
+[submodule "themes/emacs-theme-gruvbox"]
+	path = themes/emacs-theme-gruvbox
+	url = https://github.com/greduan/emacs-theme-gruvbox.git
+[submodule "lisp/general"]
+	path = lisp/general
+	url = https://github.com/noctuid/general.el.git
+[submodule "lisp/s"]
+	path = lisp/s
+	url = https://github.com/magnars/s.el.git
+[submodule "lisp/f"]
+	path = lisp/f
+	url = https://github.com/rejeep/f.el.git
+[submodule "lisp/elpy"]
+	path = lisp/elpy
+	url = https://github.com/jorgenschaefer/elpy.git
+[submodule "lisp/pyvenv"]
+	path = lisp/pyvenv
+	url = https://github.com/jorgenschaefer/pyvenv.git
+[submodule "lisp/Highlight-Indentation-for-Emacs"]
+	path = lisp/Highlight-Indentation-for-Emacs
+	url = https://github.com/antonj/Highlight-Indentation-for-Emacs.git
+[submodule "lisp/yasnippet"]
+	path = lisp/yasnippet
+	url = https://github.com/joaotavora/yasnippet.git
