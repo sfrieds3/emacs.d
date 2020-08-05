@@ -1,0 +1,9 @@
+local-settings.el
+backups/*
+recentf
+savehist
+ido.last
+auto-save-list/*
+elpy/*
+.cache/*
+projectile-bookmarks.eld

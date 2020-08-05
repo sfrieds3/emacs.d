@@ -8,12 +8,9 @@
 ;;; Code:
 ;;;; GENERAL PACKAGE SETTINGS
 
-(let ((default-directory  "~/.emacs.d/lisp/"))
+(let ((default-directory  (expand-file-name "lisp" user-emacs-directory)))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
-
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-theme-gruvbox")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/vscode-dark-plus-emacs-theme/")
 
 ;; backup settings
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -23,7 +20,7 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list" t)))
 
 ;; history settings
-(setq savehist-file "~/.emacs.d/savehist")
+(setq savehist-file (expand-file-name "savehist" user-emacs-directory))
 (savehist-mode 1)
 (setq history-length t)
 (setq history-delete-duplicates t)
@@ -50,13 +47,15 @@
 (defvar platform-default-font)
 (setq platform-default-font
       (cond ((eq system-type 'windows-nt) "DejaVu Sans Mono 10")
-            ((eq system-type 'gnu/linux) "DejaVu Sans Mono 11")
+            ((eq system-type 'gnu/linux) "Unifont 12")
             (t nil)))
 
 (when platform-default-font
   (set-frame-font platform-default-font nil t))
 
-(load-theme 'gruvbox-dark-hard t)
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+(load-theme 'ample t)
+(enable-theme 'ample)
 
 ;; ////////////////////////////////////////////////////////////
 
@@ -135,150 +134,13 @@
 
 ;; ////////////////////////////////////////////////////////////
 
-;; PERSONAL FUNCTIONS
+;; LOAD INIT FILES
 
 ;; ////////////////////////////////////////////////////////////
 
-;; mode line
-(setq-default mode-line-format
-              (list
-               ;; file status info
-               mode-line-mule-info
-               mode-line-modified
-               mode-line-frame-identification
-               ;; current buffer name
-               "%b |"
-               ;; current git branch
-               '(vc-mode vc-mode)
-               ;; mode-name
-               " [%m] "
-               ;; current line and column number
-               "(%l:%c %P)"
-               ))
-
-;; grep in current directory
-(defun my/dir-grep ()
-  "Run grep recursively from the directory of the current buffer or the default directory."
-  (interactive)
-  (let ((dir (file-name-directory (or load-file-name buffer-file-name default-directory))))
-    (let ((command (read-from-minibuffer "Run grep (like this): "
-                                         (cons (concat "grep --color --null -nH -ir -e  " dir) 32))))
-      (grep command))))
-
-;; grep in current file
-(defun my/file-grep ()
-  "Run grep in the current file."
-  (interactive)
-  (let ((fname (buffer-file-name)))
-    (let ((command (read-from-minibuffer "Run grep (like this): "
-                                         (cons (concat "grep --color --null -nH -ir -e  " fname) 32))))
-      (grep command))))
-
-;; revert file without prompt
-(defun my/revert-buffer-noconfirm ()
-  "Call `revert-buffer' with the NOCONFIRM argument set."
-  (interactive)
-  (revert-buffer nil t))
-
-(defun my/ido-open-recentf ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
-
-(defun my/smarter-move-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
-
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
-
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
-
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
-
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
-
-(defun my/goto-match-paren (arg)
-  "Go to the matching parenthesis if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
-  (interactive "p")
-  (cond ((looking-at "\\s\(") (forward-list 1))
-        ((looking-back "\\s\)") (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
-
-(define-key isearch-mode-map (kbd "<C-return>")
-  (defun my/isearch-done-opposite (&optional nopush edit)
-    "End current search in the opposite side of the match."
-    (interactive)
-    (funcall #'isearch-done nopush edit)
-    (when isearch-other-end (goto-char isearch-other-end))))
-
-(defun my/kill-back-to-indent ()
-  "Kill from point back to the first non-whitespace character on the line."
-  (interactive)
-  (let ((prev-pos (point)))
-    (my/smarter-move-beginning-of-line nil)
-    (kill-region (point) prev-pos)))
-
-(defun my/select-line ()
-  "Select entire line"
-  (interactive)
-  (beginning-of-line)
-  (cua-set-mark)
-  (end-of-line))
-
-(defun my/delete-trailing-whitespace ()
-  "Delete trailing whitespace, and echo"
-  (interactive)
-  (delete-trailing-whitespace)
-  (message "trailing whitespace deleted..."))
-
- ;; ////////////////////////////////////////////////////////////
-
-;; EVIL CONFIG
-
-;; ////////////////////////////////////////////////////////////
-
-;; evil mode
-(require 'evil)
-(evil-mode 1)
-;; evil bindings for occur mode
-(add-hook 'occur-mode-hook
-          (lambda ()
-            (evil-add-hjkl-bindings occur-mode-map 'emacs
-              (kbd "/")       'evil-search-forward
-              (kbd "n")       'evil-search-next
-              (kbd "N")       'evil-search-previous
-              (kbd "C-d")     'evil-scroll-down
-              (kbd "C-u")     'evil-scroll-up
-              (kbd "C-w C-w") 'other-window)))
-(eval-after-load 'evil
-  (progn
-    (defalias #'forward-evil-word #'forward-evil-symbol)
-    ;; make evil-search-word look for symbol rather than word boundaries
-    (setq-default evil-symbol-word-search t)
-    ;; Make horizontal movement cross lines
-    (setq-default evil-cross-lines t)))
-
-(require 'general)
-(general-evil-define-key 'normal 'global
-                         :prefix "SPC"
-                         "SPC" 'other-window
-                         "W" 'delete-trailing-whitespace
-                         "RET" 'lazy-highlight-cleanup
-                         "h" 'dired-jump)
+(require 'defun)
+(require 'evil-config)
+(require 'general-config)
 
 ;; ////////////////////////////////////////////////////////////
 
@@ -333,36 +195,53 @@ vi style of % jumping to matching brace."
 
 ;; ////////////////////////////////////////////////////////////
 
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
-(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+(require 'which-key)
+(which-key-mode)
 
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-to-list (make-local-variable 'company-backends)
-                         'elpy-company-backend)))
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t) ;; rename after killing uniquified
-(setq uniquify-ignore-buffers-re "^\\*") ;; dont change names of special buffers.
-
-;; elpy
-(add-to-list 'load-path "~/.emacs.d/lisp/elpy")
+;;;; elpy
 (load "elpy")
 (load "elpy-rpc")
 (load "elpy-shell")
 (load "elpy-profile")
 (load "elpy-refactor")
 (load "elpy-django")
-(elpy-enable)
-(setq elpy-rpc-python-command "python3")
 
-(require 'slime)
+;;;; COMPANY
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+
+;;;; UNIQUIFY
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ;; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ;; dont change names of special buffers.
+
+;;;; SLIME
+(require 'slime-autoloads)
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
 (custom-set-faces
-'(slime-repl-inputed-output-face ((t (:foreground "yellow")))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(slime-repl-inputed-output-face ((t (:foreground "yellow")))))
+;; slime key bindings
+(defun my/slime-keybindings ()
+  "keybindings for use in slime"
+  (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
+  (local-set-key (kbd "C-c b") 'slime-eval-buffer))
+(add-hook 'slime-mode-hook #'my/slime-keybindings)
+(add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
+
+;; projectile
+(require 'projectile)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; ////////////////////////////////////////////////////////////
 
@@ -462,3 +341,14 @@ vi style of % jumping to matching brace."
 ;; ////////////////////////////////////////////////////////////
 
 (provide 'init.el)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-backends
+   '(company-lsp company-bbdb company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                 (company-dabbrev-code company-gtags company-etags company-keywords)
+                 company-oddmuse company-dabbrev))
+ '(custom-safe-themes
+   '("36ca8f60565af20ef4f30783aa16a26d96c02df7b4e54e9900a5138fb33808da" "b89ae2d35d2e18e4286c8be8aaecb41022c1a306070f64a66fd114310ade88aa" default)))
