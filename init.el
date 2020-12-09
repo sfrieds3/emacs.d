@@ -205,6 +205,7 @@
 (load "elpy-profile")
 (load "elpy-refactor")
 (load "elpy-django")
+(elpy-enable)
 
 ;;;; COMPANY
 (require 'company)
