@@ -1,8 +1,8 @@
 [submodule "lisp/dependencies/dash.el"]
 	path = lisp/dependencies/dash.el
 	url = https://github.com/magnars/dash.el.git
-[submodule "lisp/dependencies/f.el"]
-	path = lisp/dependencies/f.el
+[submodule "lisp/dependencies/f"]
+	path = lisp/dependencies/f
 	url = https://github.com/rejeep/f.el.git
 [submodule "lisp/dependencies/hydra"]
 	path = lisp/dependencies/hydra
@@ -10,8 +10,8 @@
 [submodule "lisp/dependencies/pyvenv"]
 	path = lisp/dependencies/pyvenv
 	url = https://github.com/jorgenschaefer/pyvenv.git
-[submodule "lisp/dependencies/s.el"]
-	path = lisp/dependencies/s.el
+[submodule "lisp/dependencies/s"]
+	path = lisp/dependencies/s
 	url = https://github.com/magnars/s.el.git
 [submodule "lisp/dependencies/yasnippet"]
 	path = lisp/dependencies/yasnippet
