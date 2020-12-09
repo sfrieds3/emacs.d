@@ -1,5 +1,5 @@
-[submodule "lisp/dependencies/dash.el"]
-	path = lisp/dependencies/dash.el
+[submodule "lisp/dependencies/dash"]
+	path = lisp/dependencies/dash
 	url = https://github.com/magnars/dash.el.git
 [submodule "lisp/dependencies/f"]
 	path = lisp/dependencies/f
@@ -40,3 +40,6 @@
 [submodule "lisp/external/slime"]
 	path = lisp/external/slime
 	url = https://github.com/slime/slime.git
+[submodule "lisp/dependencies/dash.el"]
+	path = lisp/dependencies/dash.el
+	url = https://github.com/magnars/dash.el.git
