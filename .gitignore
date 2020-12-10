@@ -8,3 +8,5 @@ elpy/*
 .cache/*
 projectile-bookmarks.eld
 undo-fu-session/*
+\#*\#
+smex-items
