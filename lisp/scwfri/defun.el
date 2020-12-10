@@ -110,4 +110,40 @@ vi style of % jumping to matching brace."
   (delete-trailing-whitespace)
   (message "trailing whitespace deleted..."))
 
+;; source: https://emacs.stackexchange.com/questions/51972/possible-to-use-emacs-undo-redo-without-keyboard-quit-ctrl-g/54142#54142
+(defun my/simple-redo ()
+  (interactive)
+  (let
+    (
+      (last-command
+        (cond
+          ;; Break undo chain, avoid having to press Ctrl-G.
+          ((string= last-command 'simple-undo) 'ignore)
+          ;; Emacs undo uses this to detect successive undo calls.
+          ((string= last-command 'simple-redo) 'undo)
+          (t last-command))))
+    (condition-case err
+      (progn
+        (undo) t)
+      (error
+        (message "%s" (error-message-string err)))))
+  (setq this-command 'simple-redo))
+
+(defun my/simple-undo ()
+  (interactive)
+  (let
+    (
+      (last-command
+        (cond
+          ;; Emacs undo uses this to detect successive undo calls.
+          ((string= last-command 'simple-undo) 'undo)
+          ((string= last-command 'simple-redo) 'undo)
+          (t last-command))))
+    (condition-case err
+      (progn
+        (undo-only) t)
+      (error
+        (message "%s" (error-message-string err)))))
+  (setq this-command 'simple-undo))
+
 (provide 'defun)
