@@ -32,6 +32,10 @@
   (when (file-exists-p home-settings)
     (load-file home-settings)))
 
+(let ((shared-config (expand-file-name "sahred-config.el" user-emacs-directory)))
+  (when (file-exists-p shared-config)
+    (load-file shared-config)))
+
 ;;; default 
 (setf find-def-directory command-line-default-directory)
 (add-hook 'find-file-hook
@@ -128,7 +132,6 @@
 (transient-mark-mode 1)
  
 ;;; LOAD INIT FILES
-(require 'shared-config)
 (require 'defun)
 (require 'evil-config)
 (require 'company-config)
@@ -139,7 +142,6 @@
 (require 'elpy-config)
 
 ;; PACKAGES
-
 
 (require 'which-key)
 (which-key-mode)
