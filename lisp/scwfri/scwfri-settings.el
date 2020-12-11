@@ -1,0 +1,3 @@
+
+
+(provide 'scwfri-config)

@@ -7,19 +7,19 @@
 ;; mode line
 (setq-default mode-line-format
               (list
-               ;; file status info
-               mode-line-mule-info
-               mode-line-modified
-               mode-line-frame-identification
-               ;; current buffer name
-               "%b |"
-               ;; current git branch
-               '(vc-mode vc-mode)
-               ;; mode-name
-               " [%m] "
-               ;; current line and column number
-               "(%l:%c %P)"
-               ))
+                ;; file status info
+                mode-line-mule-info
+                mode-line-modified
+                mode-line-frame-identification
+                ;; current buffer name
+                "%b |"
+                ;; current git branch
+                '(vc-mode vc-mode)
+                ;; mode-name
+                " [%m] "
+                ;; current line and column number
+                "(%l:%c %P)"
+                ))
 
 ;; grep in current directory
 (defun my/dir-grep ()
@@ -49,7 +49,7 @@
   "Use `ido-completing-read' to \\[find-file] a recent file"
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
+    (message "Opening file...")
     (message "Aborting")))
 
 (defun my/smarter-move-beginning-of-line (arg)
@@ -77,18 +77,18 @@
 
 (defun my/goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
+  vi style of % jumping to matching brace."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1))
         ((looking-back "\\s\)") (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
 (define-key isearch-mode-map (kbd "<C-return>")
-  (defun my/isearch-done-opposite (&optional nopush edit)
-    "End current search in the opposite side of the match."
-    (interactive)
-    (funcall #'isearch-done nopush edit)
-    (when isearch-other-end (goto-char isearch-other-end))))
+            (defun my/isearch-done-opposite (&optional nopush edit)
+              "End current search in the opposite side of the match."
+              (interactive)
+              (funcall #'isearch-done nopush edit)
+              (when isearch-other-end (goto-char isearch-other-end))))
 
 (defun my/kill-back-to-indent ()
   "Kill from point back to the first non-whitespace character on the line."
@@ -114,36 +114,34 @@ vi style of % jumping to matching brace."
 (defun my/simple-redo ()
   (interactive)
   (let
-    (
-      (last-command
-        (cond
-          ;; Break undo chain, avoid having to press Ctrl-G.
-          ((string= last-command 'simple-undo) 'ignore)
-          ;; Emacs undo uses this to detect successive undo calls.
-          ((string= last-command 'simple-redo) 'undo)
-          (t last-command))))
+    ((last-command
+       (cond
+         ;; Break undo chain, avoid having to press Ctrl-G.
+         ((string= last-command 'simple-undo) 'ignore)
+         ;; Emacs undo uses this to detect successive undo calls.
+         ((string= last-command 'simple-redo) 'undo)
+         (t last-command))))
     (condition-case err
-      (progn
-        (undo) t)
-      (error
-        (message "%s" (error-message-string err)))))
+                    (progn
+                      (undo) t)
+                    (error
+                      (message "%s" (error-message-string err)))))
   (setq this-command 'simple-redo))
 
 (defun my/simple-undo ()
   (interactive)
   (let
-    (
-      (last-command
-        (cond
-          ;; Emacs undo uses this to detect successive undo calls.
-          ((string= last-command 'simple-undo) 'undo)
-          ((string= last-command 'simple-redo) 'undo)
-          (t last-command))))
+    ((last-command
+       (cond
+         ;; Emacs undo uses this to detect successive undo calls.
+         ((string= last-command 'simple-undo) 'undo)
+         ((string= last-command 'simple-redo) 'undo)
+         (t last-command))))
     (condition-case err
-      (progn
-        (undo-only) t)
-      (error
-        (message "%s" (error-message-string err)))))
+                    (progn
+                      (undo-only) t)
+                    (error
+                      (message "%s" (error-message-string err)))))
   (setq this-command 'simple-undo))
 
 (provide 'defun)

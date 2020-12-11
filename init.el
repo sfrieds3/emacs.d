@@ -137,58 +137,15 @@
 
 ;; ////////////////////////////////////////////////////////////
 
+(require 'shared-config)
 (require 'defun)
 (require 'evil-config)
-(require 'general-config)
+(require 'company-config)
 (require 'ido-config)
 (require 'smex-config)
-
-;; ////////////////////////////////////////////////////////////
-
-;; SMEX/IDO STUFF
-
-;; ////////////////////////////////////////////////////////////
-
-(icomplete-mode 1)
-(setq icomplete-hide-common-prefix nil)
-(setq icomplete-show-matches-on-no-input t)
-(setq icomplete-in-buffer t)
-
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-cannot-complete-command 'ido-next-match)
-
-;; fix keymap for ido completion
-(defun my/ido-keys ()
-  "Add my keybindings for ido."
-  (define-key ido-completion-map (kbd "C-.") 'ido-next-match)
-  (define-key ido-completion-map (kbd "C-,") 'ido-prev-match)
-  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
-  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
-  (define-key ido-completion-map (kbd "<backtab") 'ido-prev-match)
-  (define-key ido-completion-map (kbd "<tab>") 'ido-exit-minibuffer)
-  (define-key ido-completion-map (kbd "C-e") 'ido-exit-minibuffer))
-
-(add-hook 'ido-setup-hook #'my/ido-keys)
-
-;; ////////////////////////////////////////////////////////////
-
-;; ORG MODE
-
-;; ////////////////////////////////////////////////////////////
-
-(require 'org)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-
-(setq org-todo-keywords
-      '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-
-;; keybindings
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(require 'org-config)
+(require 'uniquify-config)
+(require 'elpy-config)
 
 ;; ////////////////////////////////////////////////////////////
 
@@ -199,38 +156,12 @@
 (require 'which-key)
 (which-key-mode)
 
-;;;; elpy
-(load "elpy")
-(load "elpy-rpc")
-(load "elpy-shell")
-(load "elpy-profile")
-(load "elpy-refactor")
-(load "elpy-django")
-(elpy-enable)
 
-;;;; COMPANY
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
-(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
-
-;;;; UNIQUIFY
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t) ;; rename after killing uniquified
-(setq uniquify-ignore-buffers-re "^\\*") ;; dont change names of special buffers.
 
 ;;;; SLIME
 (require 'slime-autoloads)
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(slime-repl-inputed-output-face ((t (:foreground "yellow")))))
 ;; slime key bindings
 (defun my/slime-keybindings ()
   "keybindings for use in slime"
@@ -238,12 +169,6 @@
   (local-set-key (kbd "C-c b") 'slime-eval-buffer))
 (add-hook 'slime-mode-hook #'my/slime-keybindings)
 (add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
-
-;; projectile
-(require 'projectile)
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; ////////////////////////////////////////////////////////////
 
@@ -343,14 +268,3 @@
 ;; ////////////////////////////////////////////////////////////
 
 (provide 'init.el)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-backends
-   '(company-lsp company-bbdb company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-                 (company-dabbrev-code company-gtags company-etags company-keywords)
-                 company-oddmuse company-dabbrev))
- '(custom-safe-themes
-   '("36ca8f60565af20ef4f30783aa16a26d96c02df7b4e54e9900a5138fb33808da" "b89ae2d35d2e18e4286c8be8aaecb41022c1a306070f64a66fd114310ade88aa" default)))

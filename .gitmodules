@@ -28,15 +28,9 @@
 [submodule "lisp/external/evil"]
 	path = lisp/external/evil
 	url = https://github.com/emacs-evil/evil.git
-[submodule "lisp/external/general"]
-	path = lisp/external/general
-	url = https://github.com/noctuid/general.el.git
 [submodule "lisp/external/markdown-mode"]
 	path = lisp/external/markdown-mode
 	url = https://github.com/jrblevin/markdown-mode.git
-[submodule "lisp/external/projectile"]
-	path = lisp/external/projectile
-	url = https://github.com/bbatsov/projectile.git
 [submodule "lisp/external/slime"]
 	path = lisp/external/slime
 	url = https://github.com/slime/slime.git
