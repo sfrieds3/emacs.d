@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(if version< "24.3"
+(if version>= "24.4"
   (load "elpy")
   (load "elpy-rpc")
   (load "elpy-shell")
