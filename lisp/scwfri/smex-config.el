@@ -1,3 +1,10 @@
+;;;; package --- summary
+
+;;; Commentary:
+;;;     smex-config
+
+;;; Code:
+
 (require 'smex)
 (smex-initialize)
 
@@ -8,3 +15,4 @@
 
 
 (provide 'smex-config)
+;;; smex-config.el ends here
