@@ -1,3 +1,10 @@
+;;;; package --- summary
+
+;;; Commentary:
+;;;     ido-config
+
+;;; Code:
+
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -23,3 +30,4 @@
 (setq icomplete-in-buffer t)
 
 (provide 'ido-config)
+;;; ido-config.el ends here
