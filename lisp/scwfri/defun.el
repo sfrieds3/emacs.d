@@ -1,8 +1,9 @@
-;; ////////////////////////////////////////////////////////////
+;;;; package --- summary
 
-;; PERSONAL FUNCTIONS
+;;; Commentary:
+;;;     personal functions
 
-;; ////////////////////////////////////////////////////////////
+;;; Code:
 
 ;; mode line
 (setq-default mode-line-format
@@ -145,3 +146,4 @@
   (setq this-command 'simple-undo))
 
 (provide 'defun)
+;;; defun.el ends here
