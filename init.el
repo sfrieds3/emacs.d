@@ -32,7 +32,7 @@
   (when (file-exists-p home-settings)
     (load-file home-settings)))
 
-(let ((shared-config (expand-file-name "sahred-config.el" user-emacs-directory)))
+(let ((shared-config (expand-file-name "shared-config.el" user-emacs-directory)))
   (when (file-exists-p shared-config)
     (load-file shared-config)))
 
@@ -75,8 +75,8 @@
 (setq mouse-wheel-progressive-speed nil)
 (setq mouse-wheel-follow-mouse 't)
 
-;; cursor always blinks
-(;setq blink-cursor-blinks -1)
+;;; cursor always blinks
+(setq blink-cursor-blinks -1)
 
 ;;; visuals
 (setq inhibit-startup-screen t)
