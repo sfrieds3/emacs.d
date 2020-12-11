@@ -1,3 +1,10 @@
+;;;; package --- summary
+
+;;; Commentary:
+;;;     org-config
+
+;;; Code:
+
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -10,3 +17,4 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 (provide 'org-config)
+;;; org-config.el ends here
