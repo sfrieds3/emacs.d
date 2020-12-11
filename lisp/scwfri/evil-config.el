@@ -1,3 +1,10 @@
+;;;; package --- summary
+
+;;; Commentary:
+;;;     evil-config
+
+;;; Code:
+
 (require 'evil)
 (evil-mode 1)
 
@@ -33,3 +40,4 @@
         (evil-delete (point-at-bol) (point)))))) 
 
 (provide 'evil-config)
+;;; evil-config.el ends here
