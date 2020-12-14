@@ -13,11 +13,11 @@
                mode-line-modified
                mode-line-frame-identification
                ;; current buffer name
-               "%b"
+               "%b ("
                ;; current git branch
-               ;;'(vc-mode vc-mode)
+               '(vc-mode vc-mode)
                ;; mode-name
-               " [%m] "
+               ") [%m] "
                ;; current line and column number
                "(%l:%c %P)"))
 
