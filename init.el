@@ -36,12 +36,12 @@
   (when (file-exists-p shared-config)
     (load-file shared-config)))
 
-;;; default 
-(setf find-def-directory command-line-default-directory)
-(add-hook 'find-file-hook
- (lambda ()
-  (setq default-directory find-def-directory)
-  (setq find-name-arg "-iname")))
+;;; default directory stuff.. not working properly
+;;(setf find-def-directory command-line-default-directory)
+;;(add-hook 'find-file-hook
+;; (lambda ()
+;;  (setq default-directory find-def-directory)
+;;  (setq find-name-arg "-iname")))
 
 
 ;;; byte recompile everything
