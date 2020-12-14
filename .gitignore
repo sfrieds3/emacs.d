@@ -12,3 +12,4 @@ undo-fu-session/*
 smex-items
 eshell/*
 elpa/*
+undohist/*

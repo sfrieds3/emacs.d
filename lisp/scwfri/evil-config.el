@@ -6,6 +6,7 @@
 ;;; Code:
 
 (require 'evil)
+(require 'evil-numbers)
 (evil-mode 1)
 
 ;; evil bindings for occur mode

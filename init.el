@@ -130,11 +130,11 @@
 
 ;;; transient mark mode
 (transient-mark-mode 1)
-
-(vc-mode -1)
  
 ;;; LOAD INIT FILES
 (require 'defun)
+(require 'scwfri-config)
+(require 'modeline)
 (require 'evil-config)
 (require 'company-config)
 (require 'ido-config)
