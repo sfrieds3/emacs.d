@@ -32,6 +32,7 @@
     (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
     (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
     (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
+    (define-key evil-normal-state-map (kbd "DEL") 'evil-switch-to-windows-last-buffer)
     (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
