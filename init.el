@@ -143,6 +143,7 @@
 (require 'uniquify-config)
 (require 'elpy-config)
 (require 'slime-config)
+(require 'ivy-config)
 (require 'keybindings)
 
 ;; PACKAGES
