@@ -137,13 +137,13 @@
 (require 'modeline)
 (require 'evil-config)
 (require 'company-config)
-(require 'ido-config)
+;;(require 'ido-config)
 (require 'smex-config)
 (require 'org-config)
 (require 'uniquify-config)
 (require 'elpy-config)
 (require 'slime-config)
-(require 'ivy-config)
+(require 'icicles-config)
 (require 'keybindings)
 
 ;; PACKAGES
