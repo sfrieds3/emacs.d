@@ -145,7 +145,7 @@
 (require 'uniquify-config)
 (require 'elpy-config)
 (require 'slime-config)
-(require 'icicles-config)
+(require 'ivy-config)
 (require 'keybindings)
 
 ;; PACKAGES
