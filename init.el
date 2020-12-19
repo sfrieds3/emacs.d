@@ -155,12 +155,12 @@
 
 ;;; LANGUAGE SETTINGS
 ;;; c++
-(defun my/c++-mode-hook ()
+(defun $c++-mode-hook ()
   "C++ mode stuff."
   (defvar c-basic-offset)
   (setq c-basic-offset 4)
   (c-set-offset 'substatement-open 0))
-(add-hook 'c++-mode-hook 'my/c++-mode-hook)
+(add-hook 'c++-mode-hook '$c++-mode-hook)
 
 ;;; eldoc mode
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
