@@ -5,17 +5,21 @@
 
 ;;; Code:
 
+(setf evil-want-keybinding 'nil)
 (require 'evil)
 (require 'evil-numbers)
+(require 'evil-collection)
 (evil-mode 1)
+(evil-collection-init)
 
 (defun $clear-highlights ()
-  "Clear highlights from evil-search"
+  "Clear highlight from evil-search."
   (interactive)
   (evil-ex "nohl")
   (exit-minibuffer))
 
 (defun $star-keep-position ()
+  "Keep position when searching."
   (interactive)
   (case evil-search-module
     (evil-search (progn
@@ -26,12 +30,18 @@
                (evil-search-previous)))))
 
 (defun $visualstar-keep-position ()
+  "Keep current position on visual star search."
   (interactive)
   (when (region-active-p)
     (evil-visualstar/begin-search (region-beginning) (region-end) t)
     (case evil-search-module
       (evil-search (evil-ex-search-previous))
       (isearch (evil-search-previous)))))
+
+(defun $evil-set-jump-args (&rest ns)
+  "Preserve jump list with dumb-jump.  NS args."
+  (evil-set-jump))
+(advice-add 'dumb-jump-goto-file-line :before #'$evil-set-jump-args)
 
 ;; evil bindings for occur mode
 (add-hook 'occur-mode-hook
@@ -57,6 +67,7 @@
     (define-key evil-normal-state-map (kbd "u") '$simple-undo)
     (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
     (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
+    (define-key evil-normal-state-map (kbd "C-]") 'dumb-jump-go)
     (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
     (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
     (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)

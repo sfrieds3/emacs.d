@@ -43,3 +43,15 @@
 [submodule "lisp/dependencies/dash"]
 	path = lisp/dependencies/dash
 	url = https://github.com/magnars/dash.el.git
+[submodule "lisp/external/dumb-jump"]
+	path = lisp/external/dumb-jump
+	url = https://github.com/jacktasia/dumb-jump.git
+[submodule "themes/modus-themes"]
+	path = themes/modus-themes
+	url = https://gitlab.com/protesilaos/modus-themes.git
+[submodule "lisp/external/evil-collection"]
+	path = lisp/external/evil-collection
+	url = https://github.com/emacs-evil/evil-collection.git
+[submodule "lisp/dependencies/annalist"]
+	path = lisp/dependencies/annalist
+	url = https://github.com/noctuid/annalist.el.git

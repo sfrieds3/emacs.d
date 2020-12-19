@@ -50,8 +50,12 @@
   (set-frame-font platform-default-font nil t))
 
 (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
-(load-theme 'ample t)
-(enable-theme 'ample)
+(add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
+(require 'modus-themes)
+(require 'modus-operandi-theme)
+(require 'modus-vivendi-theme)
+(load-theme 'modus-vivendi t)
+(enable-theme 'modus-vivendi)
 
 ;;; start emacsclient if server not running already
 (load "server")
@@ -136,6 +140,7 @@
 (require 'ivy-config)
 (require 'keybindings)
 (require 'flycheck-config)
+(require 'dumb-jump-config)
 
 ;; PACKAGES
 

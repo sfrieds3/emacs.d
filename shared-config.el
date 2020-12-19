@@ -3,7 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(slime-repl-inputed-output-face ((t (:foreground "yellow"))))
  )
 
 (custom-set-variables
@@ -11,7 +10,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ido-case-fold t)
- )
+ '(custom-safe-themes
+   '("77cdb6c4d2bd17e707943d19d58759565dd14eb881f46b4031b382fc0c9ebb0a" default)))
 
 (provide 'shared-config)
