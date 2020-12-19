@@ -81,13 +81,6 @@
     ($smarter-move-beginning-of-line nil)
     (kill-region (point) prev-pos)))
 
-(defun $select-line ()
-  "Select entire line"
-  (interactive)
-  (beginning-of-line)
-  (cua-set-mark)
-  (end-of-line))
-
 (defun $delete-trailing-whitespace ()
   "Delete trailing whitespace, and echo"
   (interactive)
@@ -96,6 +89,7 @@
 
 ;; source: https://emacs.stackexchange.com/questions/51972/possible-to-use-emacs-undo-redo-without-keyboard-quit-ctrl-g/54142#54142
 (defun $simple-redo ()
+  "Simple redo function."
   (interactive)
   (let
     ((last-command
@@ -113,6 +107,7 @@
   (setq this-command 'simple-redo))
 
 (defun $simple-undo ()
+  "Simple undo function."
   (interactive)
   (let
     ((last-command
@@ -128,5 +123,5 @@
                       (message "%s" (error-message-string err)))))
   (setq this-command 'simple-undo))
 
-(provide 'defun)
+(provide 'scwfri-defun)
 ;;; defun.el ends here

@@ -37,26 +37,6 @@
 ;;; byte recompile everything
 ;;;(byte-recompile-directory (expand-file-name "~/.emacs.d/lisp") 0)
 
-;;; theme settings
-
-;;; set default preferred fonts
-(defvar platform-default-font)
-(setq platform-default-font
-      (cond ((eq system-type 'windows-nt) "DejaVu Sans Mono 10")
-            ((eq system-type 'gnu/linux) "Iosevka Fixed SS14 11")
-            (t nil)))
-
-(when platform-default-font
-  (set-frame-font platform-default-font nil t))
-
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
-(require 'modus-themes)
-(require 'modus-operandi-theme)
-(require 'modus-vivendi-theme)
-(load-theme 'modus-vivendi t)
-(enable-theme 'modus-vivendi)
-
 ;;; start emacsclient if server not running already
 (load "server")
 (unless (server-running-p) (server-start))
@@ -126,7 +106,8 @@
 (transient-mark-mode 1)
  
 ;;; LOAD INIT FILES
-(require 'defun)
+(require 'scwfri-defun)
+(require 'theme-config)
 (require 'scwfri-config)
 (require 'modeline)
 (require 'evil-config)
@@ -141,11 +122,9 @@
 (require 'keybindings)
 (require 'flycheck-config)
 (require 'dumb-jump-config)
+(require 'which-key-config)
 
 ;; PACKAGES
-
-(require 'which-key)
-(which-key-mode)
 
 ;;; LANGUAGE SETTINGS
 ;;; c++
