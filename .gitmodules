@@ -1,6 +1,3 @@
-[submodule "lisp/dependencies/dash"]
-	path = lisp/dependencies/dash
-	url = https://github.com/magnars/dash.el.git
 [submodule "lisp/dependencies/f"]
 	path = lisp/dependencies/f
 	url = https://github.com/rejeep/f.el.git
@@ -40,3 +37,9 @@
 [submodule "lisp/external/swiper"]
 	path = lisp/external/swiper
 	url = https://github.com/abo-abo/swiper.git
+[submodule "lisp/external/flycheck"]
+	path = lisp/external/flycheck
+	url = https://github.com/flycheck/flycheck.git
+[submodule "lisp/dependencies/dash"]
+	path = lisp/dependencies/dash
+	url = https://github.com/magnars/dash.el.git

@@ -32,19 +32,7 @@
   (when (file-exists-p home-settings)
     (load-file home-settings)))
 
-;;(let ((shared-config (expand-file-name "shared-config.el" user-emacs-directory)))
-;;  (when (file-exists-p shared-config)
-;;    (load-file shared-config)))
-
 (setq custom-file (concat user-emacs-directory "shared-config.el"))
-
-;;; default directory stuff.. not working properly
-;;(setf find-def-directory command-line-default-directory)
-;;(add-hook 'find-file-hook
-;; (lambda ()
-;;  (setq default-directory find-def-directory)
-;;  (setq find-name-arg "-iname")))
-
 
 ;;; byte recompile everything
 ;;;(byte-recompile-directory (expand-file-name "~/.emacs.d/lisp") 0)
@@ -103,8 +91,8 @@
 
 ;;; smart parens
 (electric-pair-mode -1)
-;; dont use smart parens in mini-buffers
 (defun $inhibit-electric-pair-mode (char)
+  "Do not use smart parens in mini-buffers.  Params: CHAR."
   (minibufferp))
 
 (setq electric-pair-inhibit-predicate #'$inhibit-electric-pair-mode)
@@ -147,6 +135,7 @@
 (require 'slime-config)
 (require 'ivy-config)
 (require 'keybindings)
+(require 'flycheck-config)
 
 ;; PACKAGES
 

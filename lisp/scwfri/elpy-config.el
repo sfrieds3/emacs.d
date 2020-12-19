@@ -15,5 +15,9 @@
       (load "elpy-django")
       (elpy-enable)))
 
+(add-hook 'python-mode-hook (lambda()
+                              (make-local-variable 'company-backends)
+                              (setq company-backends (list (cons 'elpy-company-backend (copy-tree (car company-backends)))))))
+
 (provide 'elpy-config)
 ;;; elpy-config ends here
