@@ -104,10 +104,10 @@
 ;;; smart parens
 (electric-pair-mode -1)
 ;; dont use smart parens in mini-buffers
-(defun my-inhibit-electric-pair-mode (char)
+(defun $inhibit-electric-pair-mode (char)
   (minibufferp))
 
-(setq electric-pair-inhibit-predicate #'my-inhibit-electric-pair-mode)
+(setq electric-pair-inhibit-predicate #'$inhibit-electric-pair-mode)
 
 ;;; turn on recent file mode
 (recentf-mode t)
@@ -139,7 +139,7 @@
 (require 'modeline)
 (require 'evil-config)
 (require 'company-config)
-;;(require 'ido-config)
+(require 'ido-config)
 (require 'smex-config)
 (require 'org-config)
 (require 'uniquify-config)

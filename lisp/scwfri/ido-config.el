@@ -12,7 +12,7 @@
 (setq ido-cannot-complete-command 'ido-next-match)
 
 ;; fix keymap for ido completion
-(defun my/ido-keys ()
+(defun $ido-keys ()
   "Add my keybindings for ido."
   (define-key ido-completion-map (kbd "C-.") 'ido-next-match)
   (define-key ido-completion-map (kbd "C-,") 'ido-prev-match)
@@ -22,7 +22,7 @@
   (define-key ido-completion-map (kbd "<tab>") 'ido-exit-minibuffer)
   (define-key ido-completion-map (kbd "C-e") 'ido-exit-minibuffer))
 
-(add-hook 'ido-setup-hook #'my/ido-keys)
+(add-hook 'ido-setup-hook #'$ido-keys)
 
 (icomplete-mode 1)
 (setq icomplete-hide-common-prefix nil)

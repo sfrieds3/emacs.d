@@ -10,19 +10,19 @@
   (windmove-default-keybindings))
 
 ;;; custom functions
-(global-set-key (kbd "C-c s d") 'my/dir-grep)
-(global-set-key (kbd "C-c s s") 'my/file-grep)
+(global-set-key (kbd "C-c s d") '$dir-grep)
+(global-set-key (kbd "C-c s s") '$file-grep)
 (global-set-key (kbd "C-c s f") 'find-dired)
-(global-set-key (kbd "C-x f") 'my/ido-open-recentf)
-(global-set-key (kbd "C-a") 'my/smarter-move-beginning-of-line)
-(global-set-key (kbd "C-<tab>") 'my/goto-match-paren)
-(global-set-key (kbd "%") 'my/goto-match-paren)
+(global-set-key (kbd "C-x f") '$ido-open-recentf)
+(global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
+(global-set-key (kbd "C-<tab>") '$goto-match-paren)
+(global-set-key (kbd "%") '$goto-match-paren)
 
 ;;; SPC commands
-(global-set-key (kbd "C-c SPC l") 'my/select-line)
+(global-set-key (kbd "C-c SPC l") '$select-line)
 (global-set-key (kbd "C-c SPC r") 'replace-regexp)
 (global-set-key (kbd "C-c SPC i") 'indent-region)
-(global-set-key (kbd "C-c SPC W") 'my/delete-trailing-whitespace)
+(global-set-key (kbd "C-c SPC W") '$delete-trailing-whitespace)
 (global-set-key (kbd "C-c SPC l") 'goto-line)
 (global-set-key (kbd "C-c SPC b e") 'eval-buffer)
 (global-set-key (kbd "C-c SPC b r") 'revert-buffer)
@@ -52,7 +52,7 @@
 
 ;;; indent
 (global-set-key (kbd "C-x TAB") 'indent-code-rigidly)
-(global-set-key (kbd "C-M-<backspace>") 'my/kill-back-to-indent)
+(global-set-key (kbd "C-M-<backspace>") '$kill-back-to-indent)
 
 ;;; want to go to correct indentation on enter
 (global-set-key (kbd "RET") 'newline-and-indent)
