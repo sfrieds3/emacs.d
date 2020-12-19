@@ -43,6 +43,12 @@
   (evil-set-jump))
 (advice-add 'dumb-jump-goto-file-line :before #'$evil-set-jump-args)
 
+(defun $split-right-and-move ()
+  "Split window to the right and move to it."
+  (interactive)
+  (split-window-right)
+  (evil-window-right 1))
+
 ;; evil bindings for occur mode
 (add-hook 'occur-mode-hook
           (lambda ()
@@ -90,6 +96,8 @@
     (evil-ex-define-cmd "Q" 'evil-quit)
     (evil-ex-define-cmd "E" 'evil-edit)
     (evil-ex-define-cmd "W" 'evil-write)
+    (evil-ex-define-cmd "vs" '$split-right-and-move)
+    (evil-ex-define-cmd "Vs" '$split-right-and-move)
     (define-key universal-argument-map (kbd "_") 'universal-argument-more)
     (define-key universal-argument-map (kbd "C-u") nil)))
  
