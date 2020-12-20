@@ -5,6 +5,13 @@
 
 ;;; Code:
 
+;; get face under cursor
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (pos) 'read-face-name)
+                  (get-char-property (pos) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
 ;; grep in current directory
 (defun $dir-grep ()
   "Run grep recursively from the directory of the current buffer or the default directory."
