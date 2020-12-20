@@ -18,7 +18,7 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list" t)))
 
 ;;; history settings
-(setq savehist-file (expand-file-name "savehist" user-emacs-directory))
+(setq savehist-file (expand-file-name "savehist" "~"))
 (savehist-mode 1)
 (setq history-length t)
 (setq history-delete-duplicates t)
@@ -83,7 +83,7 @@
 
 ;;; turn on recent file mode
 (recentf-mode t)
-(setq recentf-max-saved-items 50)
+(setq recentf-max-saved-items 1000)
 
 ;;; filename in titlebar
 (setq frame-title-format
