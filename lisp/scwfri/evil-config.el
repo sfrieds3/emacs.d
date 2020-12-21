@@ -9,8 +9,10 @@
 (require 'evil)
 (require 'evil-numbers)
 (require 'evil-collection)
+(require 'evil-visualstar)
 (evil-mode 1)
 (evil-collection-init)
+(global-evil-visualstar-mode)
 
 (defun $clear-highlights ()
   "Clear highlight from evil-search."
