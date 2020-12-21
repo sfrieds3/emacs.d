@@ -63,7 +63,6 @@
     (setq-default evil-symbol-word-search t)
     ;; Make horizontal movement cross lines
     (setq-default evil-cross-lines t)
-    ;;(evil-select-search-module 'evil-search-module 'evil-search)
     (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
     (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -77,7 +76,7 @@
     (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-    ;;(define-key evil-normal-state-map (kbd "*") '$star-keep-position)
+    (define-key evil-normal-state-map (kbd "*") '$star-keep-position)
     (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
     (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
     (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
