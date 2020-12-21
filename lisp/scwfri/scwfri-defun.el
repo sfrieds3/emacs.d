@@ -5,6 +5,12 @@
 
 ;;; Code:
 
+;; show full file path in msg buffer
+(defun $show-full-file-path ()
+  "Show full file path in msg."
+  (interactive)
+  (message "%s" (buffer-file-name)))
+
 ;; get face under cursor
 (defun $what-face (pos)
   "Return face under point POS."
