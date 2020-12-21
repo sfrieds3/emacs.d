@@ -21,22 +21,16 @@
 (defun $star-keep-position ()
   "Keep position when searching."
   (interactive)
-  (case evil-search-module
-    (evil-search (progn
-                  (evil-ex-search-word-forward)
-                  (evil-ex-search-previous)))
-    (isearch (progn
-               (evil-search-word-forward)
-               (evil-search-previous)))))
+  (evil-search-word-forward)
+  (evil-search-previous))
 
 (defun $visualstar-keep-position ()
   "Keep current position on visual star search."
   (interactive)
   (when (region-active-p)
-    (evil-visualstar/begin-search (region-beginning) (region-end) t)
-    (case evil-search-module
-      (evil-search (evil-ex-search-previous))
-      (isearch (evil-search-previous)))))
+    (evil-search-word-forward)
+    (evi-search-word-backward)
+    (cua-cancel))
 
 (defun $evil-set-jump-args (&rest ns)
   "Preserve jump list with dumb-jump.  NS args."
@@ -67,7 +61,7 @@
     (setq-default evil-symbol-word-search t)
     ;; Make horizontal movement cross lines
     (setq-default evil-cross-lines t)
-    (evil-select-search-module 'evil-search-module 'evil-search)
+    ;;(evil-select-search-module 'evil-search-module 'evil-search)
     (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
     (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -81,13 +75,13 @@
     (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-    (define-key evil-normal-state-map (kbd "*") '$star-keep-position)
+    ;;(define-key evil-normal-state-map (kbd "*") '$star-keep-position)
     (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
     (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
     (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
     (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
-    (define-key evil-visual-state-map (kbd "*") '$star-keep-position)
+    ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
     (define-key evil-insert-state-map (kbd "C-u")
       (lambda ()
         (interactive)
