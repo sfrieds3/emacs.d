@@ -78,7 +78,7 @@
     (define-key evil-normal-state-map (kbd "u") '$simple-undo)
     (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
     (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-    (define-key evil-normal-state-map (kbd "C-]") 'dumb-jump-go)
+    (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
     (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
     (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
     (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
