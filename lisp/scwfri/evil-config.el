@@ -79,6 +79,7 @@
     (define-key evil-normal-state-map (kbd "*") '$star-keep-position)
     (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
     (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
+    (define-key evil-normal-state-map (kbd "\\\\") 'counsel-etags-list-tag)
     (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
     (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
