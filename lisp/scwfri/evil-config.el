@@ -85,6 +85,7 @@
     (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
     (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
     (define-key evil-normal-state-map (kbd "_f") $show-full-file-path)
+    (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
     (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
     (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
