@@ -6,7 +6,8 @@
 ;;; Code:
 
 ;; get face under cursor
-(defun what-face (pos)
+(defun $what-face (pos)
+  "Return face under point POS."
   (interactive "d")
   (let ((face (or (get-char-property (pos) 'read-face-name)
                   (get-char-property (pos) 'face))))
