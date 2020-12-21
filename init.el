@@ -87,7 +87,7 @@
 
 ;;; filename in titlebar
 (setq frame-title-format
-      (concat "%b [%m]: " user-login-name "@" (system-name)))
+      (concat "%f [%m]: " user-login-name "@" (system-name)))
 
 ;;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
 (global-hi-lock-mode 1)
