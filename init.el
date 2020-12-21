@@ -123,6 +123,7 @@
 (require 'flycheck-config)
 (require 'dumb-jump-config)
 (require 'which-key-config)
+(require 'origami-config)
 
 ;; PACKAGES
 
