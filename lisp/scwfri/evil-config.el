@@ -96,6 +96,7 @@
     (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
     (define-key evil-normal-state-map (kbd "_f") $show-full-file-path)
     (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
+    (define-key evil-normal-state-map (kbd "gr") 'counsel-git-grep)
     (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
     (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
     (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
