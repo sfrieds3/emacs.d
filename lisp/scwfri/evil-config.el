@@ -30,7 +30,7 @@
   (when (region-active-p)
     (evil-search-word-forward)
     (evi-search-word-backward)
-    (cua-cancel))
+    (cua-cancel)))
 
 (defun $evil-set-jump-args (&rest ns)
   "Preserve jump list with dumb-jump.  NS args."
