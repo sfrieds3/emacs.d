@@ -8,6 +8,7 @@
 (require 'ivy)
 (require 'counsel)
 (require 'swiper)
+(require 'counsel-etags)
 (ivy-mode 1)
 
 (defun my-ivy-switch-file-search ()
