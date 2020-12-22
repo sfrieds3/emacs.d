@@ -5,6 +5,19 @@
 
 ;;; Code:
 
+(defun simple-mode-line-render (left right)
+  "Return a string of `window-width' length containing LEFT, and RIGHT
+ aligned respectively."
+  (let* ((available-width (- (window-width) (length left) 2)))
+    (format (format " %%s %%%ds " available-width) left right)))
+
+;(setq mode-line-format
+;      '((:eval (simple-mode-line-render
+;                ;; left
+;                (format-mode-line "%b [%m] [%*]")
+;                ;; right
+;                (format-mode-line "Line: %l/%i Column: %c")))))
+
 ;; mode line
 (setq-default mode-line-format
               (list
