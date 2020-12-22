@@ -84,6 +84,8 @@
     (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
     (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
     (define-key evil-normal-state-map (kbd "\\H") 'unhighlight-regexp)
+    (define-key evil-normal-state-map (kbd "\\c") 'global-hl-line-mode)
+    (define-key evil-normal-state-map (kbd "\\C") 'column-marker-1)
     (define-key evil-normal-state-map (kbd "DEL") 'evil-switch-to-windows-last-buffer)
     (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
