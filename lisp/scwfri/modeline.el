@@ -29,7 +29,7 @@
                         (quote (
                                 "[%m] (%l/%i:%c %p)"
                                 ;mode-line-frame-identification
-                                mode-line-modes
+                                ;mode-line-modes
                                 mode-line-misc-info))))))
 
 ;  (defun with-face (str &rest face-plist)
