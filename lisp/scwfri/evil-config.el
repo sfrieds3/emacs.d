@@ -94,7 +94,7 @@
     (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
     (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
     (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
-    (define-key evil-normal-state-map (kbd "_f") $show-full-file-path)
+    (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
     (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
     (define-key evil-normal-state-map (kbd "gr") 'counsel-git-grep)
     (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
