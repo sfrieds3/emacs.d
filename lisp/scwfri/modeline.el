@@ -28,7 +28,7 @@
                         ;; Right.
                         (quote (
                                 "[%m] (%l/%i:%c %p)"
-                                mode-line-frame-identification
+                                ;mode-line-frame-identification
                                 mode-line-modes
                                 mode-line-misc-info))))))
 
