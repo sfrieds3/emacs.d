@@ -110,8 +110,8 @@
 (transient-mark-mode 1)
  
 ;;; LOAD INIT FILES
-(require 'scwfri-defun)
-(require 'theme-config)
+(use-package scwfri-defun)
+(use-package theme-config)
 (require 'scwfri-config)
 (require 'modeline)
 (require 'company-config)
