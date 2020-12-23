@@ -19,7 +19,7 @@
 (setq delete-old-versions -1)
 (setq version-control t)
 (setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list" t)))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp" t)))
 
 ;;; history settings
 (setq savehist-file (expand-file-name "savehist" "~"))
@@ -112,21 +112,21 @@
 ;;; LOAD INIT FILES
 (use-package scwfri-defun)
 (use-package theme-config)
-(require 'scwfri-config)
-(require 'modeline)
-(require 'company-config)
-(require 'ido-config)
-(require 'smex-config)
-(require 'org-config)
-(require 'uniquify-config)
-(require 'elpy-config)
-(require 'slime-config)
-(require 'ivy-config)
-(require 'keybindings)
-(require 'flycheck-config)
-(require 'dumb-jump-config)
-(require 'which-key-config)
-(require 'origami-config)
+(use-package scwfri-config)
+(use-package modeline)
+(use-package company-config)
+(use-package ido-config)
+(use-package smex-config)
+(use-package org-config)
+(use-package uniquify-config)
+(use-package elpy-config)
+(use-package slime-config)
+(use-package ivy-config)
+(use-package keybindings)
+(use-package flycheck-config)
+(use-package dumb-jump-config)
+(use-package which-key-config)
+(use-package origami-config)
 
 ;;; evil
 (use-package evil
@@ -217,7 +217,7 @@
 
 ;; PACKAGES
 
-(require 'column-marker)
+(use-package column-marker)
 
 ;;; LANGUAGE SETTINGS
 ;;; c++
