@@ -10,9 +10,12 @@
 (require 'evil-numbers)
 (require 'evil-collection)
 (require 'evil-visualstar)
+(require 'evil-surround)
+(require 'goto-chg)
 (evil-mode 1)
 (evil-collection-init)
 (global-evil-visualstar-mode)
+(global-evil-surround-mode 1)
 
 (defun $evil-clear-highlights ()
   "Clear highlight from evil-search."

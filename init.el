@@ -38,8 +38,8 @@
 ;;;(byte-recompile-directory (expand-file-name "~/.emacs.d/lisp") 0)
 
 ;;; start emacsclient if server not running already
-(load "server")
-(unless (server-running-p) (server-start))
+;;(load "server")
+;;(unless (server-running-p) (server-start))
 
 ;;; make scrolling work like it should
 (setq scroll-step 1)
@@ -126,6 +126,8 @@
 (require 'origami-config)
 
 ;; PACKAGES
+
+(require 'column-marker)
 
 ;;; LANGUAGE SETTINGS
 ;;; c++
