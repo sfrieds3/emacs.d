@@ -243,7 +243,6 @@
 ;;; ivy
 (use-package ivy
   :diminish
-  :defer t
   :config
   (ivy-mode 1)
 
@@ -311,7 +310,6 @@
 
 ;;; elpy
 (use-package elpy
-  :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable)
   :config
@@ -336,7 +334,6 @@
   (setq slime-contribs '(slime-fancy)))
 
 (use-package dumb-jump
-  :defer t
   :config
   (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
 
@@ -356,13 +353,11 @@
 
 ;; origami
 (use-package origami
-  :defer t
   :config
   (global-origami-mode 1))
 
 ;;; column-marker
-(use-package column-marker
-  :defer t)
+(use-package column-marker)
 
 ;;; LOAD INIT FILES
 (use-package scwfri-defun)
