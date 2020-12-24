@@ -15,11 +15,11 @@
   (require 'use-package))
 
 ;;; backup settings
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq backup-directory-alist '(("." . "~/.emacs.d/tmp/")))
 (setq delete-old-versions -1)
 (setq version-control t)
 (setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp" t)))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/" t)))
 
 ;;; history settings
 (setq savehist-file (expand-file-name "savehist" "~"))
@@ -108,25 +108,7 @@
 
 ;;; transient mark mode
 (transient-mark-mode 1)
- 
-;;; LOAD INIT FILES
-(use-package scwfri-defun)
-(use-package theme-config)
-(use-package scwfri-config)
-(use-package modeline)
-(use-package company-config)
-(use-package ido-config)
-(use-package smex-config)
-(use-package org-config)
-(use-package uniquify-config)
-(use-package elpy-config)
-(use-package slime-config)
-(use-package ivy-config)
-(use-package keybindings)
-(use-package flycheck-config)
-(use-package dumb-jump-config)
-(use-package which-key-config)
-(use-package origami-config)
+
 
 ;;; evil
 (use-package evil
@@ -143,11 +125,49 @@
   (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1)
-  ;;(defalias #'forward-evil-word #'forward-evil-symbol)
-  ;; make evil-search-word look for symbol rather than word boundaries
-  ;;(setq-default evil-symbol-word-search t)
-  ;; Make horizontal movement cross lines
   (setq-default evil-cross-lines t)
+
+  (defun $evil-clear-highlights ()
+    "Clear highlight from evil-search."
+    (interactive)
+    (evil-ex "nohl")
+    (exit-minibuffer))
+
+  (defun $evil-star-keep-position ()
+    "Keep position when searching."
+    (interactive)
+    (evil-search-word-forward)
+    (evil-search-previous))
+
+  (defun $evil-visualstar-keep-position ()
+    "Keep current position on visual star search."
+    (interactive)
+    (when (region-active-p)
+      (evil-search-word-forward)
+      (evi-search-word-backward)
+      (cua-cancel)))
+
+  (defun $evil-set-jump-args (&rest ns)
+    "Preserve jump list with dumb-jump.  NS args."
+    (evil-set-jump))
+  (advice-add 'dumb-jump-goto-file-line :before #'$evil-set-jump-args)
+
+  (defun $evil-split-right-and-move ()
+    "Split window to the right and move to it."
+    (interactive)
+    (split-window-right)
+    (evil-window-right 1))
+
+  (defun $evil-scroll-down-keep-pos ()
+    (interactive)
+    (evil-scroll-line-down 1)
+    (evil-next-visual-line))
+
+  (defun $evil-scroll-up-keep-pos ()
+    (interactive)
+    (evil-scroll-line-up 1)
+    (evil-previous-visual-line))
+
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -178,20 +198,24 @@
   (define-key evil-normal-state-map (kbd "gr") 'counsel-git-grep)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
+
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
   ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
+
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
       (evil-delete (point-at-bol) (point))))
   (define-key evil-normal-state-map (kbd "|") 'universal-argument)
+
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
   (evil-ex-define-cmd "W" 'evil-write)
   (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
   (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
+
   (define-key universal-argument-map (kbd "|") 'universal-argument-more)
   (define-key universal-argument-map (kbd "C-u") nil))
 
@@ -213,13 +237,144 @@
   :config
   (global-evil-surround-mode 1))
 
+;;; goto-chg
 (use-package goto-chg)
 
-;; PACKAGES
+;;; ivy
+(use-package ivy
+  :diminish
+  :defer t
+  :config
+  (ivy-mode 1)
 
-(use-package column-marker)
+  (defun my-ivy-switch-file-search ()
+    "Switch to counsel-file-jump, preserving current input."
+    (interactive)
+    (let ((input (ivy--input)))
+      (ivy-quit-and-run (counsel-file-jump))))
+  (define-key ivy-minibuffer-map (kbd "M-s r") 'my-ivy-switch-file-search)
 
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; enable this if you want `swiper' to use it
+  ;; (setq search-default-mode #'char-fold-to-regexp)
+  (global-set-key (kbd "C-s") 'counsel-grep-or-swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;;(global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c f") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+
+;;; counsel
+(use-package counsel)
+
+;;; swiper
+(use-package swiper)
+
+;;; counsel-etags
+(use-package counsel-etags)
+
+;;; smex
+(use-package smex
+  :config
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+
+;;; company
+(use-package company
+  :commands (global-company-mode company-mode company-indent-or-complete-common)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous))
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev)))
+  (global-company-mode 1))
+
+;;; flycheck
+(use-package flycheck
+  :config
+  (global-flycheck-mode))
+
+;;; elpy
+(use-package elpy
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable)
+  :config
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  :hook
+  (elpy-mode-hook . (lambda () (highlight-indentation-mode -1)))
+  (python-mode-hook . (lambda()
+                       (make-local-variable 'company-backends)
+                       (setq company-backends (list (cons 'elpy-company-backend (copy-tree (car company-backends)))))))
+  (elpy-mode-hook . flycheck-mode))
+
+(use-package slime
+  :init
+  (defun my/slime-keybindings ()
+    "keybindings for use in slime"
+    (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
+    (local-set-key (kbd "C-c b") 'slime-eval-buffer))
+  (add-hook 'slime-mode-hook #'my/slime-keybindings)
+  (add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package dumb-jump
+  :defer t
+  :config
+  (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
+
+(use-package uniquify
+  :custom
+  (uniquify-buffer-name-style 'forward)
+  (uniquify-separator "/")
+  ;; rename after killing unqualified
+  (uniquify-after-kill-buffer-p t)
+  ;; dont change names of special buffers
+  (uniquify-ignore-buffers-re "^\\*"))
+
+;;; which-key
+(use-package which-key
+  :defer t
+  :config
+  (which-key-mode))
+
+;; origami
+(use-package origami
+  :defer t
+  :config
+  (global-origami-mode 1))
+
+;;; column-marker
+(use-package column-marker
+  :defer t)
+
+;;; LOAD INIT FILES
+(use-package scwfri-defun)
+(use-package theme-config)
+(use-package scwfri-config)
+(use-package modeline)
+(use-package ido-config)
+(use-package org-config)
+(use-package keybindings)
 ;;; LANGUAGE SETTINGS
+
 ;;; c++
 (defun $c++-mode-hook ()
   "C++ mode stuff."

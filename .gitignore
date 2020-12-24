@@ -1,9 +1,8 @@
 local-settings.el
-backups/*
+tmp/*
 recentf
 savehist
 ido.last
-auto-save-list/*
 elpy/*
 .cache/*
 projectile-bookmarks.eld
