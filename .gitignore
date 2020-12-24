@@ -1,5 +1,6 @@
 local-settings.el
 tmp/*
+auto-save-list/*
 recentf
 savehist
 ido.last
