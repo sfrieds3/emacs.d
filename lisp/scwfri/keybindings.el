@@ -16,7 +16,6 @@
 (global-set-key (kbd "C-x f") '$ido-open-recentf)
 (global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
 (global-set-key (kbd "C-<tab>") '$goto-match-paren)
-(global-set-key (kbd "%") '$goto-match-paren)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
