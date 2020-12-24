@@ -257,11 +257,9 @@
   (setq enable-recursive-minibuffers t)
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
-  (global-set-key (kbd "C-s") 'counsel-grep-or-swiper)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume)
   ;;(global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
   (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
@@ -274,13 +272,21 @@
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
 ;;; counsel
-(use-package counsel)
+(use-package counsel
+  :after ivy
+  :demand t
+  :map (("C-x C-f" . counsel-find-file)
+        ("C-s" . counsel-grep-or-swiper)))
 
 ;;; swiper
-(use-package swiper)
+(use-package swiper
+  :after ivy
+  :demand t)
 
 ;;; counsel-etags
-(use-package counsel-etags)
+(use-package counsel-etags
+  :after counsel
+  :demand t)
 
 ;;; smex
 (use-package smex
@@ -294,6 +300,7 @@
 ;;; company
 (use-package company
   :commands (global-company-mode company-mode company-indent-or-complete-common)
+  :demand t
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
@@ -305,6 +312,7 @@
 
 ;;; flycheck
 (use-package flycheck
+  :demand t
   :config
   (global-flycheck-mode))
 
