@@ -179,6 +179,16 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
+  ;; Make escape quit everything, whenever possible.
+  ;; from https://github.com/aaronbieber/dotfiles/blob/master/configs/emacs.d/lisp/init-evil.el
+  (define-key evil-normal-state-map [escape] 'keyboard-escape-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -254,60 +264,57 @@
   :defer t)
 
 ;;; goto-chg
-(use-package goto-chg)
+(use-package goto-chg
+  :defer t)
 
 ;;; ivy
 (use-package ivy
-  :defer 5
+  :defer 1
   :diminish
   :config
   (ivy-mode 1)
 
-  (defun my-ivy-switch-file-search ()
+  (defun $ivy-switch-file-search ()
     "Switch to counsel-file-jump, preserving current input."
     (interactive)
     (let ((input (ivy--input)))
       (ivy-quit-and-run (counsel-file-jump))))
-  (define-key ivy-minibuffer-map (kbd "M-s r") 'my-ivy-switch-file-search)
+  (define-key ivy-minibuffer-map (kbd "M-s r") '$ivy-switch-file-search)
 
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
   ;;(global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c f") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c f") 'counsel-describe-function)
+  (global-set-key (kbd "C-c v") 'counsel-describe-variable)
+  (global-set-key (kbd "C-c d") 'counsel-describe-symbol)
+  (global-set-key (kbd "C-c k") 'counsel-find-library)
+  (global-set-key (kbd "C-c i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "C-c u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c C-f") 'counsel-git)
+  (global-set-key (kbd "C-c g") 'counsel-git-grep)
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
 ;;; counsel
 (use-package counsel
-  :defer t
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)
         ("C-s" . counsel-grep-or-swiper)))
 
 ;;; swiper
 (use-package swiper
-  :after ivy
-  :demand t)
+  :after ivy)
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :after counsel
-  :demand t)
+  :after counsel)
 
 ;;; smex
 (use-package smex
-  :commands (smex)
+  :commands (smex smex-initialize)
   :defer t
   :config
   (smex-initialize)
@@ -415,7 +422,7 @@
 (use-package theme-config)
 (use-package scwfri-config)
 (use-package modeline)
-(use-package ido-config)
+;;(use-package ido-config)
 ;;(use-package org-config)
 (use-package keybindings)
 ;;; LANGUAGE SETTINGS
