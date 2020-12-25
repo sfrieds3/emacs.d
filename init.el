@@ -1,8 +1,8 @@
 ;;;; package --- summary
 
 ;;; Commentary:
-;;;     place 'local-settings.el' file (provide 'local-settings)
-;;;     in .emacs.d directory to overwrite settings (loaded at end)
+;;     place 'local-settings.el' file (provide 'local-settings)
+;;     in .emacs.d directory to overwrite settings (loaded at end)
 
 ;;; Code:
 
@@ -318,18 +318,14 @@
 
 ;;; elpy
 ;; does not play nice with use-package, so we'll do it the semi-old fashioned way
-(use-package emacs
+(use-package elpy
   :defer t
+  :commands (elpy-enable)
   :init
-  (load "elpy")
-  (load "elpy-rpc")
-  (load "elpy-shell")
-  (load "elpy-profile")
-  (load "elpy-refactor")
-  (load "elpy-django")
-  (elpy-enable)
+  (advice-add 'python-mode :before 'elpy-enable)
   :config
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
   (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
   (add-hook 'python-mode-hook (lambda()
                        (make-local-variable 'company-backends)
@@ -337,6 +333,11 @@
   :hook
   (elpy-mode-hook . flycheck-mode))
 
+;;; yasnippet
+(use-package yasnippet
+  :defer t)
+
+;;; slime
 (use-package slime
   :init
   (defun my/slime-keybindings ()
@@ -349,6 +350,7 @@
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
+;;; dumb-jump
 (use-package dumb-jump
   :config
   (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
