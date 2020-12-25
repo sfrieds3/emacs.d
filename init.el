@@ -275,7 +275,7 @@
 (use-package counsel
   :after ivy
   :demand t
-  :map (("C-x C-f" . counsel-find-file)
+  :bind (("C-x C-f" . counsel-find-file)
         ("C-s" . counsel-grep-or-swiper)))
 
 ;;; swiper
@@ -317,16 +317,24 @@
   (global-flycheck-mode))
 
 ;;; elpy
-(use-package elpy
+;; does not play nice with use-package, so we'll do it the semi-old fashioned way
+(use-package emacs
+  :defer t
   :init
-  (advice-add 'python-mode :before 'elpy-enable)
+  (load "elpy")
+  (load "elpy-rpc")
+  (load "elpy-shell")
+  (load "elpy-profile")
+  (load "elpy-refactor")
+  (load "elpy-django")
+  (elpy-enable)
   :config
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  :hook
-  (elpy-mode-hook . (lambda () (highlight-indentation-mode -1)))
-  (python-mode-hook . (lambda()
+  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
+  (add-hook 'python-mode-hook (lambda()
                        (make-local-variable 'company-backends)
                        (setq company-backends (list (cons 'elpy-company-backend (copy-tree (car company-backends)))))))
+  :hook
   (elpy-mode-hook . flycheck-mode))
 
 (use-package slime
