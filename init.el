@@ -109,21 +109,32 @@
 ;;; transient mark mode
 (transient-mark-mode 1)
 
+;;; dependencies
+(use-package annalist              :defer t)
+(use-package dash                  :defer t)
+(use-package f                     :defer t)
+(use-package highlight-indentation :defer t)
+(use-package ht                    :defer t)
+(use-package hydra                 :defer t)
+(use-package popup                 :defer t)
+(use-package pyvenv                :defer t)
+(use-package s                     :defer t)
+(use-package spinner               :defer t)
 
 ;;; evil
 (use-package evil
   :init
+  (setf evil-want-keybinding 'nil)
+  :config
   (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'ruby-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  (setf evil-want-keybinding 'nil)
   (setq evil-search-module 'evil-search)
   (setq evil-ex-complete-emacs-commands t)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (setq evil-shift-round nil)
   (setq evil-want-C-u-scroll t)
-  :config
   (evil-mode 1)
   (setq-default evil-cross-lines t)
 
@@ -202,6 +213,7 @@
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
+  (define-key evil-visual-state-map (kbd "gl") 'align-regexp)
   ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
 
   (define-key evil-insert-state-map (kbd "C-u")
@@ -224,6 +236,7 @@
 
 ;;; evil-collection
 (use-package evil-collection
+  :defer t
   :config
   (evil-collection-init))
 
@@ -237,11 +250,15 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package undohist
+  :defer t)
+
 ;;; goto-chg
 (use-package goto-chg)
 
 ;;; ivy
 (use-package ivy
+  :defer 5
   :diminish
   :config
   (ivy-mode 1)
@@ -273,8 +290,8 @@
 
 ;;; counsel
 (use-package counsel
+  :defer t
   :after ivy
-  :demand t
   :bind (("C-x C-f" . counsel-find-file)
         ("C-s" . counsel-grep-or-swiper)))
 
@@ -290,17 +307,19 @@
 
 ;;; smex
 (use-package smex
+  :commands (smex)
+  :defer t
   :config
   (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ;; This is your old M-x.
+         ("C-c C-c M-x" . execute-extended-command)))
 
 ;;; company
 (use-package company
+  :defer 5
   :commands (global-company-mode company-mode company-indent-or-complete-common)
-  :demand t
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
@@ -312,7 +331,7 @@
 
 ;;; flycheck
 (use-package flycheck
-  :demand t
+  :defer 5
   :config
   (global-flycheck-mode))
 
@@ -339,22 +358,29 @@
 
 ;;; slime
 (use-package slime
-  :init
+  :defer t
+  :commands (slime)
+  :config
   (defun my/slime-keybindings ()
     "keybindings for use in slime"
     (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
     (local-set-key (kbd "C-c b") 'slime-eval-buffer))
   (add-hook 'slime-mode-hook #'my/slime-keybindings)
   (add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
-  :config
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
+;;; markdown-mode
+(use-package markdown-mode
+  :defer t)
+
 ;;; dumb-jump
 (use-package dumb-jump
+  :defer t
   :config
   (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
 
+;;; uniquify
 (use-package uniquify
   :custom
   (uniquify-buffer-name-style 'forward)
@@ -369,13 +395,20 @@
   :config
   (which-key-mode))
 
-;; origami
+;;; origami
 (use-package origami
-  :config
+  :defer 5
+  :commands (global-origami-mode)
+  :init
   (global-origami-mode 1))
 
 ;;; column-marker
 (use-package column-marker)
+
+;;; esup
+(use-package esup
+  :config
+  (setq esup-depth 0))
 
 ;;; LOAD INIT FILES
 (use-package scwfri-defun)
@@ -383,7 +416,7 @@
 (use-package scwfri-config)
 (use-package modeline)
 (use-package ido-config)
-(use-package org-config)
+;;(use-package org-config)
 (use-package keybindings)
 ;;; LANGUAGE SETTINGS
 
