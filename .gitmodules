@@ -61,3 +61,6 @@
 [submodule "lisp/meta/use-package"]
 	path = lisp/meta/use-package
 	url = https://github.com/jwiegley/use-package.git
+[submodule "lisp/external/esup"]
+	path = lisp/external/esup
+	url = https://github.com/jschaf/esup.git
