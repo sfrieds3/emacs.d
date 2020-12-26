@@ -21,7 +21,6 @@
 (global-set-key (kbd "C-c t") 'modus-themes-toggle)
 
 (require 'modus-themes)
-(require 'modus-operandi-theme)
 (require 'modus-vivendi-theme)
 (load-theme 'modus-vivendi t)
 (enable-theme 'modus-vivendi)

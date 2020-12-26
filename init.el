@@ -264,8 +264,7 @@
   :defer t)
 
 ;;; goto-chg
-(use-package goto-chg
-  :defer t)
+(use-package goto-chg)
 
 ;;; ivy
 (use-package ivy
@@ -284,22 +283,22 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  :bind (("C-c C-r" . ivy-resume)
-         ("C-c f" . counsel-describe-function)
-         ("C-c v" . counsel-describe-variable)
-         ("C-c d" . counsel-describe-symbol)
-         ("C-c k" . counsel-find-library)
-         ("C-c i" . counsel-info-lookup-symbol)
-         ("C-c u" . counsel-unicode-char)
-         ("C-c C-f" . counsel-git)
-         ("C-c g g" . counsel-git-grep)
-         ("C-x l" . counsel-locate)))
+  :bind (("C-c C-r" . ivy-resume)))
 
 ;;; counsel
 (use-package counsel
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)
-         ("C-s" . counsel-grep-or-swiper)))
+         ("C-s" . counsel-grep-or-swiper)
+         ("C-c h f" . counsel-describe-function)
+         ("C-c h v" . counsel-describe-variable)
+         ("C-c h d" . counsel-describe-symbol)
+         ("C-c k" . counsel-find-library)
+         ("C-c i" . counsel-info-lookup-symbol)
+         ("C-c u" . counsel-unicode-char)
+         ("C-c f" . counsel-git)
+         ("C-c g g" . counsel-git-grep)
+         ("C-x l" . counsel-locate)))
 
 ;;; swiper
 (use-package swiper
@@ -425,7 +424,7 @@
 (use-package theme-config)
 (use-package scwfri-config)
 (use-package modeline)
-(use-package ido-config)
+;;(use-package ido-config)
 ;;(use-package org-config)
 (use-package keybindings)
 ;;; LANGUAGE SETTINGS
