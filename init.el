@@ -413,12 +413,6 @@
   :config
   (setq esup-depth 0))
 
-;;; orderless
-(use-package orderless
-  :init
-  (icomplete-mode)
-  :custom (completion-styles '(orderless)))
-
 ;;; LOAD INIT FILES
 (use-package scwfri-defun)
 (use-package theme-config)

@@ -64,6 +64,3 @@
 [submodule "lisp/external/esup"]
 	path = lisp/external/esup
 	url = https://github.com/jschaf/esup.git
-[submodule "lisp/external/orderless"]
-	path = lisp/external/orderless
-	url = https://github.com/oantolin/orderless.git
