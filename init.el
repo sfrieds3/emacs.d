@@ -1,4 +1,4 @@
-;;;; package --- summary
+;;;; init.el --- scwfri init.el
 
 ;;; Commentary:
 ;;     place 'local-settings.el' file (provide 'local-settings)
@@ -306,7 +306,21 @@
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :after counsel)
+  :after counsel
+  :bind (("C-]" . counsel-etags-find-tag-at-point))
+  :init
+  (add-hook 'prog-mode-hook
+        (lambda ()
+          (add-hook 'after-save-hook
+            'counsel-etags-virtual-update-tags 'append 'local)))
+  :config
+  (setq counsel-etags-update-interval 60)
+  (setq tags-revert-without-query t)
+  (setq large-file-warning-threshold nil)
+  (push "TAGS" counsel-etags-ignore-directories)
+  (push "tmp" counsel-etags-ignore-directories)
+  (push "bin" counsel-etags-ignore-directories)
+  (push "build" counsel-etags-ignore-directories))
 
 ;;; smex
 (use-package smex
@@ -421,6 +435,7 @@
 ;;(use-package ido-config)
 ;;(use-package org-config)
 (use-package keybindings)
+
 ;;; LANGUAGE SETTINGS
 
 ;;; c++
