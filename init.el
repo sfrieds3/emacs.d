@@ -283,26 +283,23 @@
 
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
-  ;; enable this if you want `swiper' to use it
-  ;; (setq search-default-mode #'char-fold-to-regexp)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  ;;(global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-c f") 'counsel-describe-function)
-  (global-set-key (kbd "C-c v") 'counsel-describe-variable)
-  (global-set-key (kbd "C-c d") 'counsel-describe-symbol)
-  (global-set-key (kbd "C-c k") 'counsel-find-library)
-  (global-set-key (kbd "C-c i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "C-c u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c C-f") 'counsel-git)
-  (global-set-key (kbd "C-c g") 'counsel-git-grep)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  :bind (("C-c C-r" . ivy-resume)
+         ("C-c f" . counsel-describe-function)
+         ("C-c v" . counsel-describe-variable)
+         ("C-c d" . counsel-describe-symbol)
+         ("C-c k" . counsel-find-library)
+         ("C-c i" . counsel-info-lookup-symbol)
+         ("C-c u" . counsel-unicode-char)
+         ("C-c C-f" . counsel-git)
+         ("C-c g g" . counsel-git-grep)
+         ("C-x l" . counsel-locate)))
 
 ;;; counsel
 (use-package counsel
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)
-        ("C-s" . counsel-grep-or-swiper)))
+         ("C-s" . counsel-grep-or-swiper)))
 
 ;;; swiper
 (use-package swiper
