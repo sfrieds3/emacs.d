@@ -414,12 +414,18 @@
   :config
   (setq esup-depth 0))
 
+;;; orderless
+(use-package orderless
+  :init
+  (icomplete-mode)
+  :custom (completion-styles '(orderless)))
+
 ;;; LOAD INIT FILES
 (use-package scwfri-defun)
 (use-package theme-config)
 (use-package scwfri-config)
 (use-package modeline)
-;;(use-package ido-config)
+(use-package ido-config)
 ;;(use-package org-config)
 (use-package keybindings)
 ;;; LANGUAGE SETTINGS
