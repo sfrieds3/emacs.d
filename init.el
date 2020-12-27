@@ -246,8 +246,8 @@
 
 ;;; evil-collection
 (use-package evil-collection
-  :defer t
-  :config
+  :commands (evil-collection-init)
+  :init
   (evil-collection-init))
 
 ;;; evil-visualstar
@@ -276,7 +276,9 @@
 ;;; consult
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (("C-x M-:" . consult-complex-command)
+  :bind (("C-s" . consult-line)
+         ("M-s s" . consult-line-symbol-at-point)
+         ("C-x M-:" . consult-complex-command)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-x b" . consult-buffer)
@@ -307,7 +309,7 @@
 
   ;; Optionally configure narrowing key.
   ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  (setq consult-narrow-key (kbd "C-+"))
   ;; Optionally make narrowing help available in the minibuffer.
   ;; Probably not needed if you are using which-key.
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
@@ -335,7 +337,8 @@
 (use-package selectrum
   :after selectrum-prescient
   :config
-  (selectrum-mode))
+  (selectrum-mode)
+  (global-set-key (kbd "C-c C-r") #'selectrum-repeat))
 
 (use-package prescient)
 
@@ -392,7 +395,6 @@
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :after counsel
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook
