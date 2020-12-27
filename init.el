@@ -219,7 +219,7 @@
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
   (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
-  (Define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
+  (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
   (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
   (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
