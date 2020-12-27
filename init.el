@@ -89,6 +89,9 @@
 (recentf-mode t)
 (setq recentf-max-saved-items 1000)
 
+;;; allow recursive minibuffers
+(setq enable-recursive-minibuffers t)
+
 ;;; filename in titlebar
 (setq frame-title-format
       (concat "%f [%m]: " user-login-name "@" (system-name)))
