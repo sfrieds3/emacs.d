@@ -209,14 +209,14 @@
   (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
   (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
-  (define-key evil-normal-state-map (kbd "\\\\") 'imenu)
+  (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
   (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tags)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
-  (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
-  (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
+  (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
+  (Define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
   (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
-  (define-key evil-normal-state-map (kbd "gr") 'counsel-git-grep)
+  (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
 
@@ -271,8 +271,9 @@
 (use-package projectile
   :config
   (projectile-mode)
-(define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (setq projectile-use-git-grep t)
+  (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 ;;; consult
 (use-package consult
@@ -486,8 +487,6 @@
 (use-package theme-config)
 (use-package scwfri-config)
 (use-package modeline)
-;;(use-package ido-config)
-;;(use-package org-config)
 (use-package keybindings)
 
 ;;; LANGUAGE SETTINGS
