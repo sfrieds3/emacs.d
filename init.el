@@ -89,6 +89,9 @@
 (recentf-mode t)
 (setq recentf-max-saved-items 1000)
 
+;;; allow recursive minibuffers
+(setq enable-recursive-minibuffers t)
+
 ;;; filename in titlebar
 (setq frame-title-format
       (concat "%f [%m]: " user-login-name "@" (system-name)))
@@ -210,6 +213,8 @@
   (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
+  (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
+  (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tags)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
