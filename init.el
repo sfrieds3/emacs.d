@@ -226,11 +226,11 @@
   (define-key evil-visual-state-map (kbd "gl") 'align-regexp)
   ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
 
+  (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
       (evil-delete (point-at-bol) (point))))
-  (define-key evil-normal-state-map (kbd "|") 'universal-argument)
 
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
@@ -238,6 +238,7 @@
   (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
   (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
 
+  (define-key evil-normal-state-map (kbd "|") 'universal-argument)
   (define-key universal-argument-map (kbd "|") 'universal-argument-more)
   (define-key universal-argument-map (kbd "C-u") nil))
 
