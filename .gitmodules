@@ -64,3 +64,15 @@
 [submodule "lisp/external/esup"]
 	path = lisp/external/esup
 	url = https://github.com/jschaf/esup.git
+[submodule "lisp/external/consult"]
+	path = lisp/external/consult
+	url = https://github.com/minad/consult.git
+[submodule "lisp/external/selectrum"]
+	path = lisp/external/selectrum
+	url = https://github.com/raxod502/selectrum.git
+[submodule "lisp/external/projectile"]
+	path = lisp/external/projectile
+	url = https://github.com/bbatsov/projectile.git
+[submodule "lisp/external/prescient"]
+	path = lisp/external/prescient
+	url = https://github.com/raxod502/prescient.el.git

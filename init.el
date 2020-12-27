@@ -94,7 +94,7 @@
       (concat "%f [%m]: " user-login-name "@" (system-name)))
 
 ;;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
-(global-hi-lock-mode 1)
+;;(global-hi-lock-mode 1)
 
 ;;; stop asking about upcase and downcase region
 (put 'upcase-region 'disabled nil)
@@ -266,8 +266,92 @@
 ;;; goto-chg
 (use-package goto-chg)
 
+;;; projectile
+(use-package projectile
+  :config
+  (projectile-mode)
+(define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+;;; consult
+(use-package consult
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (("C-x M-:" . consult-complex-command)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r x" . consult-register)
+         ("C-x r b" . consult-bookmark)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)     ;; "M-s o" is a good alternative.
+         ("M-g l" . consult-line)        ;; "M-s l" is a good alternative.
+         ("M-g m" . consult-mark)        ;; I recommend to bind Consult navigation
+         ("M-g k" . consult-global-mark) ;; commands under the "M-g" prefix.
+         ("M-g i" . consult-imenu)
+         ("M-g e" . consult-error)
+         ("M-s m" . consult-multi-occur)
+         ("M-y" . consult-yank-pop)
+         ("<help> a" . consult-apropos))
+
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
+
+  ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
+  (fset 'multi-occur #'consult-multi-occur)
+
+  ;; Configure other variables and modes in the :config section, after lazily loading the package
+  :config
+
+  ;; Optionally configure narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; Probably not needed if you are using which-key.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+  ;; Optional configure a view library to be used by `consult-buffer'.
+  ;; The view library must provide two functions, one to open the view by name,
+  ;; and one function which must return a list of views as strings.
+  ;; Example: https://github.com/minad/bookmark-view/
+  ;; (setq consult-view-open-function #'bookmark-jump
+  ;;       consult-view-list-function #'bookmark-view-names)
+
+  ;; Optionally enable previews. Note that individual previews can be disabled
+  ;; via customization variables.
+  (consult-preview-mode))
+
+;;; consult-selectrum
+(use-package consult-selectrum
+  :demand t)
+
+;;; consult-flycheck
+(use-package consult-flycheck
+  :bind (:map flycheck-command-map
+         ("!" . consult-flycheck)))
+
+(use-package selectrum
+  :after selectrum-prescient
+  :config
+  (selectrum-mode))
+
+(use-package prescient)
+
+(use-package selectrum-prescient
+  :after prescient
+  :config
+  (selectrum-prescient-mode))
+
+(use-package company-prescient
+  :after prescient
+  :config
+  (company-prescient-mode))
+
 ;;; ivy
 (use-package ivy
+  :disabled
   :defer 1
   :diminish
   :config
@@ -287,6 +371,7 @@
 
 ;;; counsel
 (use-package counsel
+  :disabled
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)
          ("C-s" . counsel-grep-or-swiper)
@@ -302,6 +387,7 @@
 
 ;;; swiper
 (use-package swiper
+  :disabled
   :after ivy)
 
 ;;; counsel-etags
@@ -324,6 +410,7 @@
 
 ;;; smex
 (use-package smex
+  :disabled
   :commands (smex smex-initialize)
   :defer t
   :config
