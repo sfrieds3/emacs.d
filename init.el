@@ -353,47 +353,6 @@
   :config
   (company-prescient-mode))
 
-;;; ivy
-(use-package ivy
-  :disabled
-  :defer 1
-  :diminish
-  :config
-  (ivy-mode 1)
-
-  (defun $ivy-switch-file-search ()
-    "Switch to counsel-file-jump, preserving current input."
-    (interactive)
-    (let ((input (ivy--input)))
-      (ivy-quit-and-run (counsel-file-jump))))
-  (define-key ivy-minibuffer-map (kbd "M-s r") '$ivy-switch-file-search)
-
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  :bind (("C-c C-r" . ivy-resume)))
-
-;;; counsel
-(use-package counsel
-  :disabled
-  :after ivy
-  :bind (("C-x C-f" . counsel-find-file)
-         ("C-s" . counsel-grep-or-swiper)
-         ("C-c h f" . counsel-describe-function)
-         ("C-c h v" . counsel-describe-variable)
-         ("C-c h d" . counsel-describe-symbol)
-         ("C-c k" . counsel-find-library)
-         ("C-c i" . counsel-info-lookup-symbol)
-         ("C-c u" . counsel-unicode-char)
-         ("C-c f" . counsel-git)
-         ("C-c g g" . counsel-git-grep)
-         ("C-x l" . counsel-locate)))
-
-;;; swiper
-(use-package swiper
-  :disabled
-  :after ivy)
-
 ;;; counsel-etags
 (use-package counsel-etags
   :bind (("C-]" . counsel-etags-find-tag-at-point))
