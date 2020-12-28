@@ -343,7 +343,6 @@
   (global-flycheck-mode))
 
 ;;; elpy
-;; does not play nice with use-package, so we'll do it the semi-old fashioned way
 (use-package elpy
   :demand t
   :commands (elpy-enable)
@@ -354,8 +353,8 @@
   (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
   (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
   (add-hook 'python-mode-hook (lambda()
-                       (make-local-variable 'company-backends)
-                       (setq company-backends (list (cons 'elpy-company-backend (copy-tree (car company-backends)))))))
+                                (set (make-local-variable 'company-backends)
+                                     (list 'elpy-company-backend 'company-backends))))
   :hook
   (elpy-mode-hook . flycheck-mode))
 
