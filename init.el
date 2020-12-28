@@ -179,16 +179,6 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-  ;; Make escape quit everything, whenever possible.
-  ;; from https://github.com/aaronbieber/dotfiles/blob/master/configs/emacs.d/lisp/init-evil.el
-  (define-key evil-normal-state-map [escape] 'keyboard-escape-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -335,7 +325,7 @@
 
 ;;; company
 (use-package company
-  :defer 5
+  :demand t
   :commands (global-company-mode company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
@@ -355,7 +345,7 @@
 ;;; elpy
 ;; does not play nice with use-package, so we'll do it the semi-old fashioned way
 (use-package elpy
-  :defer t
+  :demand t
   :commands (elpy-enable)
   :init
   (advice-add 'python-mode :before 'elpy-enable)
