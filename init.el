@@ -200,7 +200,7 @@
   (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\\\") 'imenu)
-  (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tags)
+  (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
   (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
