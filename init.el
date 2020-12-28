@@ -296,7 +296,6 @@
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :after counsel
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook
