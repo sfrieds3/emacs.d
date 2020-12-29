@@ -89,6 +89,9 @@
 (recentf-mode t)
 (setq recentf-max-saved-items 1000)
 
+;;; allow recursive minibuffers
+(setq enable-recursive-minibuffers t)
+
 ;;; filename in titlebar
 (setq frame-title-format
       (concat user-login-name "@" (system-name) ":%f [%m]"))
@@ -200,14 +203,16 @@
   (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
   (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
-  (define-key evil-normal-state-map (kbd "\\\\") 'imenu)
+  (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
+  (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
+  (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
-  (define-key evil-normal-state-map (kbd "\\pb") 'ivy-switch-buffer)
+  (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
   (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
   (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
-  (define-key evil-normal-state-map (kbd "gr") 'counsel-git-grep)
+  (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
 
@@ -217,11 +222,11 @@
   (define-key evil-visual-state-map (kbd "gl") 'align-regexp)
   ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
 
+  (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
       (evil-delete (point-at-bol) (point))))
-  (define-key evil-normal-state-map (kbd "|") 'universal-argument)
 
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
@@ -229,6 +234,7 @@
   (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
   (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
 
+  (define-key evil-normal-state-map (kbd "|") 'universal-argument)
   (define-key universal-argument-map (kbd "|") 'universal-argument-more)
   (define-key universal-argument-map (kbd "C-u") nil))
 
@@ -237,8 +243,8 @@
 
 ;;; evil-collection
 (use-package evil-collection
-  :defer t
-  :config
+  :commands (evil-collection-init)
+  :init
   (evil-collection-init))
 
 ;;; evil-visualstar
@@ -257,43 +263,92 @@
 ;;; goto-chg
 (use-package goto-chg)
 
-;;; ivy
-(use-package ivy
-  :defer 1
-  :diminish
+;;; projectile
+(use-package projectile
   :config
-  (ivy-mode 1)
+  (projectile-mode)
+  (setq projectile-use-git-grep t)
+  (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-  (defun $ivy-switch-file-search ()
-    "Switch to counsel-file-jump, preserving current input."
-    (interactive)
-    (let ((input (ivy--input)))
-      (ivy-quit-and-run (counsel-file-jump))))
-  (define-key ivy-minibuffer-map (kbd "M-s r") '$ivy-switch-file-search)
+;;; consult
+(use-package consult
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (("C-s" . consult-line)
+         ("M-s s" . consult-line-symbol-at-point)
+         ("C-x M-:" . consult-complex-command)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r x" . consult-register)
+         ("C-x r b" . consult-bookmark)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)     ;; "M-s o" is a good alternative.
+         ("M-g l" . consult-line)        ;; "M-s l" is a good alternative.
+         ("M-g m" . consult-mark)        ;; I recommend to bind Consult navigation
+         ("M-g k" . consult-global-mark) ;; commands under the "M-g" prefix.
+         ("M-g i" . consult-imenu)
+         ("M-g e" . consult-error)
+         ("M-s m" . consult-multi-occur)
+         ("M-y" . consult-yank-pop)
+         ("<help> a" . consult-apropos))
 
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  :bind (("C-c C-r" . ivy-resume)))
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
 
-;;; counsel
-(use-package counsel
-  :after ivy
-  :bind (("C-x C-f" . counsel-find-file)
-         ("C-s" . counsel-grep-or-swiper)
-         ("C-c h f" . counsel-describe-function)
-         ("C-c h v" . counsel-describe-variable)
-         ("C-c h d" . counsel-describe-symbol)
-         ("C-c k" . counsel-find-library)
-         ("C-c i" . counsel-info-lookup-symbol)
-         ("C-c u" . counsel-unicode-char)
-         ("C-c f" . counsel-git)
-         ("C-c g g" . counsel-git-grep)
-         ("C-x l" . counsel-locate)))
+  ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
+  (fset 'multi-occur #'consult-multi-occur)
 
-;;; swiper
-(use-package swiper
-  :after ivy)
+  ;; Configure other variables and modes in the :config section, after lazily loading the package
+  :config
+
+  ;; Optionally configure narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key (kbd "C-+"))
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; Probably not needed if you are using which-key.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+  ;; Optional configure a view library to be used by `consult-buffer'.
+  ;; The view library must provide two functions, one to open the view by name,
+  ;; and one function which must return a list of views as strings.
+  ;; Example: https://github.com/minad/bookmark-view/
+  ;; (setq consult-view-open-function #'bookmark-jump
+  ;;       consult-view-list-function #'bookmark-view-names)
+
+  ;; Optionally enable previews. Note that individual previews can be disabled
+  ;; via customization variables.
+  (consult-preview-mode))
+
+;;; consult-selectrum
+(use-package consult-selectrum
+  :demand t)
+
+;;; consult-flycheck
+(use-package consult-flycheck
+  :bind (:map flycheck-command-map
+         ("!" . consult-flycheck)))
+
+(use-package selectrum
+  :after selectrum-prescient
+  :config
+  (selectrum-mode)
+  (global-set-key (kbd "C-c C-r") #'selectrum-repeat))
+
+(use-package prescient)
+
+(use-package selectrum-prescient
+  :after prescient
+  :config
+  (selectrum-prescient-mode))
+
+(use-package company-prescient
+  :after prescient
+  :config
+  (company-prescient-mode))
 
 ;;; counsel-etags
 (use-package counsel-etags
@@ -314,6 +369,7 @@
 
 ;;; smex
 (use-package smex
+  :disabled
   :commands (smex smex-initialize)
   :defer t
   :config
@@ -426,8 +482,6 @@
 (use-package theme-config)
 (use-package scwfri-config)
 (use-package modeline)
-;;(use-package ido-config)
-;;(use-package org-config)
 (use-package keybindings)
 
 ;;; LANGUAGE SETTINGS
