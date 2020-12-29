@@ -94,7 +94,7 @@
 
 ;;; filename in titlebar
 (setq frame-title-format
-      (concat "%f [%m]: " user-login-name "@" (system-name)))
+      (concat user-login-name "@" (system-name) ":%f [%m]"))
 
 ;;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
 (global-hi-lock-mode 1)
@@ -182,16 +182,6 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-  ;; Make escape quit everything, whenever possible.
-  ;; from https://github.com/aaronbieber/dotfiles/blob/master/configs/emacs.d/lisp/init-evil.el
-  (define-key evil-normal-state-map [escape] 'keyboard-escape-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "u") '$simple-undo)
@@ -199,6 +189,7 @@
   (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
   (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
   (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
+  (define-key evil-normal-state-map (kbd "_w") '$toggle-show-trailing-whitespace)
   (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
   (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
   (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
@@ -215,7 +206,7 @@
   (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
   (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
-  (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tags)
+  (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
   (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
@@ -390,7 +381,7 @@
 
 ;;; company
 (use-package company
-  :defer 5
+  :demand t
   :commands (global-company-mode company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
@@ -408,9 +399,8 @@
   (global-flycheck-mode))
 
 ;;; elpy
-;; does not play nice with use-package, so we'll do it the semi-old fashioned way
 (use-package elpy
-  :defer t
+  :demand t
   :commands (elpy-enable)
   :init
   (advice-add 'python-mode :before 'elpy-enable)
@@ -419,8 +409,8 @@
   (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
   (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
   (add-hook 'python-mode-hook (lambda()
-                       (make-local-variable 'company-backends)
-                       (setq company-backends (list (cons 'elpy-company-backend (copy-tree (car company-backends)))))))
+                                (set (make-local-variable 'company-backends)
+                                     (list 'elpy-company-backend 'company-backends))))
   :hook
   (elpy-mode-hook . flycheck-mode))
 

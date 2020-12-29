@@ -5,6 +5,13 @@
 
 ;;; Code:
 
+(defun $toggle-show-trailing-whitespace ()
+  "Toggle 'show-trailing-whitespace'."
+  (interactive)
+  (if (eq 1 show-trailing-whitespace)
+      (setq show-trailing-whitespace nil)
+    (setq show-trailing-whitespace 1)))
+
 ;; show full file path in msg buffer
 (defun $show-full-file-path ()
   "Show full file path in msg."
