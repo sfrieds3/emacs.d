@@ -1,4 +1,4 @@
-;;;; init.el --- scwfri init.el
+;;; init.el --- scwfri init.el
 
 ;;; Commentary:
 ;;     place 'local-settings.el' file (provide 'local-settings)
@@ -74,6 +74,8 @@
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
 
+(setq require-final-newline 'ask)
+
 ;;; show matching parens
 (show-paren-mode 1)
 
@@ -111,6 +113,17 @@
 
 ;;; transient mark mode
 (transient-mark-mode 1)
+
+;;; personal init files
+(use-package scwfri-defun
+  :config
+  ;; server postfix for tramp editing
+  (add-hook 'find-file-hook '$add-server-postfix))
+
+(use-package theme-config)
+(use-package scwfri-config)
+(use-package modeline)
+(use-package keybindings)
 
 ;;; dependencies
 (use-package annalist              :defer t)
@@ -208,7 +221,7 @@
   (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
-  (define-key evil-normal-state-map (kbd "\\pr") '$ido-open-recentf)
+  (define-key evil-normal-state-map (kbd "\\pr") 'consult-recent-file)
   (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
   (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
   (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
@@ -257,6 +270,12 @@
   :config
   (global-evil-surround-mode 1))
 
+;;; evil-matchit
+(use-package evil-matchit
+  :config
+  (global-evil-matchit-mode 1))
+
+;;; undohist
 (use-package undohist
   :defer t)
 
@@ -269,7 +288,8 @@
   (projectile-mode)
   (setq projectile-use-git-grep t)
   (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  :bind (("C-c f" . projectile-find-file)))
 
 ;;; consult
 (use-package consult
@@ -280,6 +300,7 @@
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-x b" . consult-buffer)
+         ("C-x f" . consult-recent-file)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
          ("C-x r x" . consult-register)
@@ -441,6 +462,17 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+;;; web-mode
+(use-package web-mode
+  :defer t
+  :mode ("\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.erb\\'"
+         "\\.mustache\\'"
+         "\\.djhtml\\'"))
+
 ;;; dumb-jump
 (use-package dumb-jump
   :defer t
@@ -469,6 +501,11 @@
   :init
   (global-origami-mode 1))
 
+;;; idle-highlight-mode
+(use-package idle-highlight-mode
+  :hook
+  (prog-mode . idle-highlight-mode))
+
 ;;; column-marker
 (use-package column-marker)
 
@@ -476,13 +513,6 @@
 (use-package esup
   :config
   (setq esup-depth 0))
-
-;;; LOAD INIT FILES
-(use-package scwfri-defun)
-(use-package theme-config)
-(use-package scwfri-config)
-(use-package modeline)
-(use-package keybindings)
 
 ;;; LANGUAGE SETTINGS
 

@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+(defun $add-server-postfix ()
+  "Add the name of the connection type and server to the buffer name."
+  (if (string-match "^/ssh:.*?:" (buffer-file-name (current-buffer)))
+      (rename-buffer (concat (buffer-name (current-buffer)) "<" (match-string 0 (buffer-file-name (current-buffer))) ">")) nil))
+
 (defun $toggle-show-trailing-whitespace ()
   "Toggle 'show-trailing-whitespace'."
   (interactive)

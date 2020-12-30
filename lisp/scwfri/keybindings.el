@@ -13,7 +13,6 @@
 (global-set-key (kbd "C-c s d") '$dir-grep)
 (global-set-key (kbd "C-c s s") '$file-grep)
 (global-set-key (kbd "C-c s f") 'find-dired)
-(global-set-key (kbd "C-x f") '$ido-open-recentf)
 (global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
 (global-set-key (kbd "C-<tab>") '$goto-match-paren)
 

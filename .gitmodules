@@ -76,3 +76,9 @@
 [submodule "lisp/external/prescient"]
 	path = lisp/external/prescient
 	url = https://github.com/raxod502/prescient.el.git
+[submodule "lisp/external/evil-matchit"]
+	path = lisp/external/evil-matchit
+	url = https://github.com/redguardtoo/evil-matchit.git
+[submodule "lisp/external/web-mode"]
+	path = lisp/external/web-mode
+	url = https://github.com/fxbois/web-mode.git
