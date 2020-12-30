@@ -473,6 +473,13 @@
          "\\.mustache\\'"
          "\\.djhtml\\'"))
 
+;;; projectile-rails
+(use-package projectile-rails
+  :defer t
+  :bind (("C-c r" . projectile-rails-command-map))
+  :config
+  (projectile-rails-global-mode))
+
 ;;; dumb-jump
 (use-package dumb-jump
   :defer t
@@ -508,6 +515,12 @@
 
 ;;; column-marker
 (use-package column-marker)
+
+(use-package helpful
+  :defer t
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)))
 
 ;;; esup
 (use-package esup

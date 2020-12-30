@@ -82,3 +82,12 @@
 [submodule "lisp/external/web-mode"]
 	path = lisp/external/web-mode
 	url = https://github.com/fxbois/web-mode.git
+[submodule "lisp/external/projectile-rails"]
+	path = lisp/external/projectile-rails
+	url = https://github.com/asok/projectile-rails.git
+[submodule "lisp/external/helpful"]
+	path = lisp/external/helpful
+	url = https://github.com/Wilfred/helpful.git
+[submodule "lisp/dependencies/elisp-refs"]
+	path = lisp/dependencies/elisp-refs
+	url = https://github.com/Wilfred/elisp-refs.git
