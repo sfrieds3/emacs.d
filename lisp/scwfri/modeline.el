@@ -23,11 +23,11 @@
                                 evil-mode-line-tag
                                 mode-line-mule-info
                                 mode-line-modified
-                                " %b -"
+                                " %b"
                                 vc-mode))
                         ;; Right.
                         (quote (
-                                "[%m] (%l/%i:%c %p)"
+                                "[%m] (%l:%c %p)"
                                 ;mode-line-frame-identification
                                 ;mode-line-modes
                                 mode-line-misc-info))))))
