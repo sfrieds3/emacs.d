@@ -18,3 +18,5 @@ TAGS
 image-dired/*
 .#*
 tramp
+var/*
+etc/*

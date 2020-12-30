@@ -91,3 +91,6 @@
 [submodule "lisp/dependencies/elisp-refs"]
 	path = lisp/dependencies/elisp-refs
 	url = https://github.com/Wilfred/elisp-refs.git
+[submodule "lisp/external/no-littering"]
+	path = lisp/external/no-littering
+	url = https://github.com/emacscollective/no-littering.git

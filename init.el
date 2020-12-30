@@ -516,11 +516,18 @@
 ;;; column-marker
 (use-package column-marker)
 
+;;; helpful
 (use-package helpful
   :defer t
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
          ("C-h k" . helpful-key)))
+
+;;; no-littering
+(use-package no-littering
+  :config
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory))
 
 ;;; esup
 (use-package esup
