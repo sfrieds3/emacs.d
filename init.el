@@ -195,46 +195,59 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "u") '$simple-undo)
-  (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-  (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
-  (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
+  ;; NORMAL
+
+
+  ;; local leader
+  (define-key evil-normal-state-map (kbd "_i") 'idle-highlight-mode)
   (define-key evil-normal-state-map (kbd "_w") '$toggle-show-trailing-whitespace)
+  (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
+
+  ;; leader
+  (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
   (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
   (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
   (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
   (define-key evil-normal-state-map (kbd "\\H") 'unhighlight-regexp)
   (define-key evil-normal-state-map (kbd "\\c") 'global-hl-line-mode)
   (define-key evil-normal-state-map (kbd "\\C") 'column-marker-1)
-  (define-key evil-normal-state-map (kbd "DEL") 'evil-switch-to-windows-last-buffer)
-  (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
-  (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
-  (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
-  (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
-  (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
   (define-key evil-normal-state-map (kbd "\\pr") 'consult-recent-file)
   (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
-  (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
-  (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
-  (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
+
+  ;; other
+
+  (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
+  (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
+  (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
+  (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+  (define-key evil-normal-state-map (kbd "u") '$simple-undo)
+  (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
+  (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
+  (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
+  (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
+  (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
+  (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
+  (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
+  (define-key evil-normal-state-map (kbd "DEL") 'evil-switch-to-windows-last-buffer)
+
+  ;; VISUAL
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-visual-state-map (kbd "gl") 'align-regexp)
   ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
 
+  ;; INSERT
   (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
@@ -247,8 +260,8 @@
   (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
   (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
 
-  (define-key evil-normal-state-map (kbd "|") 'universal-argument)
-  (define-key universal-argument-map (kbd "|") 'universal-argument-more)
+  (define-key evil-normal-state-map (kbd "M-u") 'universal-argument)
+  (define-key universal-argument-map (kbd "M-u") 'universal-argument-more)
   (define-key universal-argument-map (kbd "C-u") nil))
 
 ;;; evil-numbers
