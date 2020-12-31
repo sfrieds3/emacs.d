@@ -136,6 +136,7 @@
 (use-package pyvenv                :defer t)
 (use-package s                     :defer t)
 (use-package spinner               :defer t)
+(use-package inf-ruby              :defer t)
 
 ;;; evil
 (use-package evil
@@ -290,7 +291,8 @@
 
 ;;; undohist
 (use-package undohist
-  :defer t)
+  :config
+  (undohist-initialize))
 
 ;;; goto-chg
 (use-package goto-chg)
@@ -364,7 +366,7 @@
 ;;; consult-flycheck
 (use-package consult-flycheck
   :bind (:map flycheck-command-map
-         ("!" . consult-flycheck)))
+              ("!" . consult-flycheck)))
 
 (use-package selectrum
   :after selectrum-prescient
@@ -389,9 +391,9 @@
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook
-        (lambda ()
-          (add-hook 'after-save-hook
-            'counsel-etags-virtual-update-tags 'append 'local)))
+            (lambda ()
+              (add-hook 'after-save-hook
+                        'counsel-etags-virtual-update-tags 'append 'local)))
   :config
   (setq counsel-etags-update-interval 60)
   (setq tags-revert-without-query t)
@@ -456,6 +458,8 @@
 (use-package slime
   :defer t
   :commands (slime)
+  :init
+  (setq inferior-lisp-program "/usr/bin/sbcl")
   :config
   (defun my/slime-keybindings ()
     "keybindings for use in slime"
@@ -463,8 +467,13 @@
     (local-set-key (kbd "C-c b") 'slime-eval-buffer))
   (add-hook 'slime-mode-hook #'my/slime-keybindings)
   (add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
-  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (add-hook 'slime-mode-hook
+            (lambda ()
+              (load (expand-file-name "~/quicklisp/slime-helper.el"))
+              (add-to-list 'slime-contribs 'slime-fancy)
+              (add-to-list 'slime-contribs 'inferior-slime)))
   (setq slime-contribs '(slime-fancy)))
+
 
 ;;; markdown-mode
 (use-package markdown-mode
@@ -473,7 +482,8 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+  :init
+  (setq markdown-command "multimarkdown"))
 
 ;;; web-mode
 (use-package web-mode
@@ -489,13 +499,16 @@
 ;;; projectile-rails
 (use-package projectile-rails
   :defer t
+  :commands (projectile-rails-mode)
   :bind (("C-c r" . projectile-rails-command-map))
   :config
-  (projectile-rails-global-mode))
+  (projectile-rails-global-mode)
+  :hook
+  (ruby-mode . projectile-rails-mode))
 
 ;;; dumb-jump
 (use-package dumb-jump
-  :defer t
+  :defer 5
   :config
   (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
 
@@ -544,6 +557,8 @@
 
 ;;; esup
 (use-package esup
+  :defer t
+  :commands (esup)
   :config
   (setq esup-depth 0))
 

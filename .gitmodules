@@ -94,3 +94,6 @@
 [submodule "lisp/external/no-littering"]
 	path = lisp/external/no-littering
 	url = https://github.com/emacscollective/no-littering.git
+[submodule "lisp/dependencies/inf-ruby"]
+	path = lisp/dependencies/inf-ruby
+	url = https://github.com/nonsequitur/inf-ruby.git
