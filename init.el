@@ -474,6 +474,15 @@
               (add-to-list 'slime-contribs 'inferior-slime)))
   (setq slime-contribs '(slime-fancy)))
 
+;;; eldoc mode
+(use-package eldoc-mode
+  :defer t
+  :commands (eldoc-mode)
+  :hook
+  (emacs-lisp-mode-hook . eldoc-mode)
+  (lisp-interaction-mode-hook . eldoc-mode)
+  (ielm-mode-hook . eldoc-mode))
+
 
 ;;; markdown-mode
 (use-package markdown-mode
@@ -571,11 +580,6 @@
   (setq c-basic-offset 4)
   (c-set-offset 'substatement-open 0))
 (add-hook 'c++-mode-hook '$c++-mode-hook)
-
-;;; eldoc mode
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
-(add-hook 'ielm-mode-hook 'eldoc-mode)
 
 ;;; LOAD LOCAL SETTINGS
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
