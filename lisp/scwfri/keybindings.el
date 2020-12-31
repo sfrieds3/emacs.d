@@ -23,7 +23,7 @@
 (global-set-key (kbd "C-c SPC W") '$delete-trailing-whitespace)
 (global-set-key (kbd "C-c SPC l") 'goto-line)
 (global-set-key (kbd "C-c SPC b e") 'eval-buffer)
-(global-set-key (kbd "C-c SPC b r") 'revert-buffer)
+(global-set-key (kbd "C-c SPC b r") '$revert-buffer-noconfirm)
 
 ;;; general customizations
 (global-set-key (kbd "C-c [") 'previous-error)
