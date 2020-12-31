@@ -5,6 +5,16 @@
 
 ;;; Code:
 
+(defun $eval-defun-view-results ()
+  "Eval defun and view results in a new buffer."
+  (interactive)
+  (let ((result (pp-to-string (eval-defun nil))))
+    (with-current-buffer
+        (get-buffer-create "*ELISP RESULT*")
+      (delete-region (point-min) (point-max))
+      (insert result)
+      (switch-to-buffer-other-window (current-buffer)))))
+
 (defun $add-server-postfix ()
   "Add the name of the connection type and server to the buffer name."
   (if (string-match "^/ssh:.*?:" (buffer-file-name (current-buffer)))
@@ -17,13 +27,11 @@
       (setq show-trailing-whitespace nil)
     (setq show-trailing-whitespace 1)))
 
-;; show full file path in msg buffer
 (defun $show-full-file-path ()
   "Show full file path in msg."
   (interactive)
   (message "%s" (buffer-file-name)))
 
-;; get face under cursor
 (defun $what-face (pos)
   "Return face under point POS."
   (interactive "d")
@@ -31,7 +39,6 @@
                   (get-char-property (pos) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
-;; grep in current directory
 (defun $dir-grep ()
   "Run grep recursively from the directory of the current buffer or the default directory."
   (interactive)
@@ -40,7 +47,6 @@
                                          (cons (concat "grep --color --null -nH -ir -e  " dir) 32))))
       (grep command))))
 
-;; grep in current file
 (defun $file-grep ()
   "Run grep in the current file."
   (interactive)
@@ -49,7 +55,6 @@
                                          (cons (concat "grep --color --null -nH -ir -e  " fname) 32))))
       (grep command))))
 
-;; revert file without prompt
 (defun $revert-buffer-noconfirm ()
   "Call `revert-buffer' with the NOCONFIRM argument set."
   (interactive)
@@ -64,14 +69,14 @@
 
 (defun $smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
+  
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
 
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
-
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
   (interactive "^p")
   (setq arg (or arg 1))
 
@@ -87,7 +92,7 @@
 
 (defun $goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert %.
-  vi style of % jumping to matching brace."
+vi style of % jumping to matching brace."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1))
         ((looking-back "\\s\)") (backward-list 1))
