@@ -29,7 +29,7 @@
         (message "show-trailing-whitespace nil"))
       (progn
         (setq show-trailing-whitespace 1)
-        (message "show-trailing-whitespace t"))
+        (message "show-trailing-whitespace t"))))
 
 (defun $show-full-file-path ()
   "Show full file path in msg."
