@@ -24,8 +24,12 @@
   "Toggle 'show-trailing-whitespace'."
   (interactive)
   (if (eq 1 show-trailing-whitespace)
-      (setq show-trailing-whitespace nil)
-    (setq show-trailing-whitespace 1)))
+      (progn
+        (setq show-trailing-whitespace nil)
+        (message "show-trailing-whitespace nil"))
+      (progn
+        (setq show-trailing-whitespace 1)
+        (message "show-trailing-whitespace t"))
 
 (defun $show-full-file-path ()
   "Show full file path in msg."
