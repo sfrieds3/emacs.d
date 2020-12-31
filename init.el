@@ -436,7 +436,7 @@
 
 ;;; elpy
 (use-package elpy
-  :demand t
+  :defer t
   :commands (elpy-enable)
   :init
   (advice-add 'python-mode :before 'elpy-enable)
