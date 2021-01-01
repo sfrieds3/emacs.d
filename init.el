@@ -373,7 +373,8 @@
   (push "TAGS" counsel-etags-ignore-directories)
   (push "tmp" counsel-etags-ignore-directories)
   (push "bin" counsel-etags-ignore-directories)
-  (push "build" counsel-etags-ignore-directories))
+  (push "build" counsel-etags-ignore-directories)
+  (push "var" counsel-etags-ignore-directories))
 
 ;;; smex
 (use-package smex
