@@ -478,6 +478,16 @@
          "\\.mustache\\'"
          "\\.djhtml\\'"))
 
+(use-package cperl-mode
+  :defer t
+  :commands (cperl-mode)
+  :init
+  (mapc
+    (lambda (pair)
+      (if (eq (cdr pair) 'perl-mode)
+          (setcdr pair 'cperl-mode)))
+    (append auto-mode-alist interpreter-mode-alist)))
+
 ;;; projectile-rails
 (use-package projectile-rails
   :defer t
