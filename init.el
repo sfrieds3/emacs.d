@@ -359,7 +359,7 @@
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :commands (counsel-etags-find-tag-at-point counsel-etags-find-tag)
+  :commands (counsel-etags-find-tag-at-point counsel-etags-find-tag counsel-etags-list-tag)
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook
