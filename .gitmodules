@@ -91,3 +91,6 @@
 [submodule "lisp/external/swiper"]
 	path = lisp/external/swiper
 	url = https://github.com/abo-abo/swiper.git
+[submodule "lisp/external/slime-company"]
+	path = lisp/external/slime-company
+	url = https://github.com/anwyn/slime-company.git

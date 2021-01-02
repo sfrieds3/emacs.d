@@ -329,6 +329,7 @@
 (use-package counsel
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)
+         ("C-x f" . counsel-recentf)
          ("C-s" . counsel-grep-or-swiper)
          ("C-c h f" . counsel-describe-function)
          ("C-c h v" . counsel-describe-variable)
@@ -434,6 +435,7 @@
   :init
   (setq inferior-lisp-program "/usr/bin/sbcl")
   :config
+  (slime-setup '(slime-fancy slime-company))
   (defun my/slime-keybindings ()
     "keybindings for use in slime"
     (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
@@ -446,6 +448,17 @@
               (add-to-list 'slime-contribs 'slime-fancy)
               (add-to-list 'slime-contribs 'inferior-slime)))
   (setq slime-contribs '(slime-fancy)))
+
+;;; slime-company
+(use-package slime-company
+  :after (slime company)
+  :config
+  (setq slime-company-completion 'fuzzy)
+  (setq slime-company-after-completion 'slime-company-just-one-space)
+  (define-key company-active-map (kbd "\C-n") 'company-select-next)
+  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+  (define-key company-active-map (kbd "M-.") 'company-show-location))
 
 ;;; eldoc mode
 (use-package eldoc-mode
