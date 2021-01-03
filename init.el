@@ -208,6 +208,7 @@
   (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
   (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
   (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
+  (define-key evil-normal-state-map (kbd "\\g") 'counsel-git-grep)
   (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
   (define-key evil-normal-state-map (kbd "\\H") 'unhighlight-regexp)
   (define-key evil-normal-state-map (kbd "\\c") 'global-hl-line-mode)
