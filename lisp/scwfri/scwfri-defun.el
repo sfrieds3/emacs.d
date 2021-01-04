@@ -15,7 +15,6 @@
       (insert result)
       (switch-to-buffer-other-window (current-buffer)))))
 
-
 (defun $profile-session ()
   "Easily toggle emacs profiler."
   (interactive)
