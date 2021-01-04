@@ -94,3 +94,6 @@
 [submodule "lisp/external/slime-company"]
 	path = lisp/external/slime-company
 	url = https://github.com/anwyn/slime-company.git
+[submodule "lisp/external/elfeed"]
+	path = lisp/external/elfeed
+	url = https://github.com/skeeto/elfeed.git
