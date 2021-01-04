@@ -84,12 +84,7 @@
 (defun $inhibit-electric-pair-mode (char)
   "Do not use smart parens in mini-buffers.  Params: CHAR."
   (minibufferp))
-
 (setq electric-pair-inhibit-predicate #'$inhibit-electric-pair-mode)
-
-;;; turn on recent file mode
-(recentf-mode t)
-(setq recentf-max-saved-items 1000)
 
 ;;; allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
@@ -294,6 +289,16 @@
 (use-package undohist
   :config
   (undohist-initialize))
+
+;;; recentf
+(use-package recentf
+  :commands (recentf-mode)
+  :init
+  (recentf-mode t)
+  :config
+  (setq recentf-max-saved-items 1000)
+  (add-to-list 'recentf-exclude "*/.ido.last")
+  (add-to-list 'recentf-exclude "*/TAGS"))
 
 ;;; goto-chg
 (use-package goto-chg)
