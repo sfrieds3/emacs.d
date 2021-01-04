@@ -5,6 +5,13 @@
 
 ;;; Code:
 
+(defun $profile-session ()
+  (interactive)
+  (require 'profiler)
+  (if (profiler-running-p)
+      (progn (profiler-stop) (profiler-report))
+    (profiler-start 'cpu))))
+
 (defun $eval-defun-view-results ()
   "Eval defun and view results in a new buffer."
   (interactive)
