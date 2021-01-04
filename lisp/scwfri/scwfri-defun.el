@@ -1,9 +1,20 @@
-;;;; package --- summary
+;;;; scwfri-defun --- personal functions
 
 ;;; Commentary:
 ;;;     personal functions
 
 ;;; Code:
+
+(defun $eval-defun-view-results ()
+  "Eval defun and view results in a new buffer."
+  (interactive)
+  (let ((result (pp-to-string (eval-defun nil))))
+    (with-current-buffer
+        (get-buffer-create "*ELISP RESULT*")
+      (delete-region (point-min) (point-max))
+      (insert result)
+      (switch-to-buffer-other-window (current-buffer)))))
+
 
 (defun $profile-session ()
   "Easily toggle emacs profiler."
