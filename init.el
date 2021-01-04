@@ -361,7 +361,10 @@
 
 ;;; counsel-etags
 (use-package counsel-etags
-  :commands (counsel-etags-find-tag-at-point counsel-etags-find-tag counsel-etags-list-tag)
+  :after counsel
+  :commands (counsel-etags-find-tag-at-point
+             counsel-etags-find-tag counsel-etags-list-tag
+             counsel-etags-virtual-update-tags)
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook
@@ -372,7 +375,6 @@
   (setq counsel-etags-update-interval 60)
   (setq tags-revert-without-query t)
   (setq large-file-warning-threshold nil)
-  (push "TAGS" counsel-etags-ignore-directories)
   (push "tmp" counsel-etags-ignore-directories)
   (push "bin" counsel-etags-ignore-directories)
   (push "build" counsel-etags-ignore-directories)
