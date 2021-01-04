@@ -195,7 +195,7 @@
 
 
   ;; local leader
-  (define-key evil-normal-state-map (kbd "_i") 'idle-highlight-mode)
+  (define-key evil-normal-state-map (kbd "_h") 'idle-highlight-mode)
   (define-key evil-normal-state-map (kbd "_w") '$toggle-show-trailing-whitespace)
   (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
 
