@@ -272,16 +272,6 @@
   :config
   (undohist-initialize))
 
-;;; recentf
-(use-package recentf
-  :commands (recentf-mode)
-  :init
-  (recentf-mode t)
-  :config
-  (setq recentf-max-saved-items 1000)
-  (add-to-list 'recentf-exclude "*/.ido.last")
-  (add-to-list 'recentf-exclude "*/TAGS"))
-
 ;;; goto-chg
 (use-package goto-chg)
 
@@ -565,6 +555,10 @@
   :init
   (savehist-mode 1)
   :config
+  (recentf-mode t)
+  (setq recentf-max-saved-items 1000)
+  (add-to-list 'recentf-exclude "*/.ido.last")
+  (add-to-list 'recentf-exclude "*/TAGS")
   (add-to-list 'recentf-exclude no-littering-var-directory)
   (add-to-list 'recentf-exclude no-littering-etc-directory)
   ;; backup settings
