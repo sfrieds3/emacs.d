@@ -525,6 +525,11 @@
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
 
+;;; winner-mode
+(use-package winner
+  :config
+  (winner-mode 1))
+
 ;;; which-key
 (use-package which-key
   :config
