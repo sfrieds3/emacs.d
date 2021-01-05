@@ -543,6 +543,19 @@
 ;;; column-marker
 (use-package column-marker)
 
+;;; hl-todo
+(use-package hl-todo
+    :hook (prog-mode . hl-todo-mode)
+    :config
+    (setq hl-todo-keyword-faces
+      '(("TODO"   . "#FF0000")
+        ("FIXME"  . "#FF0000")
+        ("DEBUG"  . "#A020F0")))
+    (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
+    (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
+    (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+    (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
+
 ;;; helpful
 (use-package helpful
   :defer t
@@ -593,7 +606,7 @@
   (defvar c-basic-offset)
   (setq c-basic-offset 4)
   (c-set-offset 'substatement-open 0))
-(add-hook 'c++-mode-hook '$c++-mode-hook)
+(add-hook 'c++-mode-hook '$c++-mode-hook))
 
 ;;; LOAD LOCAL SETTINGS
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
