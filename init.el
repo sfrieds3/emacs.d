@@ -606,7 +606,7 @@
   (defvar c-basic-offset)
   (setq c-basic-offset 4)
   (c-set-offset 'substatement-open 0))
-(add-hook 'c++-mode-hook '$c++-mode-hook))
+(add-hook 'c++-mode-hook '$c++-mode-hook)
 
 ;;; LOAD LOCAL SETTINGS
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
