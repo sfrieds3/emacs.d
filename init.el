@@ -14,24 +14,6 @@
 (eval-when-compile
   (require 'use-package))
 
-;;; backup settings
-(setq backup-directory-alist '(("." . "~/.emacs.d/tmp/")))
-(setq delete-old-versions -1)
-(setq version-control t)
-(setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/" t)))
-
-;;; history settings
-(setq savehist-file (expand-file-name "savehist" "~"))
-(savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
-
 (let ((home-settings (expand-file-name "home.el" user-emacs-directory)))
   (when (file-exists-p home-settings)
     (load-file home-settings)))
@@ -385,6 +367,22 @@
   (push "build" counsel-etags-ignore-directories)
   (push "var" counsel-etags-ignore-directories))
 
+;;; find-file-in-project
+(use-package find-file-in-project
+  :defer t
+  :commands (find-file-in-project
+             find-file-in-current-directory
+             find-file-in-project-at-point)
+  :config
+  (defun ffip-diff-mode-hook-setup ()
+    (evil-local-set-key 'normal "p" 'diff-hunk-prev)
+    (evil-local-set-key 'normal "n" 'diff-hunk-next)
+    (evil-local-set-key 'normal "P" 'diff-file-prev)
+    (evil-local-set-key 'normal "N" 'diff-file-next)
+    (evil-local-set-key 'normal (kbd "RET") 'ffip-diff-find-file)
+    (evil-local-set-key 'normal "o" 'ffip-diff-find-file))
+  (add-hook 'ffip-diff-mode-hook 'ffip-diff-mode-hook-setup))
+
 ;;; smex
 (use-package smex
   :disabled
@@ -564,9 +562,27 @@
 
 ;;; no-littering
 (use-package no-littering
+  :init
+  (savehist-mode 1)
   :config
   (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory))
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  ;; backup settings
+  ;;(setq backup-directory-alist '(("." . "~/.emacs.d/tmp/")))
+  (setq delete-old-versions -1)
+  (setq version-control t)
+  (setq vc-make-backup-files t)
+  ;;(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/" t)))
+
+  ;; history settings
+  ;;(setq savehist-file (expand-file-name "savehist" "~"))
+  (setq history-length t)
+  (setq history-delete-duplicates t)
+  (setq savehist-save-minibuffer-history 1)
+  (setq savehist-additional-variables
+        '(kill-ring
+          search-ring
+          regexp-search-ring)))
 
 ;;; esup
 (use-package esup
