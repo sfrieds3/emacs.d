@@ -5,6 +5,14 @@
 
 ;;; Code:
 
+(defun $symbol-at-point ()
+  "Return current symbol at point as a string."
+  (let ((s (thing-at-point 'symbol)))
+    (and (stringp s)
+         (if (string-match "\\`[`']?\\(.*?\\)'?\\'" s)
+             (match-string 1 s)
+           s))))
+
 (defun $eval-defun-view-results ()
   "Eval defun and view results in a new buffer."
   (interactive)
