@@ -120,9 +120,11 @@
   :init
   (setf evil-want-keybinding 'nil)
   :config
-  (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'ruby-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  ;; make evil words work like vim
+  (defalias #'forward-evil-word #'forward-evil-symbol)
+  (setq-default evil-symbol-word-search t)
+  (setq evil-search-module 'evil-search)
+
   (setq evil-search-module 'evil-search)
   (setq evil-ex-complete-emacs-commands t)
   (setq evil-vsplit-window-right t)
