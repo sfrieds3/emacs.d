@@ -35,8 +35,8 @@
 (setq mouse-wheel-progressive-speed nil)
 (setq mouse-wheel-follow-mouse 't)
 
-;;; cursor always blinks
-(setq blink-cursor-blinks -1)
+;; cursor blinks n times
+(setq blink-cursor-blinks 25)
 
 ;;; visuals
 (setq inhibit-startup-screen t)
@@ -268,6 +268,19 @@
 (use-package evil-matchit
   :config
   (global-evil-matchit-mode 1))
+
+;;; org-mode
+(use-package org
+  :commands (org-mode org-capture)
+  :defer t
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  (setq org-hide-leading-stars t)
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
 
 ;;; undohist
 (use-package undohist
@@ -555,9 +568,9 @@
     :hook (prog-mode . hl-todo-mode)
     :config
     (setq hl-todo-keyword-faces
-      '(("TODO"   . "#FF0000")
-        ("FIXME"  . "#FF0000")
-        ("DEBUG"  . "#A020F0")))
+      '(("TODO"   . "#FFFF00")
+        ("FIXME"  . "#FFFF00")
+        ("DEBUG"  . "#00FFFF")))
     (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
     (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
     (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
