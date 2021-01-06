@@ -280,7 +280,7 @@
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars t)
   (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
 
 ;;; undohist
 (use-package undohist
