@@ -56,6 +56,7 @@
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
 
+;;; ask about adding a final newline
 (setq require-final-newline 'ask)
 
 ;;; show matching parens
@@ -279,6 +280,8 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars t)
+  (setq org-src-preserve-indentation nil
+        org-edit-src-content-indentation 0)
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
 
