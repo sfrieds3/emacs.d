@@ -246,7 +246,6 @@
 
 ;;; plus-minus
 (use-package plus-minus
-  :ensure t
   :demand t
   :bind
   (("C-c C-a"   . +/-:forward+)
