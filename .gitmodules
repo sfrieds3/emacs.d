@@ -103,3 +103,6 @@
 [submodule "lisp/external/hl-todo"]
 	path = lisp/external/hl-todo
 	url = https://github.com/tarsius/hl-todo.git
+[submodule "emacs.appimage"]
+	path = emacs.appimage
+	url = https://github.com/scwfri/emacs.appimage.git
