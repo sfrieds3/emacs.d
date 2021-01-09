@@ -206,8 +206,6 @@
   (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
-  (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
@@ -246,8 +244,17 @@
   (define-key universal-argument-map (kbd "M-u") 'universal-argument-more)
   (define-key universal-argument-map (kbd "C-u") nil))
 
-;;; evil-numbers
-(use-package evil-numbers)
+;;; plus-minus
+(use-package plus-minus
+  :ensure t
+  :demand t
+  :bind
+  (("C-c C-a"   . +/-:forward+)
+   ("C-c C-x"   . +/-:forward-)
+   ("C-c M-a"   . +/-:backward+)
+   ("C-c M-x"   . +/-:backward-)
+   ("C-c g C-a" . +/-:block+)
+   ("C-c g C-x" . +/-:block-)))
 
 ;;; evil-collection
 (use-package evil-collection
