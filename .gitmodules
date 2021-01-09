@@ -106,3 +106,5 @@
 [submodule "emacs.appimage"]
 	path = emacs.appimage
 	url = https://github.com/scwfri/emacs.appimage.git
+[submodule "evil"]
+	shallow = true
