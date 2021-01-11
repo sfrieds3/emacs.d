@@ -193,16 +193,16 @@
   (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
   (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
   (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
-  (define-key evil-normal-state-map (kbd "\\g") 'counsel-git-grep)
+  (define-key evil-normal-state-map (kbd "\\g") 'consult-git-grep)
   (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
   (define-key evil-normal-state-map (kbd "\\H") 'unhighlight-regexp)
   (define-key evil-normal-state-map (kbd "\\c") 'global-hl-line-mode)
   (define-key evil-normal-state-map (kbd "\\C") 'column-marker-1)
-  (define-key evil-normal-state-map (kbd "\\\\") 'counsel-imenu)
-  (define-key evil-normal-state-map (kbd "\\pt") 'counsel-etags-list-tag)
+  (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
+  (define-key evil-normal-state-map (kbd "\\pt") 'projectile-find-tag)
   (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
-  (define-key evil-normal-state-map (kbd "\\pr") 'counsel-recentf)
-  (define-key evil-normal-state-map (kbd "\\pb") 'counsel-buffer-or-recentf)
+  (define-key evil-normal-state-map (kbd "\\pr") 'consult-recent-file)
+  (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
 
   ;; other
 
@@ -392,6 +392,7 @@
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (("C-s" . consult-line)
+         ("C-x f" . consult-recent-file)
          ("C-x M-:" . consult-complex-command)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
@@ -399,7 +400,6 @@
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
          ("C-x r x" . consult-register)
-         ("C-x r b" . consult-bookmark)
          ("M-g g" . consult-goto-line)
          ("M-g M-g" . consult-goto-line)
          ("M-g o" . consult-outline)       ;; "M-s o" is a good alternative.
@@ -507,6 +507,7 @@
 ;;; flycheck
 (use-package flycheck
   :defer 5
+  :commands (flycheck-mode global-flycheck-mode)
   :config
   (global-flycheck-mode))
 
