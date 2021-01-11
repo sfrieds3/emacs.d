@@ -208,7 +208,7 @@
 
   (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-  (define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
+  ;;(define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
