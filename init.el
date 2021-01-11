@@ -12,7 +12,9 @@
 
 ;; use-package to manage packages
 (eval-when-compile
-  (require 'use-package))
+  (require 'use-package)
+  ;; do not add -hook suffix automatically in use-package :hook
+  (setq use-package-hook-name-suffix nil))
 
 (let ((home-settings (expand-file-name "home.el" user-emacs-directory)))
   (when (file-exists-p home-settings)
@@ -92,11 +94,14 @@
 ;;; transient mark mode
 (transient-mark-mode 1)
 
+;;; set up use-package
+
 ;;; personal init files
 (use-package scwfri-defun
   :config
   ;; server postfix for tramp editing
-  (add-hook 'find-file-hook '$add-server-postfix))
+  :hook
+  (find-file-hook . $add-server-postfix))
 
 (use-package theme-config)
 (use-package scwfri-config)
@@ -308,78 +313,155 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   :bind (("C-c f" . projectile-find-file)))
 
-;;; ivy
-(use-package ivy
-  :defer 1
-  :diminish
+;;; orderless
+(use-package orderless
+  :custom (completion-styles '(orderless))
   :config
-  (ivy-mode 1)
+  (defun flex-if-twiddle (pattern _index _total)
+    (when (string-suffix-p "~" pattern)
+      `(orderless-flex . ,(substring pattern 0 -1))))
 
-  (defun $ivy-switch-file-search ()
-    "Switch to counsel-file-jump, preserving current input."
-    (interactive)
-    (let ((input (ivy--input)))
-      (ivy-quit-and-run (counsel-file-jump))))
-  (define-key ivy-minibuffer-map (kbd "M-s r") '$ivy-switch-file-search)
+  ;;(defun first-initialism (pattern index _total)
+  ;;  (if (= index 0) 'orderless-initialism))
 
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  :bind (("C-c C-r" . ivy-resume)))
+  (defun without-if-bang (pattern _index _total)
+    (when (string-prefix-p "!" pattern)
+      `(orderless-without-literal . ,(substring pattern 1))))
 
-;;; counsel
-(use-package counsel
-  :after ivy
-  :bind (("C-x C-f" . counsel-find-file)
-         ("C-x f" . counsel-recentf)
-         ("C-s" . counsel-grep-or-swiper)
-         ("C-c h f" . counsel-describe-function)
-         ("C-c h v" . counsel-describe-variable)
-         ("C-c h d" . counsel-describe-symbol)
-         ("C-c k" . counsel-find-library)
-         ("C-c i" . counsel-info-lookup-symbol)
-         ("C-c u" . counsel-unicode-char)
-         ("C-c f" . counsel-git)
-         ("C-c g g" . counsel-git-grep)
-         ("C-x l" . counsel-locate)
-         ("M-x" . counsel-M-x)))
+  (setq orderless-matching-styles '(orderless-regexp)
+        orderless-style-dispatchers '(;;first-initialism
+                                      flex-if-twiddle
+                                      without-if-bang))
+  (setq selectrum-refine-candidates-function #'orderless-filter)
+  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
-;;; swiper
-(use-package swiper
-  :after ivy)
-
-(use-package prescient)
-
-(use-package ivy-prescient
-  :after prescient
-  :config
-  (ivy-prescient-mode))
-
-(use-package company-prescient
-  :after prescient
-  :config
-  (company-prescient-mode))
-
-;;; counsel-etags
-(use-package counsel-etags
-  :after counsel
-  :commands (counsel-etags-find-tag-at-point
-             counsel-etags-find-tag counsel-etags-list-tag
-             counsel-etags-virtual-update-tags)
-  :bind (("C-]" . counsel-etags-find-tag-at-point))
+;;; marginalia
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+              ("C-M-a" . marginalia-cycle)
+              ("A" . marginalia-cycle))
+  :commands (marginalia-mode)
   :init
-  (add-hook 'prog-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook
-                        'counsel-etags-virtual-update-tags 'append 'local)))
+  (marginalia-mode)
+
+  ;; When using Selectrum, ensure that Selectrum is refreshed when cycling annotations.
+  (advice-add #'marginalia-cycle :after
+              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
+
+  ;; Prefer richer, more heavy, annotations over the lighter default variant.
+  ;; E.g. M-x will show the documentation string additional to the keybinding.
+  ;; By default only the keybinding is shown as annotation.
+  ;; Note that there is the command `marginalia-cycle' to
+  ;; switch between the annotators.
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+
+;;; embark
+(use-package embark
+  :bind
+  ("C-S-a" . embark-act)               ; pick some comfortable binding
   :config
-  (setq counsel-etags-update-interval 60)
-  (setq tags-revert-without-query t)
-  (setq large-file-warning-threshold nil)
-  (push "tmp" counsel-etags-ignore-directories)
-  (push "bin" counsel-etags-ignore-directories)
-  (push "build" counsel-etags-ignore-directories)
-  (push "var" counsel-etags-ignore-directories))
+  ;; For Selectrum users:
+  (defun current-candidate+category ()
+    (when selectrum-active-p
+      (cons (selectrum--get-meta 'category)
+            (selectrum-get-current-candidate))))
+
+  (add-hook 'embark-target-finders #'current-candidate+category)
+
+  (defun current-candidates+category ()
+    (when selectrum-active-p
+      (cons (selectrum--get-meta 'category)
+            (selectrum-get-current-candidates
+             ;; Pass relative file names for dired.
+             minibuffer-completing-file-name))))
+
+  :hook
+  ;; No unnecessary computation delay after injection.
+  (embark-setup-hook . selectrum-set-selected-candidate)
+  (embark-candidate-collectors . current-candidates+category))
+
+;;; selectrum
+(use-package selectrum
+  :commands (selectrum-mode)
+  :init
+  (selectrum-mode +1)
+  :bind
+  ("C-x C-z" . selectrum-repeat))
+
+;;; consult
+(use-package consult
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (("C-s" . consult-line)
+         ("C-x M-:" . consult-complex-command)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r x" . consult-register)
+         ("C-x r b" . consult-bookmark)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)       ;; "M-s o" is a good alternative.
+         ("M-g l" . consult-line)          ;; "M-s l" is a good alternative.
+         ("M-g m" . consult-mark)          ;; I recommend to bind Consult navigation
+         ("M-g k" . consult-global-mark)   ;; commands under the "M-g" prefix.
+         ("M-g r" . consult-git-grep)      ;; or consult-grep, consult-ripgrep
+         ("M-g f" . consult-find)          ;; or consult-locate, my-fdfind
+         ("M-g i" . consult-project-imenu) ;; or consult-imenu
+         ("M-g e" . consult-error)
+         ("M-s m" . consult-multi-occur)
+         ("M-y" . consult-yank-pop)
+         ("<help> a" . consult-apropos))
+
+  :init
+  ;; Custom command wrappers. It is generally encouraged to write your own
+  ;; commands based on the Consult commands. Some commands have arguments which
+  ;; allow tweaking. Furthermore global configuration variables can be set
+  ;; locally in a let-binding.
+  (defun my-fdfind (&optional dir)
+    (interactive "P")
+    (let ((consult-find-command '("fdfind" "--color=never" "--full-path")))
+      (consult-find dir)))
+
+  ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
+  (fset 'multi-occur #'consult-multi-occur)
+
+  ;; Configure other variables and modes in the :config section, after lazily loading the package
+  :config
+  ;; Configure preview. Note that the preview-key can also be configured on a
+  ;; per-command basis via `consult-config'.
+  ;; The default value is 'any, such that any key triggers the preview.
+  ;;(setq consult-preview-key (kbd "M-p"))
+
+  ;; Optionally configure narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; Probably not needed if you are using which-key.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+  ;; Optional configure a view library to be used by `consult-buffer'.
+  ;; The view library must provide two functions, one to open the view by name,
+  ;; and one function which must return a list of views as strings.
+  ;; Example: https://github.com/minad/bookmark-view/
+  ;; (setq consult-view-open-function #'bookmark-jump
+  ;;       consult-view-list-function #'bookmark-view-names)
+
+  ;; Optionally configure a function which returns the project root directory
+  (autoload 'projectile-project-root "projectile")
+  (setq consult-project-root-function #'projectile-project-root))
+
+;; Enable Consult-Selectrum integration.
+;; This package should be installed if Selectrum is used.
+(use-package consult-selectrum
+  :after selectrum
+  :demand t)
+
+;; Optionally add the `consult-flycheck' command.
+(use-package consult-flycheck
+  :bind (:map flycheck-command-map
+              ("!" . consult-flycheck)))
 
 ;;; find-file-in-project
 (use-package find-file-in-project
@@ -489,7 +571,6 @@
   (lisp-interaction-mode-hook . eldoc-mode)
   (ielm-mode-hook . eldoc-mode))
 
-
 ;;; markdown-mode
 (use-package markdown-mode
   :defer t
@@ -516,10 +597,10 @@
   :commands (cperl-mode)
   :init
   (mapc
-    (lambda (pair)
-      (if (eq (cdr pair) 'perl-mode)
-          (setcdr pair 'cperl-mode)))
-    (append auto-mode-alist interpreter-mode-alist)))
+   (lambda (pair)
+     (if (eq (cdr pair) 'perl-mode)
+         (setcdr pair 'cperl-mode)))
+   (append auto-mode-alist interpreter-mode-alist)))
 
 ;;; projectile-rails
 (use-package projectile-rails
@@ -529,7 +610,7 @@
   :config
   (projectile-rails-global-mode)
   :hook
-  (ruby-mode . projectile-rails-mode))
+  (ruby-mode-hook . projectile-rails-mode))
 
 ;;; dumb-jump
 (use-package dumb-jump
@@ -567,23 +648,23 @@
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode
   :hook
-  (prog-mode . idle-highlight-mode))
+  (prog-mode-hook . idle-highlight-mode))
 
 ;;; column-marker
 (use-package column-marker)
 
 ;;; hl-todo
 (use-package hl-todo
-    :hook (prog-mode . hl-todo-mode)
-    :config
-    (setq hl-todo-keyword-faces
-      '(("TODO"   . "#FFFF00")
-        ("FIXME"  . "#FFFF00")
-        ("DEBUG"  . "#00FFFF")))
-    (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
-    (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
-    (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
-    (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
+  :hook (prog-mode-hook . hl-todo-mode)
+  :config
+  (setq hl-todo-keyword-faces
+        '(("TODO"   . "#FFFF00")
+          ("FIXME"  . "#FFFF00")
+          ("DEBUG"  . "#00FFFF")))
+  (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
+  (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
+  (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+  (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
 
 ;;; helpful
 (use-package helpful

@@ -64,9 +64,6 @@
 [submodule "lisp/external/projectile"]
 	path = lisp/external/projectile
 	url = https://github.com/bbatsov/projectile.git
-[submodule "lisp/external/prescient"]
-	path = lisp/external/prescient
-	url = https://github.com/raxod502/prescient.el.git
 [submodule "lisp/external/evil-matchit"]
 	path = lisp/external/evil-matchit
 	url = https://github.com/redguardtoo/evil-matchit.git
@@ -88,9 +85,6 @@
 [submodule "lisp/dependencies/inf-ruby"]
 	path = lisp/dependencies/inf-ruby
 	url = https://github.com/nonsequitur/inf-ruby.git
-[submodule "lisp/external/swiper"]
-	path = lisp/external/swiper
-	url = https://github.com/abo-abo/swiper.git
 [submodule "lisp/external/slime-company"]
 	path = lisp/external/slime-company
 	url = https://github.com/anwyn/slime-company.git
@@ -109,3 +103,18 @@
 [submodule "lisp/external/plus-minus"]
 	path = lisp/external/plus-minus
 	url = https://github.com/peterwu/plus-minus.git
+[submodule "lisp/external/embark"]
+	path = lisp/external/embark
+	url = https://github.com/oantolin/embark.git
+[submodule "lisp/external/consult"]
+	path = lisp/external/consult
+	url = https://github.com/minad/consult.git
+[submodule "lisp/external/orderless"]
+	path = lisp/external/orderless
+	url = https://github.com/oantolin/orderless.git
+[submodule "lisp/external/marginalia"]
+	path = lisp/external/marginalia
+	url = https://github.com/minad/marginalia.git
+[submodule "lisp/external/selectrum"]
+	path = lisp/external/selectrum
+	url = https://github.com/raxod502/selectrum.git
