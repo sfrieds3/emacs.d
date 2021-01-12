@@ -611,7 +611,7 @@
 ;;; projectile-rails
 (use-package projectile-rails
   :defer t
-  :commands (projectile-rails-mode)
+  :commands (projectile-rails-mode projectile-rails-command-map)
   :bind (("C-c r" . projectile-rails-command-map))
   :config
   (projectile-rails-global-mode)
