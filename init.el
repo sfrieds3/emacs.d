@@ -219,6 +219,8 @@
   (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
   (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
   (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
+  (define-key evil-normal-state-map (kbd "]t") 'tab-next)
+  (define-key evil-normal-state-map (kbd "[t") 'tab-previous)
   (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
   (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
   (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
