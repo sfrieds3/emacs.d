@@ -439,23 +439,11 @@
   (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p")))
                        (consult-buffer :preview-key ,(kbd "M-q"))))
 
-  ;; Optionally configure narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; Probably not needed if you are using which-key.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  ;; configure narrowing key.
+  (setq consult-narrow-key "C-+")
+  ;; make narrowing help available in the minibuffer.
+  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
-  ;; Optional configure a view library to be used by `consult-buffer'.
-  ;; The view library must provide two functions, one to open the view by name,
-  ;; and one function which must return a list of views as strings.
-  ;; Example: https://github.com/minad/bookmark-view/
-  ;; (setq consult-view-open-function #'bookmark-jump
-  ;;       consult-view-list-function #'bookmark-view-names)
-
-  ;; Optionally configure a function which returns the project root directory
-  ;;(autoload 'projectile-project-root "projectile")
-  ;;(setq consult-project-root-function #'projectile-project-root))
 
 ;; Enable Consult-Selectrum integration.
 ;; This package should be installed if Selectrum is used.
