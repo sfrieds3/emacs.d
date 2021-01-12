@@ -357,7 +357,7 @@
 ;;; embark
 (use-package embark
   :bind
-  ("C-S-a" . embark-act)               ; pick some comfortable binding
+  ("C-," . embark-act)
   :config
   ;; For Selectrum users:
   (defun current-candidate+category ()
