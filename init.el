@@ -454,8 +454,8 @@
   ;;       consult-view-list-function #'bookmark-view-names)
 
   ;; Optionally configure a function which returns the project root directory
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-root-function #'projectile-project-root))
+  ;;(autoload 'projectile-project-root "projectile")
+  ;;(setq consult-project-root-function #'projectile-project-root))
 
 ;; Enable Consult-Selectrum integration.
 ;; This package should be installed if Selectrum is used.
