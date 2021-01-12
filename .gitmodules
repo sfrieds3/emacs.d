@@ -52,9 +52,6 @@
 [submodule "lisp/dependencies/annalist"]
 	path = lisp/dependencies/annalist
 	url = https://github.com/noctuid/annalist.el.git
-[submodule "lisp/external/counsel-etags"]
-	path = lisp/external/counsel-etags
-	url = https://github.com/redguardtoo/counsel-etags.git
 [submodule "lisp/meta/use-package"]
 	path = lisp/meta/use-package
 	url = https://github.com/jwiegley/use-package.git

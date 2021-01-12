@@ -208,7 +208,6 @@
 
   (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-  ;;(define-key evil-normal-state-map (kbd "C-]") 'counsel-etags-find-tag-at-point)
   (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
   (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
@@ -427,12 +426,17 @@
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
 
+  ;; register preview setting
+  (setq register-preview-delay 0
+        register-preview-function #'consult-register-preview)
+
   ;; Configure other variables and modes in the :config section, after lazily loading the package
   :config
   ;; Configure preview. Note that the preview-key can also be configured on a
   ;; per-command basis via `consult-config'.
   ;; The default value is 'any, such that any key triggers the preview.
-  ;;(setq consult-preview-key (kbd "M-p"))
+  (setq consult-preview-key (kbd "M-p"))
+  (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
 
   ;; Optionally configure narrowing key.
   ;; Both < and C-+ work reasonably well.
