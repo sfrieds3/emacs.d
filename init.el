@@ -435,8 +435,9 @@
   ;; Configure preview. Note that the preview-key can also be configured on a
   ;; per-command basis via `consult-config'.
   ;; The default value is 'any, such that any key triggers the preview.
-  (setq consult-preview-key (kbd "M-p"))
-  (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;;(setq consult-preview-key (kbd "M-p"))
+  (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p)))
+                       (consult-buffer :preview-key ,(kbd "M-p"))))
 
   ;; Optionally configure narrowing key.
   ;; Both < and C-+ work reasonably well.
