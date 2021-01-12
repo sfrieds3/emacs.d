@@ -418,10 +418,10 @@
   ;; commands based on the Consult commands. Some commands have arguments which
   ;; allow tweaking. Furthermore global configuration variables can be set
   ;; locally in a let-binding.
-  (defun my-fdfind (&optional dir)
-    (interactive "P")
-    (let ((consult-find-command '("fdfind" "--color=never" "--full-path")))
-      (consult-find dir)))
+  ;;(defun my-fdfind (&optional dir)
+  ;;  (interactive "P")
+  ;;  (let ((consult-find-command '("fdfind" "--color=never" "--full-path")))
+  ;;   (consult-find dir)))
 
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
