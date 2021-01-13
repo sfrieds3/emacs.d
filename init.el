@@ -1,5 +1,4 @@
 ;;; init.el --- scwfri init.el
-
 ;;; Commentary:
 ;;     place 'local-settings.el' file (provide 'local-settings)
 ;;     in .emacs.d directory to overwrite settings (loaded at end)
@@ -21,13 +20,6 @@
     (load-file home-settings)))
 
 (setq custom-file (concat user-emacs-directory "shared-config.el"))
-
-;;; byte recompile everything
-;;;(byte-recompile-directory (expand-file-name "~/.emacs.d/lisp") 0)
-
-;;; start emacsclient if server not running already
-;;(load "server")
-;;(unless (server-running-p) (server-start))
 
 ;;; make scrolling work like it should
 (setq scroll-step 1)
@@ -81,26 +73,11 @@
 ;;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
 (global-hi-lock-mode 1)
 
-;;; stop asking about upcase and downcase region
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-
-;;; advanced management of rectangles
-;; C-RET to mark a corner
-;; M-r to do revexp replace within marked rectange
-;; C-RET to unmark/exit rectangle editing
-(cua-selection-mode 1)
-
-;;; transient mark mode
-(transient-mark-mode 1)
-
-;;; set up use-package
-
 ;;; personal init files
 (use-package scwfri-defun
   :config
-  ;; server postfix for tramp editing
   :hook
+  ;; server postfix for tramp editing
   (find-file-hook . $add-server-postfix))
 
 (use-package theme-config)
@@ -130,7 +107,8 @@
   (modus-themes-load-themes)
   :config
   (modus-themes-load-vivendi)
-  (global-set-key (kbd "C-c t") 'modus-themes-toggle))
+  :bind
+  ("C-c C-t" . modus-themes-toggle))
 
 ;;; evil
 (use-package evil
@@ -146,10 +124,16 @@
   (setq evil-ex-complete-emacs-commands t)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
-  (setq evil-shift-round nil)
+  (setq evil-shift-round t)
+  (setq-default evil-cross-lines t)
   (setq evil-want-C-u-scroll t)
   (evil-mode 1)
-  (setq-default evil-cross-lines t)
+
+  (evil-ex-define-cmd "Q" 'evil-quit)
+  (evil-ex-define-cmd "E" 'evil-edit)
+  (evil-ex-define-cmd "W" 'evil-write)
+  (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
+  (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
 
   (defun $evil-clear-highlights ()
     "Clear highlight from evil-search."
@@ -192,88 +176,55 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-  ;; NORMAL
-
-
-  ;; local leader
-  (define-key evil-normal-state-map (kbd "_h") 'idle-highlight-mode)
-  (define-key evil-normal-state-map (kbd "_w") '$toggle-show-trailing-whitespace)
-  (define-key evil-normal-state-map (kbd "_f") '$show-full-file-path)
-
-  ;; leader
-  (define-key evil-normal-state-map (kbd "\\w") 'delete-trailing-whitespace)
-  (define-key evil-normal-state-map (kbd "\\f") 'find-name-dired)
-  (define-key evil-normal-state-map (kbd "\\b") 'buffer-menu)
-  (define-key evil-normal-state-map (kbd "\\g") 'consult-git-grep)
-  (define-key evil-normal-state-map (kbd "\\h") 'highlight-symbol-at-point)
-  (define-key evil-normal-state-map (kbd "\\H") 'unhighlight-regexp)
-  (define-key evil-normal-state-map (kbd "\\c") 'global-hl-line-mode)
-  (define-key evil-normal-state-map (kbd "\\C") 'column-marker-1)
-  (define-key evil-normal-state-map (kbd "\\\\") 'consult-imenu)
-  (define-key evil-normal-state-map (kbd "\\pt") 'projectile-find-tag)
-  (define-key evil-normal-state-map (kbd "\\pT") 'list-tags)
-  (define-key evil-normal-state-map (kbd "\\pr") 'consult-recent-file)
-  (define-key evil-normal-state-map (kbd "\\pb") 'consult-buffer)
-
-  ;; other
-
-  (define-key evil-normal-state-map (kbd "C-r") '$simple-redo)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-  (define-key evil-normal-state-map (kbd "C-j") '$evil-scroll-down-keep-pos)
-  (define-key evil-normal-state-map (kbd "C-k") '$evil-scroll-up-keep-pos)
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "u") '$simple-undo)
-  (define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
-  (define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
-  (define-key evil-normal-state-map (kbd "gb") 'evil-next-buffer)
-  (define-key evil-normal-state-map (kbd "gB") 'evil-prev-buffer)
-  (define-key evil-normal-state-map (kbd "]t") 'tab-next)
-  (define-key evil-normal-state-map (kbd "[t") 'tab-previous)
-  (define-key evil-normal-state-map (kbd "SPC") 'counsel-grep)
-  (define-key evil-normal-state-map (kbd "gr") 'projectilel-grep)
-  (define-key evil-normal-state-map (kbd "*") '$evil-star-keep-position)
-  (define-key evil-normal-state-map (kbd "DEL") 'evil-switch-to-windows-last-buffer)
-
-  ;; VISUAL
-  (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
-  (define-key evil-visual-state-map (kbd "gl") 'align-regexp)
-  ;;(define-key evil-visual-state-map (kbd "*") '$visualstar-keep-position)
-
-  ;; INSERT
-  (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
-  (define-key evil-insert-state-map (kbd "C-u")
-    (lambda ()
-      (interactive)
-      (evil-delete (point-at-bol) (point))))
-
-  (evil-ex-define-cmd "Q" 'evil-quit)
-  (evil-ex-define-cmd "E" 'evil-edit)
-  (evil-ex-define-cmd "W" 'evil-write)
-  (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
-  (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
-
-  (define-key evil-normal-state-map (kbd "M-u") 'universal-argument)
-  (define-key universal-argument-map (kbd "M-u") 'universal-argument-more)
-  (define-key universal-argument-map (kbd "C-u") nil))
-
-;;; plus-minus
-(use-package plus-minus
-  :demand t
   :bind
-  (("C-c C-a"   . +/-:forward+)
-   ("C-c C-x"   . +/-:forward-)
-   ("C-c M-a"   . +/-:backward+)
-   ("C-c M-x"   . +/-:backward-)
-   ("C-c g C-a" . +/-:block+)
-   ("C-c g C-x" . +/-:block-)))
+  (:map evil-normal-state-map
+        ("_w" . $toggle-show-trailing-whitespace)
+        ("_f" . $show-full-file-path)
+
+        ("\\w" . delete-trailing-whitespace)
+        ("\\f" . find-name-dired)
+        ("\\h" . highlight-symbol-at-point)
+        ("\\H" . unhighlight-regexp)
+        ("\\c" . global-hl-line-mode)
+        ("\\C" . column-marker-1)
+        ("\\pT" . list-tags)
+
+        ("C-r" . $simple-redo)
+        ("C-l" . evil-ex-nohighlight)
+        ("C-j" . $evil-scroll-down-keep-pos)
+        ("C-k" . $evil-scroll-up-keep-pos)
+        ("C-u" . evil-scroll-up)
+
+        ("j" . evil-next-visual-line)
+        ("k" . evil-previous-visual-line)
+        ("u" . $simple-undo)
+        ("]b" . evil-next-buffer)
+        ("[b" . evil-prev-buffer)
+        ("gb" . evil-next-buffer)
+        ("gB" . evil-prev-buffer)
+        ("]t" . tab-next)
+        ("[t" . tab-previous)
+        ("*" . $evil-star-keep-position)
+        ("DEL" . evil-switch-to-windows-last-buffer)
+        ("M-u" . universal-argument))
+
+  (:map evil-visual-state-map
+        ("C-u" . evil-scroll-up)
+        ("j" . evil-next-visual-line)
+        ("k" . evil-previous-visual-line)
+        ("gl" . align-regexp)
+        ("TAB" . tab-to-tab-stop)
+        ("C-u" . (lambda ()
+                   (interactive)
+                   (evil-delete (point-at-bol) (point)))))
+
+  (:map universal-argument-map
+        ("M-u" . universal-argument-more)
+        ("C-u" . nil)))
 
 ;;; evil-collection
 (use-package evil-collection
+  :after evil
   :commands (evil-collection-init)
   :init
   (evil-collection-init))
@@ -292,6 +243,22 @@
 (use-package evil-matchit
   :config
   (global-evil-matchit-mode 1))
+
+;;; avy
+(use-package avy
+  :bind (:map evil-normal-state-map
+              ("s" . avy-goto-char-timer)))
+
+;;; plus-minus
+(use-package plus-minus
+  :demand t
+  :bind
+  (("C-c C-a"   . +/-:forward+)
+   ("C-c C-x"   . +/-:forward-)
+   ("C-c M-a"   . +/-:backward+)
+   ("C-c M-x"   . +/-:backward-)
+   ("C-c g C-a" . +/-:block+)
+   ("C-c g C-x" . +/-:block-)))
 
 ;;; org-mode
 (use-package org
@@ -321,9 +288,13 @@
   :config
   (projectile-mode)
   (setq projectile-use-git-grep t)
-  (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  :bind (("C-c f" . projectile-find-file)))
+  :bind
+  (:map evil-normal-state-map
+        ("\\pt" . projectile-find-tag))
+  (:map projectile-mode-map
+        ("M-p" . projectile-command-map)
+        ("C-c p" . projectile-command-map))
+  (("C-c f" . projectile-find-file)))
 
 ;;; orderless
 (use-package orderless
@@ -403,39 +374,39 @@
 ;;; consult
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (("C-s" . consult-line)
-         ("C-x f" . consult-recent-file)
-         ("C-x M-:" . consult-complex-command)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-x b" . consult-buffer)
-         ("C-x 4 b" . consult-buffer-other-window)
-         ("C-x 5 b" . consult-buffer-other-frame)
-         ("C-x r x" . consult-register)
-         ("M-g g" . consult-goto-line)
-         ("M-g M-g" . consult-goto-line)
-         ("M-g o" . consult-outline)       ;; "M-s o" is a good alternative.
-         ("M-g l" . consult-line)          ;; "M-s l" is a good alternative.
-         ("M-g m" . consult-mark)          ;; I recommend to bind Consult navigation
-         ("M-g k" . consult-global-mark)   ;; commands under the "M-g" prefix.
-         ("M-g r" . consult-git-grep)      ;; or consult-grep, consult-ripgrep
-         ("M-g f" . consult-find)          ;; or consult-locate, my-fdfind
-         ("M-g i" . consult-project-imenu) ;; or consult-imenu
-         ("M-g e" . consult-error)
-         ("M-s m" . consult-multi-occur)
-         ("M-y" . consult-yank-pop)
-         ("<help> a" . consult-apropos))
+  :bind
+  (:map evil-normal-state-map
+        ("\\\\" . consult-imenu)
+        ("\\g" . consult-git-grep)
+        ("\\pr" . consult-recent-file)
+        ("\\pb" . consult-buffer)
+        ("\\b" . consult-buffer)
+        ("SPC" . counsel-grep)
+        ("gr" . consult-grep))
+  (("C-s" . consult-line)
+   ("C-x f" . consult-recent-file)
+   ("C-x M-:" . consult-complex-command)
+   ("C-c h" . consult-history)
+   ("C-c m" . consult-mode-command)
+   ("C-x b" . consult-buffer)
+   ("C-x 4 b" . consult-buffer-other-window)
+   ("C-x 5 b" . consult-buffer-other-frame)
+   ("C-x r x" . consult-register)
+   ("M-g g" . consult-goto-line)
+   ("M-g M-g" . consult-goto-line)
+   ("M-g o" . consult-outline)
+   ("M-g l" . consult-line)
+   ("M-g m" . consult-mark)
+   ("M-g k" . consult-global-mark)
+   ("M-g r" . consult-git-grep)
+   ("M-g f" . consult-find)
+   ("M-g i" . consult-project-imenu)
+   ("M-g e" . consult-error)
+   ("M-s m" . consult-multi-occur)
+   ("M-y" . consult-yank-pop)
+   ("<help> a" . consult-apropos))
 
   :init
-  ;; Custom command wrappers. It is generally encouraged to write your own
-  ;; commands based on the Consult commands. Some commands have arguments which
-  ;; allow tweaking. Furthermore global configuration variables can be set
-  ;; locally in a let-binding.
-  ;;(defun my-fdfind (&optional dir)
-  ;;  (interactive "P")
-  ;;  (let ((consult-find-command '("fdfind" "--color=never" "--full-path")))
-  ;;   (consult-find dir)))
-
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
 
@@ -450,7 +421,7 @@
   ;; The default value is 'any, such that any key triggers the preview.
   ;;(setq consult-preview-key (kbd "M-q"))
   (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p")))
-                       (consult-buffer :preview-key ,(kbd "M-q"))))
+                         (consult-buffer :preview-key ,(kbd "M-q"))))
 
   ;; configure narrowing key.
   (setq consult-narrow-key "C-+")
@@ -494,7 +465,6 @@
   (smex-initialize)
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)
-         ;; This is your old M-x.
          ("C-c C-c M-x" . execute-extended-command)))
 
 ;;; company
@@ -564,10 +534,11 @@
   :config
   (setq slime-company-completion 'fuzzy)
   (setq slime-company-after-completion 'slime-company-just-one-space)
-  (define-key company-active-map (kbd "\C-n") 'company-select-next)
-  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
-  (define-key company-active-map (kbd "M-.") 'company-show-location))
+  :bind (:map company-active-map
+              ("\C-n" . company-select-next)
+              ("\C-p" . company-select-previous)
+              ("\C-d" . company-show-doc-buffer)
+              ("M-." . company-show-location)))
 
 ;;; eldoc mode
 (use-package eldoc-mode
@@ -655,7 +626,9 @@
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode
   :hook
-  (prog-mode-hook . idle-highlight-mode))
+  (prog-mode-hook . idle-highlight-mode)
+  :bind (:map evil-normal-state-map
+              ("_h" . idle-highlight-mode)))
 
 ;;; column-marker
 (use-package column-marker)
@@ -668,10 +641,14 @@
         '(("TODO"   . "#FFFF00")
           ("FIXME"  . "#FFFF00")
           ("DEBUG"  . "#00FFFF")))
-  (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
-  (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
-  (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
-  (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
+  :bind
+  (:map hl-todo-mode-map
+        ("C-c t p" . hl-todo-previous)
+        ("C-c t n" . hl-todo-next)
+        ("C-c t o" . hl-todo-occur)
+        ("C-c t i" . hl-todo-insert))
+  (:map evil-normal-state-map
+        ("\\t" . hl-todo-occur)))
 
 ;;; helpful
 (use-package helpful
@@ -692,14 +669,11 @@
   (add-to-list 'recentf-exclude no-littering-var-directory)
   (add-to-list 'recentf-exclude no-littering-etc-directory)
   ;; backup settings
-  ;;(setq backup-directory-alist '(("." . "~/.emacs.d/tmp/")))
   (setq delete-old-versions -1)
   (setq version-control t)
   (setq vc-make-backup-files t)
-  ;;(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/tmp/" t)))
 
   ;; history settings
-  ;;(setq savehist-file (expand-file-name "savehist" "~"))
   (setq history-length t)
   (setq history-delete-duplicates t)
   (setq savehist-save-minibuffer-history 1)

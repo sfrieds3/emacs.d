@@ -115,3 +115,6 @@
 [submodule "lisp/external/selectrum"]
 	path = lisp/external/selectrum
 	url = https://github.com/raxod502/selectrum.git
+[submodule "lisp/external/avy"]
+	path = lisp/external/avy
+	url = https://github.com/abo-abo/avy.git
