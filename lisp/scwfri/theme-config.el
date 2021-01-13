@@ -18,12 +18,10 @@
 (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
 
-(global-set-key (kbd "C-c t") 'modus-themes-toggle)
-
-(require 'modus-themes)
-(require 'modus-vivendi-theme)
-(load-theme 'modus-vivendi t)
-(enable-theme 'modus-vivendi)
+;;(require 'modus-themes)
+;;(require 'modus-vivendi-theme)
+;;(load-theme 'modus-vivendi t)
+;;(enable-theme 'modus-vivendi)
 
 (provide 'theme-config)
 ;;; theme-config.el ends here

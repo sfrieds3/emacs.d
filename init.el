@@ -121,6 +121,17 @@
 (use-package spinner               :defer t)
 (use-package inf-ruby              :defer t)
 
+;;; modus-theme
+(use-package modus-themes
+  :commands (modus-themes-load-themes)
+  :init
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi)
+  (global-set-key (kbd "C-c t") 'modus-themes-toggle))
+
 ;;; evil
 (use-package evil
   :init
