@@ -578,7 +578,10 @@
    (lambda (pair)
      (if (eq (cdr pair) 'perl-mode)
          (setcdr pair 'cperl-mode)))
-   (append auto-mode-alist interpreter-mode-alist)))
+   (append auto-mode-alist interpreter-mode-alist))
+   :config
+   (setq cperl-invalid-face nil)
+   (setq cperl-highlight-variables-indiscriminately t))
 
 ;;; projectile-rails
 (use-package projectile-rails
