@@ -293,8 +293,8 @@
         ("\\pt" . projectile-find-tag))
   (:map projectile-mode-map
         ("M-p" . projectile-command-map)
-        ("C-c p" . projectile-command-map))
-  (("C-c f" . projectile-find-file)))
+        ("C-c p" . projectile-command-map)
+  (("C-c f" . projectile-find-file))))
 
 ;;; orderless
 (use-package orderless
