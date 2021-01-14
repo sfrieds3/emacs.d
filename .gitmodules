@@ -118,3 +118,6 @@
 [submodule "lisp/external/avy"]
 	path = lisp/external/avy
 	url = https://github.com/abo-abo/avy.git
+[submodule "lisp/external/evil-owl"]
+	path = lisp/external/evil-owl
+	url = https://github.com/mamapanda/evil-owl.git
