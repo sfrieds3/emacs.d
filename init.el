@@ -347,8 +347,13 @@
     (when selectrum-active-p
       (cons (selectrum--get-meta 'category)
             (selectrum-get-current-candidate))))
-
   (add-hook 'embark-target-finders #'current-candidate+category)
+
+  (setq embark-action-indicator
+        (lambda (map)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator)
 
   (defun current-candidates+category ()
     (when selectrum-active-p
