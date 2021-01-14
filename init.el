@@ -220,6 +220,21 @@
               ("M-u" . universal-argument-more)
               ("C-u" . nil)))
 
+;;; evil-owl
+(use-package evil-owl
+  :config
+  (setq evil-owl-max-string-length 500)
+  (setq evil-owl-header-format       "%s")
+  (setq evil-owl-register-format     " %r: %s")
+  (setq evil-owl-local-mark-format   " %m (%l:%c): %s")
+  (setq evil-owl-global-mark-format  " %m [%b] (%l:%c): %s")
+  (setq evil-owl-separator           "\n")
+  (add-to-list 'display-buffer-alist
+               '("*evil-owl*"
+                 (display-buffer-in-side-window)
+                 (side . bottom)
+                 (window-height . 0.3)))
+  (evil-owl-mode))
 
 ;;; evil-collection
 (use-package evil-collection
@@ -654,7 +669,6 @@
               ("C-c t i" . hl-todo-insert)
               :map evil-normal-state-map
               ("\\t" . hl-todo-occur)))
-
 
 ;;; helpful
 (use-package helpful
