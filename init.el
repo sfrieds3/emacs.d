@@ -176,51 +176,50 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-  :bind
-  (:map evil-normal-state-map
-        ("_w" . $toggle-show-trailing-whitespace)
-        ("_f" . $show-full-file-path)
+    :bind (:map evil-normal-state-map
+              ("_w" . $toggle-show-trailing-whitespace)
+              ("_f" . $show-full-file-path)
 
-        ("\\w" . delete-trailing-whitespace)
-        ("\\f" . find-name-dired)
-        ("\\h" . highlight-symbol-at-point)
-        ("\\H" . unhighlight-regexp)
-        ("\\c" . global-hl-line-mode)
-        ("\\C" . column-marker-1)
-        ("\\pT" . list-tags)
+              ("\\w" . delete-trailing-whitespace)
+              ("\\f" . find-name-dired)
+              ("\\h" . highlight-symbol-at-point)
+              ("\\H" . unhighlight-regexp)
+              ("\\c" . global-hl-line-mode)
+              ("\\C" . column-marker-1)
+              ("\\pT" . list-tags)
 
-        ("C-r" . $simple-redo)
-        ("C-l" . evil-ex-nohighlight)
-        ("C-j" . $evil-scroll-down-keep-pos)
-        ("C-k" . $evil-scroll-up-keep-pos)
-        ("C-u" . evil-scroll-up)
+              ("C-r" . $simple-redo)
+              ("C-l" . evil-ex-nohighlight)
+              ("C-j" . $evil-scroll-down-keep-pos)
+              ("C-k" . $evil-scroll-up-keep-pos)
+              ("C-u" . evil-scroll-up)
 
-        ("j" . evil-next-visual-line)
-        ("k" . evil-previous-visual-line)
-        ("u" . $simple-undo)
-        ("]b" . evil-next-buffer)
-        ("[b" . evil-prev-buffer)
-        ("gb" . evil-next-buffer)
-        ("gB" . evil-prev-buffer)
-        ("]t" . tab-next)
-        ("[t" . tab-previous)
-        ("*" . $evil-star-keep-position)
-        ("DEL" . evil-switch-to-windows-last-buffer)
-        ("M-u" . universal-argument))
+              ("j" . evil-next-visual-line)
+              ("k" . evil-previous-visual-line)
+              ("u" . $simple-undo)
+              ("]b" . evil-next-buffer)
+              ("[b" . evil-prev-buffer)
+              ("gb" . evil-next-buffer)
+              ("gB" . evil-prev-buffer)
+              ("]t" . tab-next)
+              ("[t" . tab-previous)
+              ("*" . $evil-star-keep-position)
+              ("DEL" . evil-switch-to-windows-last-buffer)
+              ("M-u" . universal-argument)
+              :map evil-visual-state-map
+              ("C-u" . evil-scroll-up)
+              ("j" . evil-next-visual-line)
+              ("k" . evil-previous-visual-line)
+              ("gl" . align-regexp)
+              ("TAB" . tab-to-tab-stop)
+              ("C-u" . (lambda ()
+                         (interactive)
+                         (evil-delete (point-at-bol) (point))))
 
-  (:map evil-visual-state-map
-        ("C-u" . evil-scroll-up)
-        ("j" . evil-next-visual-line)
-        ("k" . evil-previous-visual-line)
-        ("gl" . align-regexp)
-        ("TAB" . tab-to-tab-stop)
-        ("C-u" . (lambda ()
-                   (interactive)
-                   (evil-delete (point-at-bol) (point)))))
+              :map universal-argument-map
+              ("M-u" . universal-argument-more)
+              ("C-u" . nil)))
 
-  (:map universal-argument-map
-        ("M-u" . universal-argument-more)
-        ("C-u" . nil)))
 
 ;;; evil-collection
 (use-package evil-collection
@@ -288,13 +287,13 @@
   :config
   (projectile-mode)
   (setq projectile-use-git-grep t)
-  :bind
-  (:map evil-normal-state-map
-        ("\\pt" . projectile-find-tag))
-  (:map projectile-mode-map
-        ("M-p" . projectile-command-map)
-        ("C-c p" . projectile-command-map)
-  (("C-c f" . projectile-find-file))))
+  :bind (("C-c f" . projectile-find-file)
+         :map evil-normal-state-map
+         ("\\pt" . projectile-find-tag)
+         :map projectile-mode-map
+         ("M-p" . projectile-command-map)
+         ("C-c p" . projectile-command-map)))
+
 
 ;;; orderless
 (use-package orderless
@@ -373,38 +372,37 @@
 
 ;;; consult
 (use-package consult
-  ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind
-  (:map evil-normal-state-map
-        ("\\\\" . consult-imenu)
-        ("\\g" . consult-git-grep)
-        ("\\pr" . consult-recent-file)
-        ("\\pb" . consult-buffer)
-        ("\\b" . consult-buffer)
-        ("SPC" . counsel-grep)
-        ("gr" . consult-grep))
-  (("C-s" . consult-line)
-   ("C-x f" . consult-recent-file)
-   ("C-x M-:" . consult-complex-command)
-   ("C-c h" . consult-history)
-   ("C-c m" . consult-mode-command)
-   ("C-x b" . consult-buffer)
-   ("C-x 4 b" . consult-buffer-other-window)
-   ("C-x 5 b" . consult-buffer-other-frame)
-   ("C-x r x" . consult-register)
-   ("M-g g" . consult-goto-line)
-   ("M-g M-g" . consult-goto-line)
-   ("M-g o" . consult-outline)
-   ("M-g l" . consult-line)
-   ("M-g m" . consult-mark)
-   ("M-g k" . consult-global-mark)
-   ("M-g r" . consult-git-grep)
-   ("M-g f" . consult-find)
-   ("M-g i" . consult-project-imenu)
-   ("M-g e" . consult-error)
-   ("M-s m" . consult-multi-occur)
-   ("M-y" . consult-yank-pop)
-   ("<help> a" . consult-apropos))
+  :bind (("C-s" . consult-line)
+         ("C-x f" . consult-recent-file)
+         ("C-x M-:" . consult-complex-command)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r x" . consult-register)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)
+         ("M-g l" . consult-line)
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g r" . consult-git-grep)
+         ("M-g f" . consult-find)
+         ("M-g i" . consult-project-imenu)
+         ("M-g e" . consult-error)
+         ("M-s m" . consult-multi-occur)
+         ("M-y" . consult-yank-pop)
+         ("<help> a" . consult-apropos)
+         :map evil-normal-state-map
+         ("\\\\" . consult-imenu)
+         ("\\g" . consult-git-grep)
+         ("\\pr" . consult-recent-file)
+         ("\\pb" . consult-buffer)
+         ("\\b" . consult-buffer)
+         ("SPC" . counsel-grep)
+         ("gr" . consult-grep))
+
 
   :init
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
@@ -644,14 +642,14 @@
         '(("TODO"   . "#FFFF00")
           ("FIXME"  . "#FFFF00")
           ("DEBUG"  . "#00FFFF")))
-  :bind
-  (:map hl-todo-mode-map
-        ("C-c t p" . hl-todo-previous)
-        ("C-c t n" . hl-todo-next)
-        ("C-c t o" . hl-todo-occur)
-        ("C-c t i" . hl-todo-insert))
-  (:map evil-normal-state-map
-        ("\\t" . hl-todo-occur)))
+  :bind (:map hl-todo-mode-map
+              ("C-c t p" . hl-todo-previous)
+              ("C-c t n" . hl-todo-next)
+              ("C-c t o" . hl-todo-occur)
+              ("C-c t i" . hl-todo-insert)
+              :map evil-normal-state-map
+              ("\\t" . hl-todo-occur)))
+
 
 ;;; helpful
 (use-package helpful
