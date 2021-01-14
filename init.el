@@ -21,6 +21,14 @@
 
 (setq custom-file (concat user-emacs-directory "shared-config.el"))
 
+;;; try not to gc during emacs startup... set to 10MB from 800kb
+(setq gc-cons-threshold 10000000)
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-threshold 1000000)
+            (message "gc-cons-threshold restored to %S"
+                     gc-cons-threshold)))
+
 ;;; make scrolling work like it should
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
@@ -66,6 +74,15 @@
 ;;; allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
+;;; allow narrowing commands
+(put 'narrow-to-region 'disabled nil)
+
+;;; show garbage collection messages in minbuffer
+(setq garbage-collection-messages t)
+
+;;; always debug on error
+(setq debug-on-error t)
+
 ;;; filename in titlebar
 (setq frame-title-format
       (concat user-login-name "@" (system-name) ":%f [%m]"))
@@ -75,10 +92,14 @@
 
 ;;; personal init files
 (use-package scwfri-defun
-  :config
+  :after evil
   :hook
   ;; server postfix for tramp editing
-  (find-file-hook . $add-server-postfix))
+  (find-file-hook . $add-server-postfix)
+  :bind (:map evil-normal-state-map
+              ("_P" . $profile-session)
+              ("u" . $simple-undo)
+              ("C-r" . $simple-redo)))
 
 (use-package theme-config)
 (use-package scwfri-config)
@@ -188,7 +209,6 @@
               ("\\C" . column-marker-1)
               ("\\pT" . list-tags)
 
-              ("C-r" . $simple-redo)
               ("C-l" . evil-ex-nohighlight)
               ("C-j" . $evil-scroll-down-keep-pos)
               ("C-k" . $evil-scroll-up-keep-pos)
@@ -196,7 +216,6 @@
 
               ("j" . evil-next-visual-line)
               ("k" . evil-previous-visual-line)
-              ("u" . $simple-undo)
               ("]b" . evil-next-buffer)
               ("[b" . evil-prev-buffer)
               ("gb" . evil-next-buffer)
@@ -335,29 +354,22 @@
 ;;; marginalia
 (use-package marginalia
   :bind (:map minibuffer-local-map
-              ("C-M-a" . marginalia-cycle)
-              ("A" . marginalia-cycle))
+              ("C-M-a" . marginalia-cycle))
   :commands (marginalia-mode)
   :init
   (marginalia-mode)
 
   ;; When using Selectrum, ensure that Selectrum is refreshed when cycling annotations.
-  (advice-add #'marginalia-cycle :after
-              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
-
-  ;; Prefer richer, more heavy, annotations over the lighter default variant.
-  ;; E.g. M-x will show the documentation string additional to the keybinding.
-  ;; By default only the keybinding is shown as annotation.
-  ;; Note that there is the command `marginalia-cycle' to
-  ;; switch between the annotators.
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+  ;;(advice-add #'marginalia-cycle :after
+  ;;            (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  )
 
 ;;; embark
 (use-package embark
   :bind
   ("C-," . embark-act)
   :config
-  ;; For Selectrum users:
   (defun current-candidate+category ()
     (when selectrum-active-p
       (cons (selectrum--get-meta 'category)
@@ -381,6 +393,12 @@
   ;; No unnecessary computation delay after injection.
   (embark-setup-hook . selectrum-set-selected-candidate)
   (embark-candidate-collectors . current-candidates+category))
+
+(use-package embark-consult
+  :after (embark consult)
+  :demand t
+  :hook
+  (embark-collect-mode . embark-consult-preview-minor-mode))
 
 ;;; selectrum
 (use-package selectrum
@@ -423,7 +441,6 @@
          ("SPC" . counsel-grep)
          ("gr" . consult-grep))
 
-
   :init
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
@@ -444,16 +461,17 @@
   ;; configure narrowing key.
   (setq consult-narrow-key "C-+")
   ;; make narrowing help available in the minibuffer.
-  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
+  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  (autoload 'projectile-project-root "projectile")
+  (setq consult-project-root-function #'projectile-project-root))
 
 
-;; Enable Consult-Selectrum integration.
-;; This package should be installed if Selectrum is used.
+;; consult-selectrum
 (use-package consult-selectrum
   :after selectrum
   :demand t)
 
-;; Optionally add the `consult-flycheck' command.
+;; consult-flycheck
 (use-package consult-flycheck
   :bind (:map flycheck-command-map
               ("!" . consult-flycheck)))
