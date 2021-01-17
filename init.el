@@ -118,6 +118,8 @@
 (use-package s                     :defer t)
 (use-package spinner               :defer t)
 (use-package inf-ruby              :defer t)
+(use-package dired+                :defer t)
+(use-package bookmark+             :defer t)
 
 ;;; modus-theme
 (use-package modus-themes
@@ -308,6 +310,14 @@
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
 
+;;; org-bullets
+(use-package org-bullets
+  :commands org-bullets-mode
+  :defer t
+  :hook
+  (org-mode-hook . (lambda () (org-bullets-mode 1))))
+
+
 ;;; undohist
 (use-package undohist
   :config
@@ -490,7 +500,8 @@
     (evil-local-set-key 'normal "N" 'diff-file-next)
     (evil-local-set-key 'normal (kbd "RET") 'ffip-diff-find-file)
     (evil-local-set-key 'normal "o" 'ffip-diff-find-file))
-  (add-hook 'ffip-diff-mode-hook 'ffip-diff-mode-hook-setup))
+  :hook
+  (ffip-diff-mode-hook . ffip-diff-mode-hook-setup))
 
 ;;; smex
 (use-package smex
@@ -510,8 +521,8 @@
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
+  :hook
+  (after-init-hook . global-company-mode)
   :config
   (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev)))
   (global-company-mode 1))
@@ -532,12 +543,12 @@
   :config
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
-  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
-  (add-hook 'python-mode-hook (lambda()
-                                (set (make-local-variable 'company-backends)
-                                     (list 'elpy-company-backend 'company-backends))))
   :hook
-  (elpy-mode-hook . flycheck-mode))
+  (elpy-mode-hook . flycheck-mode)
+  (elpy-mode-hook . (lambda () (highlight-indentation-mode -1)))
+  (python-mode-hook . (lambda()
+                        (set (make-local-variable 'company-backends)
+                             (list 'elpy-company-backend 'company-backends)))))
 
 ;;; yasnippet
 (use-package yasnippet
@@ -551,18 +562,18 @@
   (setq inferior-lisp-program "/usr/bin/sbcl")
   :config
   (slime-setup '(slime-fancy slime-company))
-  (defun my/slime-keybindings ()
+  (defun $slime-keybindings ()
     "keybindings for use in slime"
     (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
     (local-set-key (kbd "C-c b") 'slime-eval-buffer))
-  (add-hook 'slime-mode-hook #'my/slime-keybindings)
-  (add-hook 'slime-repl-mode-hook #'my/slime-keybindings)
-  (add-hook 'slime-mode-hook
-            (lambda ()
-              (load (expand-file-name "~/quicklisp/slime-helper.el"))
-              (add-to-list 'slime-contribs 'slime-fancy)
-              (add-to-list 'slime-contribs 'inferior-slime)))
-  (setq slime-contribs '(slime-fancy)))
+  (add-hook 'slime-mode-hook #$slime-keybindings)
+  (add-hook 'slime-repl-mode-hook #'$slime-keybindings)
+  (setq slime-contribs '(slime-fancy))
+  :hook
+  (slime-mode-hook . (lambda ()
+                       (load (expand-file-name "~/quicklisp/slime-helper.el"))
+                       (add-to-list 'slime-contribs 'slime-fancy)
+                       (add-to-list 'slime-contribs 'inferior-slime))))
 
 ;;; slime-company
 (use-package slime-company
@@ -726,6 +737,9 @@
   :commands (esup)
   :config
   (setq esup-depth 0))
+
+;;; restart-emacs
+(use-package restart-emacs)
 
 ;;; LANGUAGE SETTINGS
 
