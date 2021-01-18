@@ -319,7 +319,6 @@
   :hook
   (org-mode-hook . (lambda () (org-bullets-mode 1))))
 
-
 ;;; undohist
 (use-package undohist
   :config
@@ -339,7 +338,6 @@
          :map projectile-mode-map
          ("M-p" . projectile-command-map)
          ("C-c p" . projectile-command-map)))
-
 
 ;;; orderless
 (use-package orderless
@@ -370,12 +368,7 @@
   :commands (marginalia-mode)
   :init
   (marginalia-mode)
-
-  ;; When using Selectrum, ensure that Selectrum is refreshed when cycling annotations.
-  ;;(advice-add #'marginalia-cycle :after
-  ;;            (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  )
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
 ;;; embark
 (use-package embark
@@ -461,7 +454,6 @@
   (setq register-preview-delay 0
         register-preview-function #'consult-register-preview)
 
-  ;; Configure other variables and modes in the :config section, after lazily loading the package
   :config
   ;; Configure preview. Note that the preview-key can also be configured on a
   ;; per-command basis via `consult-config'.
@@ -476,7 +468,6 @@
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   (autoload 'projectile-project-root "projectile")
   (setq consult-project-root-function #'projectile-project-root))
-
 
 ;; consult-selectrum
 (use-package consult-selectrum
@@ -645,8 +636,12 @@
 ;;; dumb-jump
 (use-package dumb-jump
   :defer 5
+  :commands (dumb-jump-go)
   :config
-  (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t) )
+  (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t)
+  ;; Preserve jump list in evil
+  (defun evil-set-jump-args (&rest ns) (evil-set-jump))
+  (advice-add 'dumb-jump-goto-file-line :before #'evil-set-jump-args))
 
 ;;; uniquify
 (use-package uniquify
