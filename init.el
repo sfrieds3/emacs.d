@@ -5,21 +5,10 @@
 
 ;;; Code:
 
+;;; add everything in lisp/ dir to load path
 (let ((default-directory  (expand-file-name "lisp" user-emacs-directory)))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
-
-;; use-package to manage packages
-(eval-when-compile
-  (require 'use-package)
-  ;; do not add -hook suffix automatically in use-package :hook
-  (setq use-package-hook-name-suffix nil))
-
-(let ((home-settings (expand-file-name "home.el" user-emacs-directory)))
-  (when (file-exists-p home-settings)
-    (load-file home-settings)))
-
-(setq custom-file (concat user-emacs-directory "shared-config.el"))
 
 ;;; try not to gc during emacs startup... set to 10MB from 800kb
 (setq gc-cons-threshold 10000000)
@@ -28,6 +17,20 @@
             (setq gc-cons-threshold 1000000)
             (message "gc-cons-threshold restored to %S"
                      gc-cons-threshold)))
+
+;;; use-package to manage packages
+(eval-when-compile
+  (require 'use-package)
+  ;; do not add -hook suffix automatically in use-package :hook
+  (setq use-package-hook-name-suffix nil))
+
+;;; home.el
+(let ((home-settings (expand-file-name "home.el" user-emacs-directory)))
+  (when (file-exists-p home-settings)
+    (load-file home-settings)))
+
+;;; shared config not in init.el
+(setq custom-file (concat user-emacs-directory "shared-config.el"))
 
 ;;; make scrolling work like it should
 (setq scroll-step 1)
@@ -76,6 +79,7 @@
 
 ;;; allow narrowing commands
 (put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
 
 ;;; show garbage collection messages in minbuffer
 (setq garbage-collection-messages t)
@@ -118,8 +122,8 @@
 (use-package s                     :defer t)
 (use-package spinner               :defer t)
 (use-package inf-ruby              :defer t)
-(use-package dired+                :defer t)
-(use-package bookmark+             :defer t)
+(use-package dired+                :defer 5)
+(use-package bookmark+             :defer 5)
 
 ;;; modus-theme
 (use-package modus-themes
@@ -241,7 +245,14 @@
 
          :map universal-argument-map
          ("M-u" . universal-argument-more)
-         ("C-u" . nil)))
+         ("C-u" . nil))
+  :hook
+  (python-mode-hook . (lambda ()
+                        (setq evil-shift-width python-indent)))
+  (ruby-mode-hook . (lambda ()
+                      (setq evil-shift-width ruby-indent-level)))
+  (org-mode-hook . (lambda ()
+                     (setq evil-shift-width 1))))
 
 ;;; evil-owl
 (use-package evil-owl
@@ -283,8 +294,9 @@
 
 ;;; avy
 (use-package avy
-  :bind (:map evil-normal-state-map
-              ("s" . avy-goto-char-timer)))
+  :bind (("s-," . avy-goto-char-timer)
+         :map evil-normal-state-map
+         ("s" . avy-goto-char-timer)))
 
 ;;; plus-minus
 (use-package plus-minus
@@ -332,7 +344,7 @@
   :config
   (projectile-mode)
   (setq projectile-use-git-grep t)
-  :bind (("C-c f" . projectile-find-file)
+  :bind (;;("C-c f" . projectile-find-file)
          :map evil-normal-state-map
          ("\\pt" . projectile-find-tag)
          :map projectile-mode-map
@@ -494,7 +506,8 @@
     (evil-local-set-key 'normal (kbd "RET") 'ffip-diff-find-file)
     (evil-local-set-key 'normal "o" 'ffip-diff-find-file))
   :hook
-  (ffip-diff-mode-hook . ffip-diff-mode-hook-setup))
+  (ffip-diff-mode-hook . ffip-diff-mode-hook-setup)
+  :bind (("C-c f" . find-file-in-project)))
 
 ;;; smex
 (use-package smex

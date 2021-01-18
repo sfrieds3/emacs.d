@@ -27,9 +27,7 @@
                                 vc-mode))
                         ;; Right.
                         (quote (
-                                "[%m] (%l:%c %p)"
-                                ;mode-line-frame-identification
-                                ;mode-line-modes
+                                "[%m] (%l:%c %p) "
                                 mode-line-misc-info))))))
 
 ;  (defun with-face (str &rest face-plist)
