@@ -199,47 +199,49 @@
     (evil-scroll-line-up 1)
     (evil-previous-visual-line))
 
-    :bind (:map evil-normal-state-map
-              ("_w" . $toggle-show-trailing-whitespace)
-              ("_f" . $show-full-file-path)
+  :bind (
+         :map evil-normal-state-map
+         ("_w" . $toggle-show-trailing-whitespace)
+         ("_f" . $show-full-file-path)
 
-              ("\\w" . delete-trailing-whitespace)
-              ("\\f" . find-name-dired)
-              ("\\h" . highlight-symbol-at-point)
-              ("\\H" . unhighlight-regexp)
-              ("\\c" . global-hl-line-mode)
-              ("\\C" . column-marker-1)
-              ("\\pT" . list-tags)
+         ("\\w" . delete-trailing-whitespace)
+         ("\\f" . find-name-dired)
+         ("\\h" . highlight-symbol-at-point)
+         ("\\H" . unhighlight-regexp)
+         ("\\c" . global-hl-line-mode)
+         ("\\C" . column-marker-1)
+         ("\\pT" . list-tags)
 
-              ("C-l" . evil-ex-nohighlight)
-              ("C-j" . $evil-scroll-down-keep-pos)
-              ("C-k" . $evil-scroll-up-keep-pos)
-              ("C-u" . evil-scroll-up)
+         ("C-l" . evil-ex-nohighlight)
+         ("C-j" . $evil-scroll-down-keep-pos)
+         ("C-k" . $evil-scroll-up-keep-pos)
+         ("C-u" . evil-scroll-up)
 
-              ("j" . evil-next-visual-line)
-              ("k" . evil-previous-visual-line)
-              ("]b" . evil-next-buffer)
-              ("[b" . evil-prev-buffer)
-              ("gb" . evil-next-buffer)
-              ("gB" . evil-prev-buffer)
-              ("]t" . tab-next)
-              ("[t" . tab-previous)
-              ("*" . $evil-star-keep-position)
-              ("DEL" . evil-switch-to-windows-last-buffer)
-              ("M-u" . universal-argument)
-              :map evil-visual-state-map
-              ("C-u" . evil-scroll-up)
-              ("j" . evil-next-visual-line)
-              ("k" . evil-previous-visual-line)
-              ("gl" . align-regexp)
-              ("TAB" . tab-to-tab-stop)
-              ("C-u" . (lambda ()
-                         (interactive)
-                         (evil-delete (point-at-bol) (point))))
+         ("j" . evil-next-visual-line)
+         ("k" . evil-previous-visual-line)
+         ("]b" . evil-next-buffer)
+         ("[b" . evil-prev-buffer)
+         ("gb" . evil-next-buffer)
+         ("gB" . evil-prev-buffer)
+         ("]t" . tab-next)
+         ("[t" . tab-previous)
+         ("*" . $evil-star-keep-position)
+         ("DEL" . evil-switch-to-windows-last-buffer)
+         ("M-u" . universal-argument)
 
-              :map universal-argument-map
-              ("M-u" . universal-argument-more)
-              ("C-u" . nil)))
+         :map evil-visual-state-map
+         ("C-u" . evil-scroll-up)
+         ("j" . evil-next-visual-line)
+         ("k" . evil-previous-visual-line)
+         ("gl" . align-regexp)
+         ("TAB" . tab-to-tab-stop)
+         ("C-u" . (lambda ()
+                    (interactive)
+                    (evil-delete (point-at-bol) (point))))
+
+         :map universal-argument-map
+         ("M-u" . universal-argument-more)
+         ("C-u" . nil)))
 
 ;;; evil-owl
 (use-package evil-owl
