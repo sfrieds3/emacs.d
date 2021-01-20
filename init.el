@@ -227,8 +227,6 @@
          ("[b" . evil-prev-buffer)
          ("gb" . evil-next-buffer)
          ("gB" . evil-prev-buffer)
-         ("]t" . tab-next)
-         ("[t" . tab-previous)
          ("*" . $evil-star-keep-position)
          ("DEL" . evil-switch-to-windows-last-buffer)
          ("M-u" . universal-argument)
@@ -455,7 +453,7 @@
          ("\\pr" . consult-recent-file)
          ("\\pb" . consult-buffer)
          ("\\b" . consult-buffer)
-         ("SPC" . counsel-grep)
+         ("SPC" . consult-grep)
          ("gr" . consult-grep))
 
   :init
@@ -666,10 +664,162 @@
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
 
+;;; display-buffer (most/all of this taken from prot)
+(use-package window
+  :init
+  (setq display-buffer-alist
+        '(;; top side window
+          ("\\*\\(Flymake\\|Package-Lint\\|vc-git :\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . top)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t))))
+          ("\\*Messages.*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . top)
+           (slot . 1)
+           (window-parameters . ((no-other-window . t))))
+          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . top)
+           (slot . 2)
+           (window-parameters . ((no-other-window . t))))
+          ;; bottom side window
+          ("\\*\\(Embark\\)?.*Completions.*"
+           (display-buffer-in-side-window)
+           (side . bottom)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t)
+                                 (mode-line-format . none))))
+          ;; left side window
+          ("\\*Help.*"
+           (display-buffer-in-side-window)
+           (window-width . 0.25)       ; See the :hook
+           (side . left)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t))))
+          ;; right side window
+          ("\\*Faces\\*"
+           (display-buffer-in-side-window)
+           (window-width . 0.25)
+           (side . right)
+           (slot . 0)
+           (window-parameters
+            . ((mode-line-format
+                . (" "
+                   mode-line-buffer-identification)))))
+          ("\\*Custom.*"
+           (display-buffer-in-side-window)
+           (window-width . 0.25)
+           (side . right)
+           (slot . 1)
+           (window-parameters . ((no-other-window . t))))
+          ;; bottom buffer (NOT side window)
+          ("\\*\\vc-\\(incoming\\|outgoing\\).*"
+           (display-buffer-at-bottom))
+          ("\\*\\(Output\\|Register Preview\\).*"
+           (display-buffer-at-bottom)
+           (window-parameters . ((no-other-window . t))))
+          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\).*"
+           (display-buffer-reuse-mode-window display-buffer-at-bottom)
+           (window-height . 0.2)
+           ;; (mode . '(eshell-mode shell-mode))
+           )))
+  (setq window-combination-resize t)
+  (setq even-window-sizes 'height-only)
+  (setq window-sides-vertical nil)
+  (setq switch-to-buffer-in-dedicated-window 'pop)
+  :hook ((help-mode-hook . visual-line-mode)
+         (custom-mode-hook . visual-line-mode))
+  :bind (("s-n" . next-buffer)
+         ("s-p" . previous-buffer)
+         ("s-o" . other-window)
+         ("s-2" . split-window-below)
+         ("s-3" . split-window-right)
+         ("s-0" . delete-window)
+         ("s-1" . delete-other-windows)
+         ("s-!" . delete-other-windows-vertically) ; s-S-1
+         ("s-5" . delete-frame)
+         ("C-x _" . balance-windows)
+         ("C-x +" . balance-windows-area)
+         ("s-q" . window-toggle-side-windows)))
+
 ;;; winner-mode
 (use-package winner
+  :hook
+  (after-init-hook . winner-mode)
+  :bind(("<s-right>" . winner-redo)
+        ("<s-left>" . winner-undo)))
+
+;;; windmove
+(use-package windmove
   :config
-  (winner-mode 1))
+  (setq windmove-create-window nil)
+  :bind (("C-c <up>" . windmove-up)
+         ("C-c <down>" . windmove-down)
+         ("C-c <left>" . windmove-left)
+         ("C-c <right>" . windmove-right)))
+
+;;; tab-bar (again, most/all of this taken from prot)
+(use-package tab-bar
+  :init
+  (setq tab-bar-close-button-show nil)
+  (setq tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
+  (setq tab-bar-close-tab-select 'recent)
+  (setq tab-bar-new-tab-choice t)
+  (setq tab-bar-new-tab-to 'right)
+  (setq tab-bar-position nil)
+  (setq tab-bar-show nil)
+  (setq tab-bar-tab-hints nil)
+  (setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
+
+  :config
+  (tab-bar-mode -1)
+  (tab-bar-history-mode 1)
+  (defun $tab--tab-bar-tabs ()
+    "Return a list of `tab-bar' tabs, minus the current one."
+    (mapcar (lambda (tab)
+              (alist-get 'name tab))
+            (tab-bar--tabs-recent)))
+
+  (defun $tab-select-tab-dwim ()
+    "Do-What-I-Mean function for getting to a `tab-bar' tab.
+If no other tab exists, create one and switch to it.  If there is
+one other tab (so two in total) switch to it without further
+questions.  Else use completion to select the tab to switch to."
+    (interactive)
+    (let ((tabs ($tab--tab-bar-tabs)))
+      (cond ((eq tabs nil)
+             (tab-new))
+            ((eq (length tabs) 1)
+             (tab-next))
+            (t
+             (tab-bar-switch-to-tab
+              (completing-read "Select tab: " tabs nil t))))))
+
+  (defun $tab-tab-bar-toggle ()
+    "Toggle `tab-bar' presentation."
+    (interactive)
+    (if (bound-and-true-p tab-bar-mode)
+        (progn
+          (setq tab-bar-show nil)
+          (tab-bar-mode -1))
+      (setq tab-bar-show t)
+      (tab-bar-mode 1)))
+
+  :bind (("<s-tab>" . tab-next)
+         ("<S-s-iso-lefttab>" . tab-previous)
+         ("<f8>" . $tab-tab-bar-toggle)
+         ("C-x t k" . tab-close)
+         ("C-x t n" . tab-new)
+         ("C-x t t" . $tab-select-tab-dwim)
+         ("s-t" . $tab-select-tab-dwim)
+         :map evil-normal-state-map
+         ("]t" . tab-next)
+         ("[t" . tab-previous)))
 
 ;;; which-key
 (use-package which-key
