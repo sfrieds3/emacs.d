@@ -43,9 +43,6 @@
 [submodule "lisp/external/dumb-jump"]
 	path = lisp/external/dumb-jump
 	url = https://github.com/jacktasia/dumb-jump.git
-[submodule "themes/modus-themes"]
-	path = themes/modus-themes
-	url = https://gitlab.com/protesilaos/modus-themes.git
 [submodule "lisp/external/evil-collection"]
 	path = lisp/external/evil-collection
 	url = https://github.com/emacs-evil/evil-collection.git
@@ -127,3 +124,9 @@
 [submodule "lisp/external/org-bullets"]
 	path = lisp/external/org-bullets
 	url = https://github.com/sabof/org-bullets.git
+[submodule "themes/modus-themes"]
+	path = themes/modus-themes
+	url = https://gitlab.com/protesilaos/modus-themes.git
+[submodule "themes/base16-emacs"]
+	path = themes/base16-emacs
+	url = https://github.com/belak/base16-emacs.git

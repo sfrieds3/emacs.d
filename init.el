@@ -58,6 +58,9 @@
 (defvar hl-line-face)
 (set-face-attribute hl-line-face nil :underline nil)
 
+;;; transient mark mode off
+(setq transient-mark-mode nil)
+
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
 
@@ -121,9 +124,15 @@
 (use-package pyvenv                :defer t)
 (use-package s                     :defer t)
 (use-package spinner               :defer t)
+(use-package yasnippet             :defer t)
 (use-package inf-ruby              :defer t)
 (use-package dired+                :defer 5)
 (use-package bookmark+             :defer 5)
+
+;;; base16-theme
+;;(use-package base16-theme
+;;  :config
+;;  (load-theme 'base16-default-dark t))
 
 ;;; modus-theme
 (use-package modus-themes
@@ -265,7 +274,7 @@
                '("*evil-owl*"
                  (display-buffer-in-side-window)
                  (side . bottom)
-                 (window-height . 0.3)))
+                 (window-height . 0.25)))
   (evil-owl-mode))
 
 ;;; evil-collection
@@ -353,21 +362,46 @@
 (use-package orderless
   :custom (completion-styles '(orderless))
   :config
-  (defun flex-if-twiddle (pattern _index _total)
+  (defun $orderless-flex (pattern _index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
     (when (string-suffix-p "~" pattern)
       `(orderless-flex . ,(substring pattern 0 -1))))
 
-  ;;(defun first-initialism (pattern index _total)
-  ;;  (if (= index 0) 'orderless-initialism))
+  (defun $orderless-literal (pattern index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
+    (when (string-suffix-p "=" pattern)
+      `(orderless-literal . ,(substring pattern 0 -1))))
 
-  (defun without-if-bang (pattern _index _total)
+  (defun $orderless-regexp (pattern index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
+    (when (string-suffix-p "," pattern)
+      `(orderless-regexp . ,(substring pattern 0 -1))))
+
+  (defun $orderless-initialism (pattern index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
+    (when (string-suffix-p "/" pattern)
+      `(orderless-strict-leading-initialism . ,(substring pattern 0 -1))))
+
+  (defun $orderless-without-if-bang (pattern _index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
     (when (string-prefix-p "!" pattern)
       `(orderless-without-literal . ,(substring pattern 1))))
 
-  (setq orderless-matching-styles '(orderless-regexp)
-        orderless-style-dispatchers '(;;first-initialism
-                                      flex-if-twiddle
-                                      without-if-bang))
+  (setq orderless-matching-styles '(orderless-flex)
+        orderless-style-dispatchers '($orderless-literal
+                                      $orderless-initialism
+                                      $orderless-regexp
+                                      $orderless-flex
+                                      $orderless-without-if-bang))
+  (defun $match-components-literally ()
+    "Components match literally for the rest of the session."
+    (interactive)
+    (setq-local orderless-matching-styles '(orderless-literal)
+                orderless-style-dispatchers nil))
+
+  (define-key minibuffer-local-completion-map (kbd "C-l")
+    #'$match-components-literally)
+
   (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
@@ -554,10 +588,6 @@
                         (set (make-local-variable 'company-backends)
                              (list 'elpy-company-backend 'company-backends)))))
 
-;;; yasnippet
-(use-package yasnippet
-  :defer t)
-
 ;;; slime
 (use-package slime
   :defer t
@@ -725,9 +755,7 @@
            (window-parameters . ((no-other-window . t))))
           ("\\*.*\\([^E]eshell\\|shell\\|v?term\\).*"
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
-           (window-height . 0.2)
-           ;; (mode . '(eshell-mode shell-mode))
-           )))
+           (window-height . 0.25))))
   (setq window-combination-resize t)
   (setq even-window-sizes 'height-only)
   (setq window-sides-vertical nil)
@@ -810,16 +838,21 @@ questions.  Else use completion to select the tab to switch to."
       (setq tab-bar-show t)
       (tab-bar-mode 1)))
 
-  :bind (("<s-tab>" . tab-next)
+  :bind (("C-x t h" . tab-bar-history-forward)
+         ("C-x t l" . tab-bar-history-back)
+         ("C-x t n" . tab-next)
+         ("C-x t p" . tab-previous)
+         ("<s-tab>" . tab-next)
          ("<S-s-iso-lefttab>" . tab-previous)
          ("<f8>" . $tab-tab-bar-toggle)
          ("C-x t k" . tab-close)
-         ("C-x t n" . tab-new)
+         ("C-x t c" . tab-new)
          ("C-x t t" . $tab-select-tab-dwim)
          ("s-t" . $tab-select-tab-dwim)
          :map evil-normal-state-map
          ("]t" . tab-next)
          ("[t" . tab-previous)))
+
 
 ;;; which-key
 (use-package which-key

@@ -6,17 +6,27 @@
 ;;; Code:
 
 ;;; set default preferred fonts
-(defvar platform-default-font)
-(setq platform-default-font
-      (cond ((eq system-type 'windows-nt) "DejaVu Sans Mono 10")
-            ((eq system-type 'gnu/linux) "Iosevka Fixed SS14 11")
+(defvar default-font)
+(setq default-font
+      (cond ((eq (system-name) 'mixolydian) "Iosevka Fixed SS14 10")
+            ((eq (system-name) 'phrygian) "Iosevka Fixed SS14 14")
             (t nil)))
 
-(when platform-default-font
-  (set-frame-font platform-default-font nil t))
+(when default-font
+  (set-frame-font default-font nil t))
 
 (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+(add-to-list 'custom-theme-load-path (expand-file-name "themes"
+                                                       (expand-file-name "themes" user-emacs-directory)))
 (add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
+
+;;; add everything in themes/ dir to load path
+(let ((default-directory  (expand-file-name "themes" user-emacs-directory)))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
+
+;;; don't ask if themes are safe
+(setq custom-safe-themes t)
 
 ;;(require 'modus-themes)
 ;;(require 'modus-vivendi-theme)
