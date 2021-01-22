@@ -367,6 +367,11 @@
     (when (string-suffix-p "~" pattern)
       `(orderless-flex . ,(substring pattern 0 -1))))
 
+  (defun $orderless-initialism-any (pattern _index _total)
+    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
+    (when (string-suffix-p "," pattern)
+      `(orderless-initialism . ,(substring pattern 0 -1))))
+
   (defun $orderless-literal (pattern index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
     (when (string-suffix-p "=" pattern)
@@ -374,7 +379,7 @@
 
   (defun $orderless-regexp (pattern index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "," pattern)
+    (when (string-suffix-p "+" pattern)
       `(orderless-regexp . ,(substring pattern 0 -1))))
 
   (defun $orderless-initialism (pattern index _total)
@@ -390,17 +395,18 @@
   (setq orderless-matching-styles '(orderless-flex)
         orderless-style-dispatchers '($orderless-literal
                                       $orderless-initialism
+                                      $orderless-initialism-any
                                       $orderless-regexp
                                       $orderless-flex
                                       $orderless-without-if-bang))
+
   (defun $match-components-literally ()
     "Components match literally for the rest of the session."
     (interactive)
     (setq-local orderless-matching-styles '(orderless-literal)
                 orderless-style-dispatchers nil))
 
-  (define-key minibuffer-local-completion-map (kbd "C-l")
-    #'$match-components-literally)
+  (define-key minibuffer-local-completion-map (kbd "C-l") #'$match-components-literally)
 
   (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
