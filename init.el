@@ -358,7 +358,7 @@
          ("M-p" . projectile-command-map)
          ("C-c p" . projectile-command-map)))
 
-;;; orderless
+;;;; orderless
 (use-package orderless
   :custom (completion-styles '(orderless))
   :config
@@ -367,7 +367,7 @@
     (when (string-suffix-p "~" pattern)
       `(orderless-flex . ,(substring pattern 0 -1))))
 
-  (defun $orderless-initialism-any (pattern _index _total)
+  (defun $orderless-initialism (pattern _index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
     (when (string-suffix-p "," pattern)
       `(orderless-initialism . ,(substring pattern 0 -1))))
@@ -379,34 +379,34 @@
 
   (defun $orderless-regexp (pattern index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "+" pattern)
+    (when (string-suffix-p "/" pattern)
       `(orderless-regexp . ,(substring pattern 0 -1))))
 
-  (defun $orderless-initialism (pattern index _total)
+  (defun $orderless-strict-leading-initialism (pattern index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "/" pattern)
+    (when (string-suffix-p "+" pattern)
       `(orderless-strict-leading-initialism . ,(substring pattern 0 -1))))
 
-  (defun $orderless-without-if-bang (pattern _index _total)
+  (defun $orderless-without-literal (pattern _index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
     (when (string-prefix-p "!" pattern)
       `(orderless-without-literal . ,(substring pattern 1))))
 
   (setq orderless-matching-styles '(orderless-flex)
         orderless-style-dispatchers '($orderless-literal
+                                      $orderless-strict-leading-initialism
                                       $orderless-initialism
-                                      $orderless-initialism-any
                                       $orderless-regexp
                                       $orderless-flex
-                                      $orderless-without-if-bang))
-
+                                      $orderless-without-literal))
   (defun $match-components-literally ()
     "Components match literally for the rest of the session."
     (interactive)
     (setq-local orderless-matching-styles '(orderless-literal)
                 orderless-style-dispatchers nil))
 
-  (define-key minibuffer-local-completion-map (kbd "C-l") #'$match-components-literally)
+  (define-key minibuffer-local-completion-map (kbd "C-l")
+    #'$match-components-literally)
 
   (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
