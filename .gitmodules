@@ -124,9 +124,9 @@
 [submodule "lisp/external/org-bullets"]
 	path = lisp/external/org-bullets
 	url = https://github.com/sabof/org-bullets.git
-[submodule "themes/modus-themes"]
-	path = themes/modus-themes
-	url = https://gitlab.com/protesilaos/modus-themes.git
 [submodule "themes/base16-emacs"]
 	path = themes/base16-emacs
 	url = https://github.com/belak/base16-emacs.git
+[submodule "themes/modus-themes"]
+	path = themes/modus-themes
+	url = https://gitlab.com/protesilaos/modus-themes.git
