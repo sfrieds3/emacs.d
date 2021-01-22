@@ -1,4 +1,4 @@
-;;;; package --- summary
+;;;; theme-config --- configure theme-rated items
 
 ;;; Commentary:
 ;;;     theme configurations
@@ -10,7 +10,7 @@
 (setq default-font
       (cond ((eq (system-name) 'mixolydian) "Iosevka Fixed SS14 10")
             ((eq (system-name) 'phrygian) "Iosevka Fixed SS14 14")
-            (t nil)))
+            (t "Iosevka Fixed SS14 13")))
 
 (when default-font
   (set-frame-font default-font nil t))
