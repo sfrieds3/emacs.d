@@ -759,7 +759,7 @@
           ("\\*\\(Output\\|Register Preview\\).*"
            (display-buffer-at-bottom)
            (window-parameters . ((no-other-window . t))))
-          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\).*"
+          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\).*"
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (window-height . 0.25))))
   (setq window-combination-resize t)
