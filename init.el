@@ -87,8 +87,8 @@
 ;;; show garbage collection messages in minbuffer
 (setq garbage-collection-messages t)
 
-;;; always debug on error
-(setq debug-on-error t)
+;;; debug on error -- off for now
+(setq debug-on-error nil)
 
 ;;; filename in titlebar
 (setq frame-title-format
@@ -351,7 +351,7 @@
   :config
   (projectile-mode)
   (setq projectile-use-git-grep t)
-  :bind (;;("C-c f" . projectile-find-file)
+  :bind (("C-c f" . projectile-find-file)
          :map evil-normal-state-map
          ("\\pt" . projectile-find-tag)
          :map projectile-mode-map
@@ -447,13 +447,13 @@
   :hook
   ;; No unnecessary computation delay after injection.
   (embark-setup-hook . selectrum-set-selected-candidate)
-  (embark-candidate-collectors . current-candidates+category))
+  (embark-candidate-collectors-hook . current-candidates+category))
 
 (use-package embark-consult
   :after (embark consult)
   :demand t
   :hook
-  (embark-collect-mode . embark-consult-preview-minor-mode))
+  (embark-collect-mode-hook . embark-consult-preview-minor-mode))
 
 ;;; selectrum
 (use-package selectrum
@@ -481,6 +481,7 @@
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g r" . consult-git-grep)
+         ("M-g s" . consult-isearch)
          ("M-g f" . consult-find)
          ("M-g i" . consult-project-imenu)
          ("M-g e" . consult-error)
@@ -488,7 +489,9 @@
          ("M-y" . consult-yank-pop)
          ("<help> a" . consult-apropos)
          :map evil-normal-state-map
-         ("\\\\" . consult-imenu)
+         ("\\\\" . consult-outline)
+         ("\\pi" . consult-imenu)
+         ("\\pp" . consult-project-imenu)
          ("\\g" . consult-git-grep)
          ("\\pr" . consult-recent-file)
          ("\\pb" . consult-buffer)
@@ -553,11 +556,27 @@
   (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev)))
   (global-company-mode 1))
 
+;;; compile
+(use-package compile
+  :config
+  (defun $python-compile-hook ()
+    (set (make-local-variable 'compile-command)
+          (format "pep8 --ignore=E501,E261,E262,E265,E266 --format=pylint %s" (buffer-name))))
+
+  (defun $perl-compile-hook ()
+    (set (make-local-variable 'compile-command)
+         (format "/cogcap/perl/current/bin/perlcritic --quiet %s" (buffer-name))))
+  :hook
+  (python-mode-hook . $python-compile-hook)
+  (perl-mode-hook . $perl-compile-hook)
+  (cperl-mode-hook . $perl-compile-hook))
+
 ;;; flycheck
 (use-package flycheck
   :defer 5
   :commands (flycheck-mode global-flycheck-mode)
   :config
+  (setq flycheck-standard-error-navigation nil)
   (global-flycheck-mode))
 
 ;;; elpy
@@ -665,9 +684,8 @@
 ;;; dumb-jump
 (use-package dumb-jump
   :defer 5
-  :commands (dumb-jump-go)
   :config
-  (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t)
+  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate t)
   ;; Preserve jump list in evil
   (defun evil-set-jump-args (&rest ns) (evil-set-jump))
   (advice-add 'dumb-jump-goto-file-line :before #'evil-set-jump-args))
@@ -741,7 +759,7 @@
           ("\\*\\(Output\\|Register Preview\\).*"
            (display-buffer-at-bottom)
            (window-parameters . ((no-other-window . t))))
-          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\).*"
+          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\|compilation\\|Occur\\).*"
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (window-height . 0.25))))
   (setq window-combination-resize t)
@@ -790,7 +808,7 @@
   (setq tab-bar-position nil)
   (setq tab-bar-show nil)
   (setq tab-bar-tab-hints nil)
-  (setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
+  (setq tab-bar-tab-name-function 'tab-bar-tab-name-current)
 
   :config
   (tab-bar-mode -1)
