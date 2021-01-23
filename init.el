@@ -529,24 +529,6 @@
   :bind (:map flycheck-command-map
               ("!" . consult-flycheck)))
 
-;;; find-file-in-project
-(use-package find-file-in-project
-  :defer t
-  :commands (find-file-in-project
-             find-file-in-current-directory
-             find-file-in-project-at-point)
-  :config
-  (defun ffip-diff-mode-hook-setup ()
-    (evil-local-set-key 'normal "p" 'diff-hunk-prev)
-    (evil-local-set-key 'normal "n" 'diff-hunk-next)
-    (evil-local-set-key 'normal "P" 'diff-file-prev)
-    (evil-local-set-key 'normal "N" 'diff-file-next)
-    (evil-local-set-key 'normal (kbd "RET") 'ffip-diff-find-file)
-    (evil-local-set-key 'normal "o" 'ffip-diff-find-file))
-  :hook
-  (ffip-diff-mode-hook . ffip-diff-mode-hook-setup)
-  :bind (("C-c f" . find-file-in-project)))
-
 ;;; smex
 (use-package smex
   :disabled

@@ -85,9 +85,6 @@
 [submodule "lisp/external/elfeed"]
 	path = lisp/external/elfeed
 	url = https://github.com/skeeto/elfeed.git
-[submodule "lisp/external/find-file-in-project"]
-	path = lisp/external/find-file-in-project
-	url = https://github.com/technomancy/find-file-in-project.git
 [submodule "lisp/external/hl-todo"]
 	path = lisp/external/hl-todo
 	url = https://github.com/tarsius/hl-todo.git

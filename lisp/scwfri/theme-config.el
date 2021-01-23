@@ -8,8 +8,8 @@
 ;;; set default preferred fonts
 (defvar default-font)
 (setq default-font
-      (cond ((eq (system-name) 'mixolydian) "Iosevka Fixed SS14 10")
-            ((eq (system-name) 'phrygian) "Iosevka Fixed SS14 14")
+      (cond ((string= (system-name) "mixolydian") "Iosevka Fixed SS14 10")
+            ((string= (system-name) "phrygian") "Iosevka Fixed SS14 14")
             (t "Iosevka Fixed SS14 13")))
 
 (when default-font
