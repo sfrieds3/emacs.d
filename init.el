@@ -658,6 +658,7 @@
          "\\.mustache\\'"
          "\\.djhtml\\'"))
 
+;;; cperl-mode
 (use-package cperl-mode
   :defer t
   :commands (cperl-mode)
@@ -669,7 +670,8 @@
    (append auto-mode-alist interpreter-mode-alist))
    :config
    (setq cperl-invalid-face nil)
-   (setq cperl-highlight-variables-indiscriminately t))
+   (setq cperl-highlight-variables-indiscriminately t)
+   (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
 
 ;;; projectile-rails
 (use-package projectile-rails
@@ -877,6 +879,7 @@ questions.  Else use completion to select the tab to switch to."
   :hook
   (prog-mode-hook . idle-highlight-mode)
   :bind (:map evil-normal-state-map
+              ("\\ SPC" . idle-highlight-mode)
               ("_h" . idle-highlight-mode)))
 
 ;;; column-marker
