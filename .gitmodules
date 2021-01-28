@@ -124,3 +124,12 @@
 [submodule "themes/modus-themes"]
 	path = themes/modus-themes
 	url = https://gitlab.com/protesilaos/modus-themes.git
+[submodule "lisp/dependencies/with-editor"]
+	path = lisp/dependencies/with-editor
+	url = https://github.com/magit/with-editor.git
+[submodule "lisp/dependencies/transient"]
+	path = lisp/dependencies/transient
+	url = https://github.com/magit/transient.git
+[submodule "lisp/external/magit"]
+	path = lisp/external/magit
+	url = https://github.com/magit/magit.git

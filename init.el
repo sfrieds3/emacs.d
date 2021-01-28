@@ -114,25 +114,8 @@
 (use-package keybindings)
 
 ;;; dependencies
-(use-package annalist              :defer t)
-(use-package dash                  :defer t)
-(use-package f                     :defer t)
-(use-package highlight-indentation :defer t)
-(use-package ht                    :defer t)
-(use-package hydra                 :defer t)
-(use-package popup                 :defer t)
-(use-package pyvenv                :defer t)
-(use-package s                     :defer t)
-(use-package spinner               :defer t)
-(use-package yasnippet             :defer t)
-(use-package inf-ruby              :defer t)
 (use-package dired+                :defer 5)
 (use-package bookmark+             :defer 5)
-
-;;; base16-theme
-;;(use-package base16-theme
-;;  :config
-;;  (load-theme 'base16-default-dark t))
 
 ;;; modus-theme
 (use-package modus-themes
@@ -222,7 +205,6 @@
          ("\\h" . highlight-symbol-at-point)
          ("\\H" . unhighlight-regexp)
          ("\\c" . global-hl-line-mode)
-         ("\\C" . column-marker-1)
          ("\\pT" . list-tags)
 
          ("C-l" . evil-ex-nohighlight)
@@ -513,7 +495,8 @@
   ;; The default value is 'any, such that any key triggers the preview.
   ;;(setq consult-preview-key (kbd "M-q"))
   (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p")))
-                         (consult-buffer :preview-key ,(kbd "M-q"))))
+                         (consult-buffer :preview-key ,(kbd "M-q"))
+                         (consult-grep :preview-key ,(kbd "M-q"))))
 
   ;; configure narrowing key.
   (setq consult-narrow-key "C-+")
@@ -522,15 +505,24 @@
   (autoload 'projectile-project-root "projectile")
   (setq consult-project-root-function #'projectile-project-root))
 
-;; consult-selectrum
+;;; consult-selectrum
 (use-package consult-selectrum
   :after selectrum
   :demand t)
 
-;; consult-flycheck
+;;; consult-flycheck
 (use-package consult-flycheck
   :bind (:map flycheck-command-map
               ("!" . consult-flycheck)))
+
+;; magit
+(use-package magit
+  :defer t
+  :commands (magit-status magit-diff-dwim)
+  :init
+  (evil-ex-define-cmd "gs" 'magit-status)
+  (evil-ex-define-cmd "gd" 'magit-diff-dwim)
+  :bind (("C-x g" . magit-status)))
 
 ;;; smex
 (use-package smex
@@ -650,6 +642,10 @@
 ;;; web-mode
 (use-package web-mode
   :defer t
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
   :mode ("\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
@@ -861,7 +857,6 @@ questions.  Else use completion to select the tab to switch to."
          ("]t" . tab-next)
          ("[t" . tab-previous)))
 
-
 ;;; which-key
 (use-package which-key
   :config
@@ -881,9 +876,6 @@ questions.  Else use completion to select the tab to switch to."
   :bind (:map evil-normal-state-map
               ("\\ SPC" . idle-highlight-mode)
               ("_h" . idle-highlight-mode)))
-
-;;; column-marker
-(use-package column-marker)
 
 ;;; hl-todo
 (use-package hl-todo
