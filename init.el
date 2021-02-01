@@ -94,9 +94,6 @@
 (setq frame-title-format
       (concat user-login-name "@" (system-name) ":%f [%m]"))
 
-;;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
-(global-hi-lock-mode 1)
-
 ;;; personal init files
 (use-package scwfri-defun
   :after evil
@@ -471,8 +468,9 @@
          ("M-y" . consult-yank-pop)
          ("<help> a" . consult-apropos)
          :map evil-normal-state-map
-         ("\\\\" . consult-outline)
+         ("\\\\" . consult-imenu)
          ("\\pi" . consult-imenu)
+         ("\\po" . consult-outline)
          ("\\pp" . consult-project-imenu)
          ("\\g" . consult-git-grep)
          ("\\pr" . consult-recent-file)
@@ -504,11 +502,6 @@
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   (autoload 'projectile-project-root "projectile")
   (setq consult-project-root-function #'projectile-project-root))
-
-;;; consult-selectrum
-(use-package consult-selectrum
-  :after selectrum
-  :demand t)
 
 ;;; consult-flycheck
 (use-package consult-flycheck
@@ -876,6 +869,19 @@ questions.  Else use completion to select the tab to switch to."
   :bind (:map evil-normal-state-map
               ("\\ SPC" . idle-highlight-mode)
               ("_h" . idle-highlight-mode)))
+
+;;; hi-lock
+(use-package hi-lock
+  :config
+  ;; make hl-lock play nice with idle-highlight-mode
+  (defun $enable-idle-highlight-mode ()
+    (setq idle-highlight-mode t))
+  (defun $disable-idle-highlight-mode ()
+    (setq idle-highlight-mode nil))
+  ;;(advice-add 'highlight-symbol-at-point :before '$disable-idle-highlight-mode)
+  ;;(advice-add 'highlight-symbol-at-point :after '$enable-idle-highlight-mode)
+  ;; C-x w h [REGEX] <RET> <RET> to highlight all occurances of [REGEX], and C-x w r [REGEX] <RET> to unhighlight them again.
+  (global-hi-lock-mode 1))
 
 ;;; hl-todo
 (use-package hl-todo
