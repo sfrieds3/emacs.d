@@ -327,10 +327,13 @@
 
 ;;; projectile
 (use-package projectile
-  :config
+  :commands projectile-mode
+  :init
   (projectile-mode)
+  :config
   (setq projectile-use-git-grep t)
   :bind (("C-c f" . projectile-find-file)
+         ("C-c b" . projectile-switch-to-buffer)
          :map evil-normal-state-map
          ("\\pt" . projectile-find-tag)
          :map projectile-mode-map
@@ -488,12 +491,10 @@
         register-preview-function #'consult-register-preview)
 
   :config
-  ;; Configure preview. Note that the preview-key can also be configured on a
-  ;; per-command basis via `consult-config'.
-  ;; The default value is 'any, such that any key triggers the preview.
-  ;;(setq consult-preview-key (kbd "M-q"))
+  ;; configure preview keys
   (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p")))
                          (consult-buffer :preview-key ,(kbd "M-q"))
+                         (consult-recent-file :preview-key ,(kbd "M-q"))
                          (consult-grep :preview-key ,(kbd "M-q"))))
 
   ;; configure narrowing key.
