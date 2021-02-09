@@ -280,7 +280,8 @@
 
 ;;; avy
 (use-package avy
-  :bind (("s-," . avy-goto-char-timer)
+  :bind (("C-;" . avy-goto-char-timer)
+         ("s-," . avy-goto-char-timer)
          :map evil-normal-state-map
          ("s" . avy-goto-char-timer)))
 
@@ -297,7 +298,8 @@
 
 ;;; org-mode
 (use-package org
-  :commands (org-mode org-capture)
+  :commands (org-mode
+             org-capture)
   :defer t
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
@@ -305,14 +307,15 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars t)
-  (setq org-src-preserve-indentation nil
-        org-edit-src-content-indentation 0)
+  (setq org-src-preserve-indentation nil)
+  (setq org-edit-src-content-indentation 0)
+  (setq org-log-done t)
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
 
 ;;; org-bullets
 (use-package org-bullets
-  :commands org-bullets-mode
+  :commands (org-bullets-mode)
   :defer t
   :hook
   (org-mode-hook . (lambda () (org-bullets-mode 1))))
@@ -327,7 +330,7 @@
 
 ;;; projectile
 (use-package projectile
-  :commands projectile-mode
+  :commands (projectile-mode)
   :init
   (projectile-mode)
   :config
@@ -406,12 +409,20 @@
 (use-package embark
   :bind
   ("C-," . embark-act)
+  ("C-." . $embark-act-noquit)
+
   :config
-  (defun current-candidate+category ()
+  (defun $embark-act-noquit ()
+    "Run action but do not quit minibuffer."
+    (interactive)
+    (let ((embark-quit-after-action nil))
+      (embark-act)))
+
+  (defun $current-candidate+category ()
     (when selectrum-active-p
       (cons (selectrum--get-meta 'category)
             (selectrum-get-current-candidate))))
-  (add-hook 'embark-target-finders #'current-candidate+category)
+  (add-hook 'embark-target-finders #'$current-candidate+category)
 
   (setq embark-action-indicator
         (lambda (map)
@@ -431,6 +442,7 @@
   (embark-setup-hook . selectrum-set-selected-candidate)
   (embark-candidate-collectors-hook . current-candidates+category))
 
+;;; embark-consult
 (use-package embark-consult
   :after (embark consult)
   :demand t
@@ -448,57 +460,89 @@
 ;;; consult
 (use-package consult
   :bind (("C-s" . consult-line)
-         ("C-x f" . consult-recent-file)
-         ("C-x M-:" . consult-complex-command)
+         ;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
+         ("C-c b" . consult-bookmark)
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)
          ("C-x b" . consult-buffer)
+         ("C-x f" . consult-recent-file)
+         ("C-x r j" . consult-register-load)
+         ("C-x r J" . consult-register)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
-         ("C-x r x" . consult-register)
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)
+         ("<help> a" . consult-apropos)
+         ;; M-g bindings (goto-map)
          ("M-g g" . consult-goto-line)
          ("M-g M-g" . consult-goto-line)
          ("M-g o" . consult-outline)
-         ("M-g l" . consult-line)
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
-         ("M-g r" . consult-git-grep)
-         ("M-g s" . consult-isearch)
-         ("M-g f" . consult-find)
-         ("M-g i" . consult-project-imenu)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-project-imenu)
          ("M-g e" . consult-error)
+         ;; M-s bindings (search-map)
+         ("M-s f" . consult-find)
+         ("M-s L" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur)
-         ("M-y" . consult-yank-pop)
-         ("<help> a" . consult-apropos)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch)
+         ("M-s e" . consult-isearch)
+         ("M-s l" . consult-line)
          :map evil-normal-state-map
          ("\\\\" . consult-imenu)
          ("\\pi" . consult-imenu)
          ("\\po" . consult-outline)
          ("\\pp" . consult-project-imenu)
-         ("\\g" . consult-git-grep)
+         ("\\g" . consult-grep)
          ("\\pr" . consult-recent-file)
          ("\\pb" . consult-buffer)
          ("\\b" . consult-buffer)
-         ("SPC" . consult-grep)
+         ("SPC" . consult-git-grep)
          ("gr" . consult-grep))
+
+
+  :commands (consult-register-window
+             consult-multi-occur
+             consult-register-format)
 
   :init
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
 
   ;; register preview setting
-  (setq register-preview-delay 0
-        register-preview-function #'consult-register-preview)
+  (setq register-preview-delay 0)
+  (setq register-preview-function #'consult-register-format)
+  (advice-add #'register-preview :override #'consult-register-window)
 
   :config
   ;; configure preview keys
-  (setq consult-config `((consult-theme :preview-key (list ,(kbd "C-M-n") ,(kbd "C-M-p")))
-                         (consult-buffer :preview-key ,(kbd "M-q"))
-                         (consult-recent-file :preview-key ,(kbd "M-q"))
-                         (consult-grep :preview-key ,(kbd "M-q"))))
+  (setq consult-config `((consult-theme :preview-key ,(kbd "M-+"))
+                         (consult-buffer :preview-key ,(kbd "M-+"))
+                         (consult-recent-file :preview-key ,(kbd "M-+"))
+                         (consult-git-grep :preview-key ,(kbd "M-+"))
+                         (consult-find :preview-key ,(kbd "M-+"))
+                         (consult-locate :preview-key ,(kbd "M-+"))
+                         (consult-grep :preview-key ,(kbd "M-+"))))
 
   ;; configure narrowing key.
-  (setq consult-narrow-key "C-+")
+  (setq consult-narrow-key (kbd "C-+"))
   ;; make narrowing help available in the minibuffer.
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   (autoload 'projectile-project-root "projectile")
@@ -512,7 +556,8 @@
 ;; magit
 (use-package magit
   :defer t
-  :commands (magit-status magit-diff-dwim)
+  :commands (magit-status
+             magit-diff-dwim)
   :init
   (evil-ex-define-cmd "gs" 'magit-status)
   (evil-ex-define-cmd "gd" 'magit-diff-dwim)
@@ -521,7 +566,8 @@
 ;;; smex
 (use-package smex
   :disabled
-  :commands (smex smex-initialize)
+  :commands (smex
+             smex-initialize)
   :defer t
   :config
   (smex-initialize)
@@ -532,7 +578,8 @@
 ;;; company
 (use-package company
   :demand t
-  :commands (global-company-mode company-mode company-indent-or-complete-common)
+  :commands (global-company-mode
+             company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
@@ -555,12 +602,28 @@
   :hook
   (python-mode-hook . $python-compile-hook)
   (perl-mode-hook . $perl-compile-hook)
-  (cperl-mode-hook . $perl-compile-hook))
+  (cperl-mode-hook . $perl-compile-hook)
+  :bind ("<f5>" . recompile))
+
+;;; nXml-mode
+(use-package nxml-mode
+  :defer t
+  :config
+  (defun $pretty-xml ()
+    (interactive)
+    (save-excursion
+      (mark-whole-buffer)
+      (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)
+      (nxml-mode)
+      (indent-region begin end)))
+  :config
+  (evil-ex-define-cmd "PrettyXML" '$pretty-xml))
 
 ;;; flycheck
 (use-package flycheck
   :defer 5
-  :commands (flycheck-mode global-flycheck-mode)
+  :commands (flycheck-mode
+             global-flycheck-mode)
   :config
   (setq flycheck-standard-error-navigation nil)
   (global-flycheck-mode))
@@ -626,7 +689,8 @@
 ;;; markdown-mode
 (use-package markdown-mode
   :defer t
-  :commands (markdown-mode gfm-mode)
+  :commands (markdown-mode
+             gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
@@ -666,7 +730,8 @@
 ;;; projectile-rails
 (use-package projectile-rails
   :defer t
-  :commands (projectile-rails-mode projectile-rails-command-map)
+  :commands (projectile-rails-mode
+             projectile-rails-command-map)
   :bind (("C-c r" . projectile-rails-command-map))
   :config
   (projectile-rails-global-mode)
@@ -691,6 +756,12 @@
   (uniquify-after-kill-buffer-p t)
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
+
+;;; ace-window
+(use-package ace-window
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :bind ("M-o" . ace-window))
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
@@ -777,8 +848,8 @@
 (use-package winner
   :hook
   (after-init-hook . winner-mode)
-  :bind(("<s-right>" . winner-redo)
-        ("<s-left>" . winner-undo)))
+  :bind(("s-<" . winner-undo)
+        ("s->" . winner-redo)))
 
 ;;; windmove
 (use-package windmove

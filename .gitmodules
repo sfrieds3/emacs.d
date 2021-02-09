@@ -133,3 +133,6 @@
 [submodule "lisp/external/magit"]
 	path = lisp/external/magit
 	url = https://github.com/magit/magit.git
+[submodule "lisp/external/ace-window"]
+	path = lisp/external/ace-window
+	url = https://github.com/abo-abo/ace-window.git
