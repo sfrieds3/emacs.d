@@ -303,7 +303,8 @@
   :defer t
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
+         ("C-c c" . org-capture)
+         ("C-c i" . org-id-copy))
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars t)
@@ -369,7 +370,7 @@
 
   (defun $orderless-strict-leading-initialism (pattern index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "+" pattern)
+    (when (string-suffix-p "\\" pattern)
       `(orderless-strict-leading-initialism . ,(substring pattern 0 -1))))
 
   (defun $orderless-without-literal (pattern _index _total)
@@ -412,6 +413,12 @@
   ("C-." . $embark-act-noquit)
 
   :config
+  (defun $embark-collect-live-shrink-to-fit (&rest _)
+    "Fit live updating collect bufferst to fit contents."
+    (when (memq embark-collect--kind '(:live :completions))
+      (fit-window-to-buffer (get-buffer-window)
+                            (floor (frame-height) 2) 1)))
+    
   (defun $embark-act-noquit ()
     "Run action but do not quit minibuffer."
     (interactive)
@@ -430,17 +437,35 @@
           #'which-key--hide-popup-ignore-command)
         embark-become-indicator embark-action-indicator)
 
-  (defun current-candidates+category ()
+  (defun $current-candidates+category ()
     (when selectrum-active-p
       (cons (selectrum--get-meta 'category)
             (selectrum-get-current-candidates
              ;; Pass relative file names for dired.
              minibuffer-completing-file-name))))
 
+  (defun $embark-refresh-selectrum ()
+    "Refresh selectrum list after embark action."
+    (setq selectrum--previous-input-string nil))
+
+  (defun $embark-shrink-selectrum ()
+    "Shrink selectrum to one line when embark-collect-live enabled."
+    (when (eq embark-collect--kind :live)
+      (with-selected-window (active-minibuffer-window)
+        (setq-local selectrum-num-candidates-displayed 1)
+        (setq-local selectrum-display-style
+                    '(horizontal :before-candidates "["
+                                 :after-candidates "]"
+                                 :more-candidates ""
+                                 :candidates-separator "")))))
+
   :hook
-  ;; No unnecessary computation delay after injection.
+  (embark-pre-action-hook . $embark-refresh-selectrum)
+  (embark-collect-mode-hook . $embark-shrink-selectrum)
   (embark-setup-hook . selectrum-set-selected-candidate)
-  (embark-candidate-collectors-hook . current-candidates+category))
+  (embark-collect-post-revert-hook . $embark-collect-live-shrink-to-fit)
+  (embark-post-action-hook . embark-collect--update-linked)
+  (embark-candidate-collectors-hook . $current-candidates+category))
 
 ;;; embark-consult
 (use-package embark-consult
@@ -727,6 +752,15 @@
    (setq cperl-highlight-variables-indiscriminately t)
    (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
 
+;;; c++-mode
+(use-package c++-mode
+  :defer t
+  :commands (c++-mode)
+  :custom
+  (c-basic-offset 2)
+  :config
+  (c-set-offset 'substatement-open 0))
+
 ;;; projectile-rails
 (use-package projectile-rails
   :defer t
@@ -1012,16 +1046,6 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; restart-emacs
 (use-package restart-emacs)
-
-;;; LANGUAGE SETTINGS
-
-;;; c++
-(defun $c++-mode-hook ()
-  "C++ mode stuff."
-  (defvar c-basic-offset)
-  (setq c-basic-offset 4)
-  (c-set-offset 'substatement-open 0))
-(add-hook 'c++-mode-hook '$c++-mode-hook)
 
 ;;; LOAD LOCAL SETTINGS
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
