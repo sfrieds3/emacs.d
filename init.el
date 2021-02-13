@@ -128,8 +128,10 @@
 
 ;;; evil
 (use-package evil
+  :commands (evil-mode)
   :init
   (setf evil-want-keybinding 'nil)
+  (evil-mode 1)
   :config
   ;; make evil words work like vim
   (defalias #'forward-evil-word #'forward-evil-symbol)
@@ -143,7 +145,6 @@
   (setq evil-shift-round t)
   (setq-default evil-cross-lines t)
   (setq evil-want-C-u-scroll t)
-  (evil-mode 1)
 
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
@@ -242,19 +243,23 @@
 
 ;;; evil-owl
 (use-package evil-owl
+  :after evil
+  :commands (evil-owl-mode)
+  :init
+  (evil-owl-mode)
+  :custom
+  (evil-owl-max-string-length 500)
+  (evil-owl-header-format       "%s")
+  (evil-owl-register-format     " %r: %s")
+  (evil-owl-local-mark-format   " %m (%l:%c): %s")
+  (evil-owl-global-mark-format  " %m [%b] (%l:%c): %s")
+  (evil-owl-separator           "\n")
   :config
-  (setq evil-owl-max-string-length 500)
-  (setq evil-owl-header-format       "%s")
-  (setq evil-owl-register-format     " %r: %s")
-  (setq evil-owl-local-mark-format   " %m (%l:%c): %s")
-  (setq evil-owl-global-mark-format  " %m [%b] (%l:%c): %s")
-  (setq evil-owl-separator           "\n")
   (add-to-list 'display-buffer-alist
                '("*evil-owl*"
                  (display-buffer-in-side-window)
                  (side . bottom)
-                 (window-height . 0.25)))
-  (evil-owl-mode))
+                 (window-height . 0.25))))
 
 ;;; evil-collection
 (use-package evil-collection
@@ -265,21 +270,25 @@
 
 ;;; evil-visualstar
 (use-package evil-visualstar
+  :after evil
   :config
   (global-evil-visualstar-mode))
 
 ;;; evil-surround
 (use-package evil-surround
+  :after evil
   :config
   (global-evil-surround-mode 1))
 
 ;;; evil-matchit
 (use-package evil-matchit
+  :after evil
   :config
   (global-evil-matchit-mode 1))
 
 ;;; avy
 (use-package avy
+  :after evil
   :bind (("C-;" . avy-goto-char-timer)
          ("s-," . avy-goto-char-timer)
          :map evil-normal-state-map
@@ -331,11 +340,12 @@
 
 ;;; projectile
 (use-package projectile
+  :after evil
   :commands (projectile-mode)
   :init
   (projectile-mode)
-  :config
-  (setq projectile-use-git-grep t)
+  :custom
+  (projectile-use-git-grep t)
   :bind (("C-c f" . projectile-find-file)
          ("C-c b" . projectile-switch-to-buffer)
          :map evil-normal-state-map
@@ -346,7 +356,8 @@
 
 ;;;; orderless
 (use-package orderless
-  :custom (completion-styles '(orderless))
+  :custom
+  (completion-styles '(orderless))
   :config
   (defun $orderless-flex (pattern _index _total)
     "TODO: add docstring (PATTERN _INDEX _TOTAL)."
@@ -484,6 +495,7 @@
 
 ;;; consult
 (use-package consult
+  :after evil
   :bind (("C-s" . consult-line)
          ;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
@@ -580,6 +592,7 @@
 
 ;; magit
 (use-package magit
+  :after evil
   :defer t
   :commands (magit-status
              magit-diff-dwim)
@@ -896,16 +909,17 @@
 
 ;;; tab-bar (again, most/all of this taken from prot)
 (use-package tab-bar
-  :init
-  (setq tab-bar-close-button-show nil)
-  (setq tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
-  (setq tab-bar-close-tab-select 'recent)
-  (setq tab-bar-new-tab-choice t)
-  (setq tab-bar-new-tab-to 'right)
-  (setq tab-bar-position nil)
-  (setq tab-bar-show nil)
-  (setq tab-bar-tab-hints nil)
-  (setq tab-bar-tab-name-function 'tab-bar-tab-name-current)
+  :after evil
+  :custom
+  (tab-bar-close-button-show nil)
+  (tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
+  (tab-bar-close-tab-select 'recent)
+  (tab-bar-new-tab-choice t)
+  (tab-bar-new-tab-to 'right)
+  (tab-bar-position nil)
+  (tab-bar-show nil)
+  (tab-bar-tab-hints nil)
+  (tab-bar-tab-name-function 'tab-bar-tab-name-current)
 
   :config
   (tab-bar-mode -1)
@@ -970,6 +984,7 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode
+  :after evil
   :hook
   (prog-mode-hook . idle-highlight-mode)
   :bind (:map evil-normal-state-map
@@ -991,6 +1006,7 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; hl-todo
 (use-package hl-todo
+  :after evil
   :hook (prog-mode-hook . hl-todo-mode)
   :config
   (setq hl-todo-keyword-faces
