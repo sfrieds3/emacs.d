@@ -918,7 +918,7 @@
   (tab-bar-new-tab-to 'right)
   (tab-bar-position nil)
   (tab-bar-show nil)
-  (tab-bar-tab-hints nil)
+  (tab-bar-tab-hints t)
   (tab-bar-tab-name-function 'tab-bar-tab-name-current)
 
   :config
@@ -1011,8 +1011,7 @@ questions.  Else use completion to select the tab to switch to."
   :config
   (setq hl-todo-keyword-faces
         '(("TODO"   . "#FFFF00")
-          ("FIXME"  . "#FFFF00")
-          ("DEBUG"  . "#00FFFF")))
+          ("FIXME"  . "#00FFFF")))
   :bind (:map hl-todo-mode-map
               ("C-c t p" . hl-todo-previous)
               ("C-c t n" . hl-todo-next)
