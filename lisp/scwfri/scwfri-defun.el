@@ -125,12 +125,23 @@ point reaches the beginning or end of the buffer, stop there."
       (move-beginning-of-line 1))))
 
 (defun $goto-match-paren (arg)
-  "Go to the matching parenthesis if on parenthesis, otherwise insert %.
+  "Go to the matching parenthesis if ARG on parenthesis, otherwise insert %.
 vi style of % jumping to matching brace."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1))
-        ((looking-back "\\s\)") (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
+        (t
+         (backward-char 1)
+         (cond ((looking-at "\\s\)")
+                (forward-char 1) (backward-list 1))
+               (t
+                (while (not (looking-at "\\s("))
+                  (backward-char 1)
+                  (cond ((looking-at "\\s\)")
+                         (message "->> )")
+                         (forward-char 1)
+                         (backward-list 1)
+                         (backward-char 1)))))))))
+
 
 (define-key isearch-mode-map (kbd "<C-return>")
             (defun $isearch-done-opposite (&optional nopush edit)
@@ -147,7 +158,7 @@ vi style of % jumping to matching brace."
     (kill-region (point) prev-pos)))
 
 (defun $delete-trailing-whitespace ()
-  "Delete trailing whitespace, and echo"
+  "Delete trailing whitespace, and echo."
   (interactive)
   (delete-trailing-whitespace)
   (message "trailing whitespace deleted..."))

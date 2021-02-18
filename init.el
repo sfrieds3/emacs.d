@@ -11,12 +11,13 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;;; try not to gc during emacs startup... set to 10MB from 800kb
-(setq gc-cons-threshold 10000000)
-(add-hook 'after-init-hook
-          (lambda ()
-            (setq gc-cons-threshold 1000000)
-            (message "gc-cons-threshold restored to %S"
-                     gc-cons-threshold)))
+(setq gc-cons-threshold 100000000)
+(defun $restore-gc-cons-threshold ()
+  "Restore \"gc-cons-threshold\" to 800kb.  To be added to after-init-hook."
+  (setq gc-cons-threshold 800000)
+  (message "gc-cons-threshold restored to %S"
+           gc-cons-threshold))
+(add-hook 'after-init-hook #'$restore-gc-cons-threshold)
 
 ;;; use-package to manage packages
 (eval-when-compile
@@ -490,8 +491,10 @@
   :commands (selectrum-mode)
   :init
   (selectrum-mode +1)
-  :bind
-  ("C-x C-z" . selectrum-repeat))
+  :bind (("C-x C-z" . selectrum-repeat)
+         :map selectrum-minibuffer-map
+         ("C-j" . selectrum-next-candidate)
+         ("C-k" . selectrum-previous-candidate)))
 
 ;;; consult
 (use-package consult
@@ -859,7 +862,7 @@
                    mode-line-buffer-identification)))))
           ("\\*Custom.*"
            (display-buffer-in-side-window)
-           (window-width . 0.25)
+           (window-width . 0.3)
            (side . right)
            (slot . 1)
            (window-parameters . ((no-other-window . t))))
@@ -1051,6 +1054,11 @@ questions.  Else use completion to select the tab to switch to."
         '(kill-ring
           search-ring
           regexp-search-ring)))
+
+;;; tags
+(use-package etags
+  :custom
+  (tags-revert-without-query 1))
 
 ;;; esup
 (use-package esup
