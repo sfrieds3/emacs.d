@@ -4,6 +4,10 @@
 ;;;     personal functions
 
 ;;; Code:
+(defun $insert-zero-width-space ()
+  "Insert zero width space."
+  (interactive)
+  (insert-char ?\u200B))
 
 (defun $symbol-at-point ()
   "Return current symbol at point as a string."

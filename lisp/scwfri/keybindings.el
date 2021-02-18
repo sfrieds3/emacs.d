@@ -14,6 +14,7 @@
 (global-set-key (kbd "C-c s s") '$file-grep)
 (global-set-key (kbd "C-c s f") 'find-dired)
 (global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
+(global-set-key (kbd "C-x 8 s") '$insert-zero-width-space)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
