@@ -10,15 +10,6 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
-;;; try not to gc during emacs startup... set to 10MB from 800kb
-(setq gc-cons-threshold 100000000)
-(defun $restore-gc-cons-threshold ()
-  "Restore \"gc-cons-threshold\" to 800kb.  To be added to after-init-hook."
-  (setq gc-cons-threshold 800000)
-  (message "gc-cons-threshold restored to %S"
-           gc-cons-threshold))
-(add-hook 'after-init-hook #'$restore-gc-cons-threshold)
-
 ;;; use-package to manage packages
 (eval-when-compile
   (require 'use-package)
@@ -43,12 +34,6 @@
 
 ;; cursor blinks n times
 (setq blink-cursor-blinks 25)
-
-;;; visuals
-(setq inhibit-startup-screen t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
 
 ;;; inhibit visual bells
 (setq visible-bell nil
@@ -961,7 +946,7 @@ questions.  Else use completion to select the tab to switch to."
 ;;; restart-emacs
 (use-package restart-emacs)
 
-;;; LOAD LOCAL SETTINGS
+;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
   (when (file-exists-p local-settings)
     (load-file local-settings)))
