@@ -1,4 +1,4 @@
-;;;; package --- summary
+;;;; keybindings.el --- general keybindings
 
 ;;; Commentary:
 ;;;     keybindings
@@ -76,6 +76,15 @@
 ;;; aliases
 (defalias 'qrr 'query-replace-regexp)
 (defalias 'PrettyXML '$pretty-xml)
+
+;;; random isearch define
+(define-key isearch-mode-map (kbd "<C-return>")
+            (defun $isearch-done-opposite (&optional nopush edit)
+              "End current search in the opposite side of the match."
+              (interactive)
+              (funcall #'isearch-done nopush edit)
+              (when isearch-other-end (goto-char isearch-other-end))))
+
 
 (provide 'keybindings)
 ;;; keybindings.el ends here

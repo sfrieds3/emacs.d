@@ -4,11 +4,14 @@
 ;;;     personal functions
 
 ;;; Code:
+
+;;;###autoload
 (defun $insert-zero-width-space ()
   "Insert zero width space."
   (interactive)
   (insert-char ?\u200B))
 
+;;;###autoload
 (defun $symbol-at-point ()
   "Return current symbol at point as a string."
   (let ((s (thing-at-point 'symbol)))
@@ -17,24 +20,16 @@
              (match-string 1 s)
            s))))
 
-(defun $eval-defun-view-results ()
-  "Eval defun and view results in a new buffer."
-  (interactive)
-  (let ((result (pp-to-string (eval-defun nil))))
-    (with-current-buffer
-        (get-buffer-create "*ELISP RESULT*")
-      (delete-region (point-min) (point-max))
-      (insert result)
-      (switch-to-buffer-other-window (current-buffer)))))
-
+;;;###autoload
 (defun $profile-session ()
-  "Easily toggle emacs profiler."
+  "Easily toggle Emacs profiler."
   (interactive)
   (require 'profiler)
   (if (profiler-running-p)
       (progn (profiler-stop) (profiler-report))
     (profiler-start 'cpu)))
 
+;;;###autoload
 (defun $eval-defun-view-results ()
   "Eval defun and view results in a new buffer."
   (interactive)
@@ -45,11 +40,13 @@
       (insert result)
       (switch-to-buffer-other-window (current-buffer)))))
 
+;;;###autoload
 (defun $add-server-postfix ()
   "Add the name of the connection type and server to the buffer name."
   (if (string-match "^/ssh:.*?:" (buffer-file-name (current-buffer)))
       (rename-buffer (concat (buffer-name (current-buffer)) "<" (match-string 0 (buffer-file-name (current-buffer))) ">")) nil))
 
+;;;###autoload
 (defun $toggle-show-trailing-whitespace ()
   "Toggle 'show-trailing-whitespace'."
   (interactive)
@@ -61,11 +58,13 @@
         (setq show-trailing-whitespace 1)
         (message "show-trailing-whitespace t"))))
 
+;;;###autoload
 (defun $show-full-file-path ()
   "Show full file path in msg."
   (interactive)
   (message "%s" (buffer-file-name)))
 
+;;;###autoload
 (defun $what-face (pos)
   "Return face under point POS."
   (interactive "d")
@@ -73,6 +72,7 @@
                   (get-char-property (pos) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
+;;;###autoload
 (defun $dir-grep ()
   "Run grep recursively from the directory of the current buffer or the default directory."
   (interactive)
@@ -81,6 +81,7 @@
                                          (cons (concat "grep --color --null -nH -ir -e  " dir) 32))))
       (grep command))))
 
+;;;###autoload
 (defun $file-grep ()
   "Run grep in the current file."
   (interactive)
@@ -89,18 +90,13 @@
                                          (cons (concat "grep --color --null -nH -ir -e  " fname) 32))))
       (grep command))))
 
+;;;###autoload
 (defun $revert-buffer-noconfirm ()
   "Call `revert-buffer' with the NOCONFIRM argument set."
   (interactive)
   (revert-buffer nil t))
 
-(defun $ido-open-recentf ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-    (message "Opening file...")
-    (message "Aborting")))
-
+;;;###autoload
 (defun $smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
   
@@ -124,6 +120,7 @@ point reaches the beginning or end of the buffer, stop there."
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
 
+;;;###autoload
 (defun $goto-match-paren (arg)
   "Go to the matching parenthesis if ARG on parenthesis, otherwise insert %.
 vi style of % jumping to matching brace."
@@ -142,14 +139,7 @@ vi style of % jumping to matching brace."
                          (backward-list 1)
                          (backward-char 1)))))))))
 
-
-(define-key isearch-mode-map (kbd "<C-return>")
-            (defun $isearch-done-opposite (&optional nopush edit)
-              "End current search in the opposite side of the match."
-              (interactive)
-              (funcall #'isearch-done nopush edit)
-              (when isearch-other-end (goto-char isearch-other-end))))
-
+;;;###autoload
 (defun $kill-back-to-indent ()
   "Kill from point back to the first non-whitespace character on the line."
   (interactive)
@@ -157,6 +147,7 @@ vi style of % jumping to matching brace."
     ($smarter-move-beginning-of-line nil)
     (kill-region (point) prev-pos)))
 
+;;;###autoload
 (defun $delete-trailing-whitespace ()
   "Delete trailing whitespace, and echo."
   (interactive)
@@ -164,6 +155,7 @@ vi style of % jumping to matching brace."
   (message "trailing whitespace deleted..."))
 
 ;; source: https://emacs.stackexchange.com/questions/51972/possible-to-use-emacs-undo-redo-without-keyboard-quit-ctrl-g/54142#54142
+;;;###autoload
 (defun $simple-redo ()
   "Simple redo function."
   (interactive)
@@ -182,6 +174,7 @@ vi style of % jumping to matching brace."
                       (message "%s" (error-message-string err)))))
   (setq this-command 'simple-redo))
 
+;;;###autoload
 (defun $simple-undo ()
   "Simple undo function."
   (interactive)

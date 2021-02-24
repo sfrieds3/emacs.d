@@ -127,73 +127,34 @@
   :bind
   ("C-c C-t" . modus-themes-toggle))
 
+;;; personal evil functions
+(use-package evil-defun)
+
 ;;; evil
 (use-package evil
+  :after (evil-defun)
   :commands (evil-mode)
   :init
   (setf evil-want-keybinding 'nil)
   (evil-mode 1)
+  :custom
+  (evil-want-C-u-scroll t)
+  (evil-search-module 'evil-search)
+  (evil-ex-complete-emacs-commands t)
+  (evil-vsplit-window-right t)
+  (evil-split-window-below t)
+  (evil-shift-round t)
+  (evil-search-module 'evil-search)
   :config
   ;; make evil words work like vim
   (defalias #'forward-evil-word #'forward-evil-symbol)
   (setq-default evil-symbol-word-search t)
-  (setq evil-search-module 'evil-search)
-
-  (setq evil-search-module 'evil-search)
-  (setq evil-ex-complete-emacs-commands t)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
-  (setq evil-shift-round t)
   (setq-default evil-cross-lines t)
-  (setq evil-want-C-u-scroll t)
-
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
   (evil-ex-define-cmd "W" 'evil-write)
   (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
   (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
-
-  (defun $evil-clear-highlights ()
-    "Clear highlight from evil-search."
-    (interactive)
-    (evil-ex "nohl")
-    (exit-minibuffer))
-
-  (defun $evil-star-keep-position ()
-    "Keep position when searching."
-    (interactive)
-    (evil-search-word-forward)
-    (evil-search-previous))
-
-  (defun $evil-visualstar-keep-position ()
-    "Keep current position on visual star search."
-    (interactive)
-    (when (region-active-p)
-      (evil-search-word-forward)
-      (evi-search-word-backward)
-      (cua-cancel)))
-
-  (defun $evil-set-jump-args (&rest ns)
-    "Preserve jump list with dumb-jump.  NS args."
-    (evil-set-jump))
-  (advice-add 'dumb-jump-goto-file-line :before #'$evil-set-jump-args)
-
-  (defun $evil-split-right-and-move ()
-    "Split window to the right and move to it."
-    (interactive)
-    (split-window-right)
-    (evil-window-right 1))
-
-  (defun $evil-scroll-down-keep-pos ()
-    (interactive)
-    (evil-scroll-line-down 1)
-    (evil-next-visual-line))
-
-  (defun $evil-scroll-up-keep-pos ()
-    (interactive)
-    (evil-scroll-line-up 1)
-    (evil-previous-visual-line))
-
   :bind (
          :map evil-normal-state-map
          ("_w" . $toggle-show-trailing-whitespace)
@@ -355,59 +316,26 @@
          ("M-p" . projectile-command-map)
          ("C-c p" . projectile-command-map)))
 
+;;; personal orderless functions
+(use-package orderless-defun)
+
 ;;;; orderless
 (use-package orderless
+  :after (orderless-defun)
   :custom
   (completion-styles '(orderless))
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
   :config
-  (defun $orderless-flex (pattern _index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "~" pattern)
-      `(orderless-flex . ,(substring pattern 0 -1))))
-
-  (defun $orderless-initialism (pattern _index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "," pattern)
-      `(orderless-initialism . ,(substring pattern 0 -1))))
-
-  (defun $orderless-literal (pattern index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "=" pattern)
-      `(orderless-literal . ,(substring pattern 0 -1))))
-
-  (defun $orderless-regexp (pattern index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "/" pattern)
-      `(orderless-regexp . ,(substring pattern 0 -1))))
-
-  (defun $orderless-strict-leading-initialism (pattern index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-suffix-p "\\" pattern)
-      `(orderless-strict-leading-initialism . ,(substring pattern 0 -1))))
-
-  (defun $orderless-without-literal (pattern _index _total)
-    "TODO: add docstring (PATTERN _INDEX _TOTAL)."
-    (when (string-prefix-p "!" pattern)
-      `(orderless-without-literal . ,(substring pattern 1))))
-
-  (setq orderless-matching-styles '(orderless-flex)
-        orderless-style-dispatchers '($orderless-literal
+  (setq orderless-matching-styles '(orderless-flex))
+  (setq orderless-style-dispatchers '($orderless-literal
                                       $orderless-strict-leading-initialism
                                       $orderless-initialism
                                       $orderless-regexp
                                       $orderless-flex
                                       $orderless-without-literal))
-  (defun $match-components-literally ()
-    "Components match literally for the rest of the session."
-    (interactive)
-    (setq-local orderless-matching-styles '(orderless-literal)
-                orderless-style-dispatchers nil))
-
-  (define-key minibuffer-local-completion-map (kbd "C-l")
-    #'$match-components-literally)
-
-  (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+  (define-key minibuffer-local-map (kbd "C-l")
+    #'$match-components-literally))
 
 ;;; marginalia
 (use-package marginalia
@@ -418,61 +346,24 @@
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
+;;; custom embark functions
+(use-package embark-defun)
+
 ;;; embark
 (use-package embark
+  :after (embark-defun)
   :bind
   ("C-," . embark-act)
   ("C-." . $embark-act-noquit)
-
   :config
-  (defun $embark-collect-live-shrink-to-fit (&rest _)
-    "Fit live updating collect bufferst to fit contents."
-    (when (memq embark-collect--kind '(:live :completions))
-      (fit-window-to-buffer (get-buffer-window)
-                            (floor (frame-height) 2) 1)))
-    
-  (defun $embark-act-noquit ()
-    "Run action but do not quit minibuffer."
-    (interactive)
-    (let ((embark-quit-after-action nil))
-      (embark-act)))
-
-  (defun $current-candidate+category ()
-    (when selectrum-active-p
-      (cons (selectrum--get-meta 'category)
-            (selectrum-get-current-candidate))))
   (add-hook 'embark-target-finders #'$current-candidate+category)
-
   (setq embark-action-indicator
         (lambda (map)
           (which-key--show-keymap "Embark" map nil nil 'no-paging)
           #'which-key--hide-popup-ignore-command)
         embark-become-indicator embark-action-indicator)
-
-  (defun $current-candidates+category ()
-    (when selectrum-active-p
-      (cons (selectrum--get-meta 'category)
-            (selectrum-get-current-candidates
-             ;; Pass relative file names for dired.
-             minibuffer-completing-file-name))))
-
-  (defun $embark-refresh-selectrum ()
-    "Refresh selectrum list after embark action."
-    (setq selectrum--previous-input-string nil))
-
-  (defun $embark-shrink-selectrum ()
-    "Shrink selectrum to one line when embark-collect-live enabled."
-    (when (eq embark-collect--kind :live)
-      (with-selected-window (active-minibuffer-window)
-        (setq-local selectrum-num-candidates-displayed 1)
-        (setq-local selectrum-display-style
-                    '(horizontal :before-candidates "["
-                                 :after-candidates "]"
-                                 :more-candidates ""
-                                 :candidates-separator "")))))
-
   :hook
-  (embark-pre-action-hook . $embark-refresh-selectrum)
+  (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
   (embark-collect-mode-hook . $embark-shrink-selectrum)
   (embark-setup-hook . selectrum-set-selected-candidate)
   (embark-collect-post-revert-hook . $embark-collect-live-shrink-to-fit)
