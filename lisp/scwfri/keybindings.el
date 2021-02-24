@@ -9,6 +9,10 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+;;; easy extended commands
+(global-set-key (kbd "C-x C-,") 'execute-extended-command)
+(global-set-key (kbd "C-c C-,") 'execute-extended-command)
+
 ;;; custom functions
 (global-set-key (kbd "C-c s d") '$dir-grep)
 (global-set-key (kbd "C-c s s") '$file-grep)
@@ -59,10 +63,19 @@
 ;;; no C-z
 (global-set-key (kbd "C-z") nil)
 
+;;; modify kill-word
+(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "C-x C-k") 'kill-region)
+(global-set-key (kbd "C-c C-k") 'kill-region)
+
 ;;; version control
 (global-set-key (kbd "C-c g \\") 'vc-diff)
 (global-set-key (kbd "C-c g h") 'vc-region-history)
 (global-set-key (kbd "C-c g s") 'vc-dir)
+
+;;; aliases
+(defalias 'qrr 'query-replace-regexp)
+(defalias 'PrettyXML '$pretty-xml)
 
 (provide 'keybindings)
 ;;; keybindings.el ends here
