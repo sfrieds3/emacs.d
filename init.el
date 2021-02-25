@@ -97,8 +97,10 @@
 (use-package keybindings)
 
 ;;; dependencies
-(use-package dired+                :defer 5)
-(use-package bookmark+             :defer 5)
+(use-package dired+ :defer 5)
+(use-package bookmark+ :defer 5)
+(use-package help+ :defer 5)
+(use-package help-fns+ :defer 5)
 
 ;;; modus-theme
 (use-package modus-themes
