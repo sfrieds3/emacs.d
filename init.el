@@ -36,13 +36,8 @@
 (setq blink-cursor-blinks 25)
 
 ;;; inhibit visual bells
-(setq visible-bell nil
-      ring-bell-function #'ignore)
-
-;;; highlight current line
-(global-hl-line-mode -1)
-(defvar hl-line-face)
-(set-face-attribute hl-line-face nil :underline nil)
+(setq visible-bell nil)
+(setq ring-bell-function #'ignore)
 
 ;;; transient mark mode off
 (setq transient-mark-mode nil)
@@ -52,16 +47,6 @@
 
 ;;; ask about adding a final newline
 (setq require-final-newline 'ask)
-
-;;; show matching parens
-(show-paren-mode 1)
-
-;;; smart parens
-(electric-pair-mode -1)
-(defun $inhibit-electric-pair-mode (char)
-  "Do not use smart parens in mini-buffers.  Params: CHAR."
-  (minibufferp))
-(setq electric-pair-inhibit-predicate #'$inhibit-electric-pair-mode)
 
 ;;; allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
@@ -528,6 +513,28 @@
   (perl-mode-hook . $perl-compile-hook)
   (cperl-mode-hook . $perl-compile-hook)
   :bind ("<f5>" . recompile))
+
+;;; show matching parens
+(use-package paren
+  :config
+  (show-paren-mode 1))
+
+;;; smart parens
+(use-package elec-pair
+  :commands (electric-pair-mode)
+  :init
+  (electric-pair-mode -1)
+  :config
+  (defun $inhibit-electric-pair-mode (char)
+    "Do not use smart parens in mini-buffers.  Params: CHAR."
+    (minibufferp))
+  (setq electric-pair-inhibit-predicate #'$inhibit-electric-pair-mode))
+
+;;; highlight current line
+(use-package hl-line
+  :config
+  (global-hl-line-mode -1)
+  (set-face-attribute hl-line-face nil :underline nil))
 
 ;;; nXml-mode
 (use-package nxml-mode
