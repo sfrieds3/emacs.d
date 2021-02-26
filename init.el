@@ -105,9 +105,11 @@
 ;;; modus-theme
 (use-package modus-themes
   :commands (modus-themes-load-themes)
+  :custom
+  (modus-themes-slanted-constructs t)
+  (modus-themes-bold-constructs nil)
+  (modus-themes-diffs 'deuteranopia)
   :init
-  (setq modus-themes-slanted-constructs t
-        modus-themes-bold-constructs nil)
   (modus-themes-load-themes)
   :config
   (modus-themes-load-vivendi)
@@ -183,12 +185,15 @@
          ("M-u" . universal-argument-more)
          ("C-u" . nil))
   :hook
+  (cperl-mode-hook . (lambda ()
+                    (setq-local evil-lookup-func #'cperl-perldoc-at-point)))
   (python-mode-hook . (lambda ()
-                        (setq evil-shift-width python-indent)))
+                        (setq-local evil-shift-width python-indent)
+                        (setq-local evil-lookup-func #'elpy-doc)))
   (ruby-mode-hook . (lambda ()
-                      (setq evil-shift-width ruby-indent-level)))
+                      (setq-local evil-shift-width ruby-indent-level)))
   (org-mode-hook . (lambda ()
-                     (setq evil-shift-width 1))))
+                     (setq-local evil-shift-width 1))))
 
 ;;; evil-owl
 (use-package evil-owl
