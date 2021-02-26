@@ -548,8 +548,10 @@
   :defer 5
   :commands (flycheck-mode
              global-flycheck-mode)
+  :custom
+  (flycheck-standard-error-navigation nil)
+  (flycheck-emacs-lisp-load-path 'inherit)
   :config
-  (setq flycheck-standard-error-navigation nil)
   (global-flycheck-mode))
 
 ;;; elpy
