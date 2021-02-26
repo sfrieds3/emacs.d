@@ -22,7 +22,7 @@
     (load-file home-settings)))
 
 ;;; shared config not in init.el
-(setq custom-file (concat user-emacs-directory "shared-config.el"))
+(setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
 ;;; make scrolling work like it should
 (setq scroll-step 1)
