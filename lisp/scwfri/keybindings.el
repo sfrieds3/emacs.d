@@ -11,7 +11,6 @@
 
 ;;; easy extended commands
 (global-set-key (kbd "C-x C-,") 'execute-extended-command)
-(global-set-key (kbd "C-c C-,") 'execute-extended-command)
 
 ;;; custom functions
 (global-set-key (kbd "C-c s d") '$dir-grep)

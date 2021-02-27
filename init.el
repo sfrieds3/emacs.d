@@ -70,11 +70,7 @@
   :after evil
   :hook
   ;; server postfix for tramp editing
-  (find-file-hook . $add-server-postfix)
-  :bind (:map evil-normal-state-map
-              ("_P" . $profile-session)
-              ("u" . $simple-undo)
-              ("C-r" . $simple-redo)))
+  (find-file-hook . $add-server-postfix))
 
 (use-package theme-config)
 (use-package scwfri-config)
@@ -155,6 +151,14 @@
          ("*" . $evil-star-keep-position)
          ("DEL" . evil-switch-to-windows-last-buffer)
          ("M-u" . universal-argument)
+
+         ("_P" . $profile-session)
+         ("u" . $simple-undo)
+         ("C-r" . $simple-redo)
+
+         :map evil-insert-state-map
+         ("C-j" . evil-complete-next)
+         ("C-k" . evil-complete-previous)
 
          :map evil-visual-state-map
          ("C-u" . evil-scroll-up)
@@ -260,7 +264,7 @@
   (setq org-edit-src-content-indentation 0)
   (setq org-log-done t)
   (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
+        '((sequence "TODO" "STRT" "WAIT" "DONE"))))
 
 ;;; org-bullets
 (use-package org-bullets
