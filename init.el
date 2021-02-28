@@ -51,9 +51,8 @@
 ;;; allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
-;;; allow narrowing commands
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
+;;; allow disabled emacs commands (mainly for narrowing)
+(setq disabled-command-function nil)
 
 ;;; show garbage collection messages in minbuffer
 (setq garbage-collection-messages t)
