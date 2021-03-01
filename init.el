@@ -238,7 +238,6 @@
 
 ;;; plus-minus
 (use-package plus-minus
-  :demand t
   :bind
   (("C-c C-a"   . +/-:forward+)
    ("C-c C-x"   . +/-:forward-)
@@ -353,7 +352,6 @@
 ;;; embark-consult
 (use-package embark-consult
   :after (embark consult)
-  :demand t
   :hook
   (embark-collect-mode-hook . embark-consult-preview-minor-mode))
 
@@ -489,7 +487,6 @@
 
 ;;; company
 (use-package company
-  :demand t
   :commands (global-company-mode
              company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
