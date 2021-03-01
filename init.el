@@ -706,7 +706,8 @@
 (use-package ace-window
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  :bind ("M-o" . ace-window))
+  :bind (("M-o" . ace-window)
+         ("M-O" . ace-delete-window)))
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
