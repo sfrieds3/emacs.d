@@ -494,9 +494,10 @@
               ("C-p" . company-select-previous))
   :hook
   (after-init-hook . global-company-mode)
+  :init
+  (global-company-mode 1)
   :config
-  (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev)))
-  (global-company-mode 1))
+  (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev))))
 
 ;;; compile
 (use-package compile
