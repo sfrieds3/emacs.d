@@ -108,6 +108,7 @@
   (evil-mode 1)
   :custom
   (evil-want-C-u-scroll t)
+  (evil-want-Y-yank-to-eol t)
   (evil-search-module 'evil-search)
   (evil-ex-complete-emacs-commands t)
   (evil-vsplit-window-right t)
