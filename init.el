@@ -263,7 +263,8 @@
   (setq org-edit-src-content-indentation 0)
   (setq org-log-done t)
   (setq org-todo-keywords
-        '((sequence "TODO" "STRT" "WAIT" "DONE"))))
+        '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
+          (sequence "NEW" "WORK" "IN-DEV" "STAGED" "|" "RELEASED" "WONTFIX"))))
 
 ;;; org-bullets
 (use-package org-bullets
