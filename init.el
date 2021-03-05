@@ -264,6 +264,9 @@
   (setq org-src-preserve-indentation nil)
   (setq org-edit-src-content-indentation 0)
   (setq org-log-done t)
+  (setq org-agenda-files '("~/code/org"))
+  (setq org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
+  (set-register ?t (cons 'file "~/code/org/todo.org"))
   (setq org-todo-keywords
         '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
           (sequence "NEW" "WORK" "IN-DEV" "STAGED" "|" "RELEASED" "WONTFIX"))))
