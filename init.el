@@ -120,6 +120,8 @@
   (defalias #'forward-evil-word #'forward-evil-symbol)
   (setq-default evil-symbol-word-search t)
   (setq-default evil-cross-lines t)
+  (advice-add 'evil-ex-search-word-forward :before 'evil-ex-nohighlight)
+  (advice-add 'evil-ex-search-word-backward :before 'evil-ex-nohighlight)
   (evil-ex-define-cmd "Q" 'evil-quit)
   (evil-ex-define-cmd "E" 'evil-edit)
   (evil-ex-define-cmd "W" 'evil-write)
@@ -235,7 +237,7 @@
   :bind (("C-;" . avy-goto-char-timer)
          ("s-," . avy-goto-char-timer)
          :map evil-normal-state-map
-         ("s" . avy-goto-char-timer)))
+         ("s" . avy-goto-char-2)))
 
 ;;; plus-minus
 (use-package plus-minus
@@ -510,7 +512,7 @@
 
   (defun $perl-compile-hook ()
     (set (make-local-variable 'compile-command)
-         (format "/cogcap/perl/current/bin/perlcritic --quiet %s" (buffer-name))))
+         (format "perl -c %s" (buffer-name))))
   :hook
   (python-mode-hook . $python-compile-hook)
   (perl-mode-hook . $perl-compile-hook)
@@ -886,8 +888,8 @@ questions.  Else use completion to select the tab to switch to."
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode
   :after evil
-  :hook
-  (prog-mode-hook . idle-highlight-mode)
+  ;;:hook
+  ;;(prog-mode-hook . idle-highlight-mode)
   :bind (:map evil-normal-state-map
               ("\\ SPC" . idle-highlight-mode)
               ("_h" . idle-highlight-mode)))
