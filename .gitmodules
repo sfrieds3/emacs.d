@@ -118,9 +118,6 @@
 [submodule "lisp/external/restart-emacs"]
 	path = lisp/external/restart-emacs
 	url = https://github.com/iqbalansari/restart-emacs.git
-[submodule "lisp/external/org-bullets"]
-	path = lisp/external/org-bullets
-	url = https://github.com/sabof/org-bullets.git
 [submodule "themes/modus-themes"]
 	path = themes/modus-themes
 	url = https://gitlab.com/protesilaos/modus-themes.git
@@ -136,3 +133,6 @@
 [submodule "lisp/external/ace-window"]
 	path = lisp/external/ace-window
 	url = https://github.com/abo-abo/ace-window.git
+[submodule "lisp/external/org-superstar-mode"]
+	path = lisp/external/org-superstar-mode
+	url = https://github.com/integral-dw/org-superstar-mode.git

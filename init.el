@@ -271,12 +271,21 @@
         '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
           (sequence "NEW" "WORK" "IN-DEV" "STAGED" "|" "RELEASED" "WONTFIX"))))
 
-;;; org-bullets
-(use-package org-bullets
-  :commands (org-bullets-mode)
-  :defer t
+;;; org-superstar
+(use-package org-superstar
+  :custom
+  ;; Set different bullets, with one getting a terminal fallback.
+  (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
+  ;; Stop cycling bullets to emphasize hierarchy of headlines.
+  (org-superstar-cycle-headline-bullets nil)
+  ;; Hide away leading stars on terminal.
+  (org-superstar-leading-fallback ?\s)
+  :config
+  (set-face-attribute 'org-superstar-item nil :height 1.2)
+  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
+  (set-face-attribute 'org-superstar-leading nil :height 1.3)
   :hook
-  (org-mode-hook . (lambda () (org-bullets-mode 1))))
+  (org-mode-hook . (lambda () (org-superstar-mode 1))))
 
 ;;; undohist
 (use-package undohist
@@ -479,18 +488,6 @@
   (evil-ex-define-cmd "gs" 'magit-status)
   (evil-ex-define-cmd "gd" 'magit-diff-dwim)
   :bind (("C-x g" . magit-status)))
-
-;;; smex
-(use-package smex
-  :disabled
-  :commands (smex
-             smex-initialize)
-  :defer t
-  :config
-  (smex-initialize)
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)
-         ("C-c C-c M-x" . execute-extended-command)))
 
 ;;; company
 (use-package company
