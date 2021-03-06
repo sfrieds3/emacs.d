@@ -281,9 +281,9 @@
   ;; Hide away leading stars on terminal.
   (org-superstar-leading-fallback ?\s)
   :config
-  (set-face-attribute 'org-superstar-item nil :height 1.2)
-  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
-  (set-face-attribute 'org-superstar-leading nil :height 1.3)
+  (set-face-attribute 'org-superstar-item nil :height 1.0)
+  (set-face-attribute 'org-superstar-header-bullet nil :height 1.0)
+  (set-face-attribute 'org-superstar-leading nil :height 1.0)
   :hook
   (org-mode-hook . (lambda () (org-superstar-mode 1))))
 
