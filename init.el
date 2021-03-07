@@ -69,7 +69,9 @@
   :after evil
   :hook
   ;; server postfix for tramp editing
-  (find-file-hook . $add-server-postfix))
+  (find-file-hook . $add-server-postfix)
+  :config
+  (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
 (use-package theme-config)
 (use-package scwfri-config)

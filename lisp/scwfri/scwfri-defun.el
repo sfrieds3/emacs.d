@@ -192,5 +192,9 @@ vi style of % jumping to matching brace."
                       (message "%s" (error-message-string err)))))
   (setq this-command 'simple-undo))
 
+(defun $load-theme--disable-current-theme (theme &rest args)
+  "Disable the current THEME before loading a new one."
+  (mapcar #'disable-theme custom-enabled-themes))
+
 (provide 'scwfri-defun)
 ;;; defun.el ends here

@@ -22,5 +22,8 @@
            gc-cons-threshold))
 (add-hook 'after-init-hook #'$restore-gc-cons-threshold)
 
+;;; do not warn cl deprecated
+(setq byte-compile-warnings '(cl-functions))
+
 (provide 'early-init)
 ;;; early-init.el ends here
