@@ -273,6 +273,8 @@
 
 ;;; org-superstar
 (use-package org-superstar
+  :defer t
+  :commands (org-superstar-mode)
   :custom
   ;; Set different bullets, with one getting a terminal fallback.
   (org-superstar-headline-bullets-list '("⦿" ("🞛" ?◈) "▷" "◉" "•" "⁃" "○"))
@@ -660,10 +662,11 @@
      (if (eq (cdr pair) 'perl-mode)
          (setcdr pair 'cperl-mode)))
    (append auto-mode-alist interpreter-mode-alist))
-   :config
-   (setq cperl-invalid-face nil)
-   (setq cperl-highlight-variables-indiscriminately t)
-   (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
+  :custom
+  (setq cperl-invalid-face nil)
+  (setq cperl-highlight-variables-indiscriminately t)
+  :config
+  (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
 
 ;;; c++-mode
 (use-package c++-mode
@@ -687,6 +690,7 @@
 
 ;;; dumb-jump
 (use-package dumb-jump
+  :disabled
   :defer 5
   :config
   (add-hook 'xref-backend-functions 'dumb-jump-xref-activate t)
@@ -803,8 +807,8 @@
 
 ;;; windmove
 (use-package windmove
-  :config
-  (setq windmove-create-window nil)
+  :custom
+  (windmove-create-window nil)
   :bind (("C-c <up>" . windmove-up)
          ("C-c <down>" . windmove-down)
          ("C-c <left>" . windmove-left)
@@ -964,11 +968,8 @@ questions.  Else use completion to select the tab to switch to."
 (use-package esup
   :defer t
   :commands (esup)
-  :config
-  (setq esup-depth 0))
-
-;;; restart-emacs
-(use-package restart-emacs)
+  :custom
+  (esup-depth 0))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))

@@ -115,9 +115,6 @@
 [submodule "lisp/external/evil-owl"]
 	path = lisp/external/evil-owl
 	url = https://github.com/mamapanda/evil-owl.git
-[submodule "lisp/external/restart-emacs"]
-	path = lisp/external/restart-emacs
-	url = https://github.com/iqbalansari/restart-emacs.git
 [submodule "themes/modus-themes"]
 	path = themes/modus-themes
 	url = https://gitlab.com/protesilaos/modus-themes.git
