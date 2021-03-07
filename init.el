@@ -82,6 +82,9 @@
 (use-package help+ :defer 5)
 (use-package help-fns+ :defer 5)
 
+;;; doom-themes
+(use-package doom-themes)
+
 ;;; modus-theme
 (use-package modus-themes
   :commands (modus-themes-load-themes)

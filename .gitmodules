@@ -133,3 +133,6 @@
 [submodule "lisp/external/org-superstar-mode"]
 	path = lisp/external/org-superstar-mode
 	url = https://github.com/integral-dw/org-superstar-mode.git
+[submodule "themes/emacs-doom-themes"]
+	path = themes/emacs-doom-themes
+	url = https://github.com/hlissner/emacs-doom-themes.git
