@@ -668,8 +668,8 @@
          (setcdr pair 'cperl-mode)))
    (append auto-mode-alist interpreter-mode-alist))
   :custom
-  (setq cperl-invalid-face nil)
-  (setq cperl-highlight-variables-indiscriminately t)
+  (cperl-invalid-face nil)
+  (cperl-highlight-variables-indiscriminately t)
   :config
   (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
 
