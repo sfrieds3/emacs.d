@@ -792,7 +792,6 @@
          (custom-mode-hook . visual-line-mode))
   :bind (("s-n" . next-buffer)
          ("s-p" . previous-buffer)
-         ("s-o" . other-window)
          ("s-2" . split-window-below)
          ("s-3" . split-window-right)
          ("s-0" . delete-window)
