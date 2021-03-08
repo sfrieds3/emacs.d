@@ -282,7 +282,7 @@
   :commands (org-superstar-mode)
   :custom
   ;; Set different bullets, with one getting a terminal fallback.
-  (org-superstar-headline-bullets-list '("⦿" ("🞛" ?◈) "▷" "◉" "•" "⁃" "○"))
+  (org-superstar-headline-bullets-list '("⦿" "❖" "▷" "◉" "•" "⁃" "○"))
   ;; Stop cycling bullets to emphasize hierarchy of headlines.
   (org-superstar-cycle-headline-bullets nil)
   ;; Hide away leading stars on terminal.
