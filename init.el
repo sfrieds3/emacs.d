@@ -246,6 +246,12 @@
 
 ;;; plus-minus
 (use-package plus-minus
+  :commands (+/-:forward+
+             +/-:forward-
+             +/-:backward+
+             +/-:backward-
+             +/-:block+
+             +/-:block-)
   :bind
   (("C-c C-a"   . +/-:forward+)
    ("C-c C-x"   . +/-:forward-)
