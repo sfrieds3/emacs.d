@@ -136,3 +136,6 @@
 [submodule "themes/emacs-doom-themes"]
 	path = themes/emacs-doom-themes
 	url = https://github.com/hlissner/emacs-doom-themes.git
+[submodule "themes/color-theme-sanityinc-tomorrow"]
+	path = themes/color-theme-sanityinc-tomorrow
+	url = https://github.com/purcell/color-theme-sanityinc-tomorrow.git

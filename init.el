@@ -87,6 +87,9 @@
 ;;; doom-themes
 (use-package doom-themes)
 
+;;; sanityinc
+(use-package color-theme-sanityinc-tomorrow)
+
 ;;; modus-theme
 (use-package modus-themes
   :commands (modus-themes-load-themes)
