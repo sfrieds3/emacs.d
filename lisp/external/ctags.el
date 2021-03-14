@@ -27,11 +27,11 @@
 (defvar ctags-program-name "ctags"
   "The installation path for ctags, or simply the name in PATH.")
 
-(defvar ctags-dominating-file "Makefile"
+(defvar ctags-dominating-file ".gitignore"
   "The file used to identify the root of the current project.")
 
 (defmacro ctags--with-temp-buffer (&rest body)
-  "Return the root"
+  "Return the root."
   (declare (indent defun))
   `(let ((default-directory (locate-dominating-file "." ctags-dominating-file)))
      (with-temp-buffer

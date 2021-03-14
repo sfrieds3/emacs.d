@@ -491,6 +491,10 @@
   :bind (:map flycheck-command-map
               ("!" . consult-flycheck)))
 
+;;; ctags
+(use-package ctags
+  :bind (("s-." . ctags-find)))
+
 ;; magit
 (use-package magit
   :after evil
@@ -730,8 +734,8 @@
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
-  :init
-  (setq display-buffer-alist
+  :custom
+  (display-buffer-alist
         '(;; top side window
           ("\\*\\(Flymake\\|Package-Lint\\|vc-git :\\).*"
            (display-buffer-in-side-window)
@@ -790,10 +794,10 @@
           ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\|compilation\\|Occur\\).*"
            (display-buffer-reuse-mode-window display-buffer-at-bottom)
            (window-height . 0.25))))
-  (setq window-combination-resize t)
-  (setq even-window-sizes 'height-only)
-  (setq window-sides-vertical nil)
-  (setq switch-to-buffer-in-dedicated-window 'pop)
+  (window-combination-resize t)
+  (even-window-sizes 'height-only)
+  (window-sides-vertical nil)
+  (switch-to-buffer-in-dedicated-window 'pop)
   :hook ((help-mode-hook . visual-line-mode)
          (custom-mode-hook . visual-line-mode))
   :bind (("s-n" . next-buffer)
@@ -950,24 +954,25 @@ questions.  Else use completion to select the tab to switch to."
   (savehist-mode 1)
   :config
   (recentf-mode t)
-  (setq recentf-max-saved-items 1000)
   (add-to-list 'recentf-exclude "*/.ido.last")
   (add-to-list 'recentf-exclude "*/TAGS")
   (add-to-list 'recentf-exclude no-littering-var-directory)
   (add-to-list 'recentf-exclude no-littering-etc-directory)
   ;; backup settings
-  (setq delete-old-versions -1)
-  (setq version-control t)
-  (setq vc-make-backup-files t)
+  :custom
+  (recentf-max-saved-items 1000)
+  (delete-old-versions -1)
+  (version-control t)
+  (vc-make-backup-files t)
 
   ;; history settings
-  (setq history-length t)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history 1)
-  (setq savehist-additional-variables
-        '(kill-ring
-          search-ring
-          regexp-search-ring)))
+  (history-length t)
+  (history-delete-duplicates t)
+  (savehist-save-minibuffer-history 1)
+  (savehist-additional-variables
+   '(kill-ring
+     search-ring
+     regexp-search-ring)))
 
 ;;; tags
 (use-package etags
