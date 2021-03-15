@@ -158,7 +158,6 @@
          ("[b" . evil-prev-buffer)
          ("gb" . evil-next-buffer)
          ("gB" . evil-prev-buffer)
-         ("*" . $evil-star-keep-position)
          ("DEL" . evil-switch-to-windows-last-buffer)
          ("M-u" . universal-argument)
 
