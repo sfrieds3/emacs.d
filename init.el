@@ -934,7 +934,9 @@ questions.  Else use completion to select the tab to switch to."
   :config
   (setq hl-todo-keyword-faces
         '(("TODO"   . "#FFFF00")
-          ("FIXME"  . "#00FFFF")))
+          ("FIXME"  . "#FFFFFF")
+          ("NOTE"   . "#F56600")
+          ("WORK"   . "#522D80")))
   :bind (:map hl-todo-mode-map
               ("C-c t p" . hl-todo-previous)
               ("C-c t n" . hl-todo-next)
