@@ -5,16 +5,20 @@
 
 ;;; Code:
 
-;;; set default preferred fonts
+;;; default preferred font-sizes
 (defvar $default-font-size
   (cond ((string= (system-name) "mixolydian") "10")
         ((string= (system-name) "phrygian") "14")
         (t "13")))
 
+;;; list of preferred fonts
 (defvar $preferred-font
   '("Iosevka Fixed SS14"
-    "DejaVu Sans Mono"))
+    "DejaVu Sans Mono"
+    "Noto Mono"
+    "JetBrains Mono"))
 
+;;; current font name.. set by $set-current-font
 (defvar $current-font nil)
 
 ;;;###autoload
