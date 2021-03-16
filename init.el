@@ -73,7 +73,16 @@
   :config
   (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
-(use-package theme-config)
+;;; theme config
+(use-package theme-config
+  :demand
+  :config
+  ($set-path)
+  :custom
+  (custom-safe-themes t)
+  :hook
+  (after-init-hook . $set-preferred-font))
+
 (use-package scwfri-config)
 (use-package modeline)
 (use-package keybindings)
