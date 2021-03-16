@@ -51,6 +51,7 @@
 ;;;###autoload
  (defun $cycle-preferred-font ()
    "Cycle through preferred fonts."
+   ;; TODO: this only cycles between first 2 fonts.. make it cycle between all
    (interactive)
    (catch 'done
      (dolist (font $preferred-font)
