@@ -6,32 +6,37 @@
 ;;; Code:
 
 ;;; set default preferred fonts
-(defvar default-font)
-(setq default-font
-      (cond ((string= (system-name) "mixolydian") "Iosevka Fixed SS14 10")
-            ((string= (system-name) "phrygian") "Iosevka Fixed SS14 14")
-            (t "Iosevka Fixed SS14 13")))
+(defvar $default-font-size
+  (cond ((string= (system-name) "mixolydian") "10")
+        ((string= (system-name) "phrygian") "14")
+        (t "13")))
 
-(when default-font
-  (set-frame-font default-font nil t))
+(defvar $preferred-font
+  '("Iosevka Fixed SS14"
+    "DejaVu Sans Mono"))
 
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
-(add-to-list 'custom-theme-load-path (expand-file-name "themes"
-                                                       (expand-file-name "themes" user-emacs-directory)))
-(add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
+(defun $set-preferred-font (&optional frame)
+  "Set preferred font and size for FRAME."
+  (catch 'done
+    (with-selected-frame (or frame (selected-frame))
+      (dolist (font $preferred-font)
+        (message font)
+        (when (ignore-errors (x-list-fonts font))
+          (set-frame-font (string-join `(,font ,$default-font-size) " ") nil t)
+          (throw 'done nil))))))
+
+(defun $set-path ()
+  "Set path for themes and packages."
+  (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+  (add-to-list 'custom-theme-load-path (expand-file-name "themes"
+                                                         (expand-file-name "themes" user-emacs-directory)))
+  (add-to-list 'load-path (expand-file-name "themes" user-emacs-directory))
 
 ;;; add everything in themes/ dir to load path
-(let ((default-directory  (expand-file-name "themes" user-emacs-directory)))
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
-
-;;; don't ask if themes are safe
-(setq custom-safe-themes t)
-
-;;(require 'modus-themes)
-;;(require 'modus-vivendi-theme)
-;;(load-theme 'modus-vivendi t)
-;;(enable-theme 'modus-vivendi)
+  (let ((default-directory  (expand-file-name "themes" user-emacs-directory)))
+    (normal-top-level-add-to-load-path '("."))
+    (normal-top-level-add-subdirs-to-load-path)))
 
 (provide 'theme-config)
 ;;; theme-config.el ends here
+
