@@ -17,12 +17,14 @@
 
 (defvar $current-font nil)
 
+;;;###autoload
 (defun $set-current-font (font &optional size)
   "Set current font to FONT and (optional) SIZE."
   (let ((font-size (or size $default-font-size)))
        (set-frame-font (string-join `(,font ,font-size) " ") nil t)
        (setf $current-font font)))
 
+;;;###autoload
 (defun $set-preferred-font (&optional frame)
   "Set preferred font and size for FRAME."
   (interactive)
@@ -33,6 +35,7 @@
           ($set-current-font font)
           (throw 'done nil))))))
 
+;;;###autoload
  (defun $cycle-preferred-font ()
    "Cycle through preferred fonts."
    (interactive)
@@ -43,6 +46,7 @@
            ($set-current-font font)
            (throw 'done nil))))))
 
+;;;###autoload
 (defun $set-path ()
   "Set path for themes and packages."
   (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
