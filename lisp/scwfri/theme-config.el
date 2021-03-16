@@ -1,4 +1,4 @@
-;;;; theme-config --- configure theme-rated items
+;;;; theme-config --- configure theme-related items
 
 ;;; Commentary:
 ;;;     theme configurations
@@ -15,15 +15,33 @@
   '("Iosevka Fixed SS14"
     "DejaVu Sans Mono"))
 
+(defvar $current-font nil)
+
+(defun $set-current-font (font &optional size)
+  "Set current font to FONT and (optional) SIZE."
+  (let ((font-size (or size $default-font-size)))
+       (set-frame-font (string-join `(,font ,font-size) " ") nil t)
+       (setf $current-font font)))
+
 (defun $set-preferred-font (&optional frame)
   "Set preferred font and size for FRAME."
+  (interactive)
   (catch 'done
     (with-selected-frame (or frame (selected-frame))
       (dolist (font $preferred-font)
-        (message font)
         (when (ignore-errors (x-list-fonts font))
-          (set-frame-font (string-join `(,font ,$default-font-size) " ") nil t)
+          ($set-current-font font)
           (throw 'done nil))))))
+
+ (defun $cycle-preferred-font ()
+   "Cycle through preferred fonts."
+   (interactive)
+   (catch 'done
+     (dolist (font $preferred-font)
+       (unless (string= font $current-font)
+         (when (ignore-errors (x-list-fonts font))
+           ($set-current-font font)
+           (throw 'done nil))))))
 
 (defun $set-path ()
   "Set path for themes and packages."
@@ -39,4 +57,3 @@
 
 (provide 'theme-config)
 ;;; theme-config.el ends here
-
