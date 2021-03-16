@@ -22,6 +22,15 @@
 (defvar $current-font nil)
 
 ;;;###autoload
+(defun $set-frame-font--update-current (font &optional keep-size frames)
+  "TODO: docstring FONT KEEP-SIZE FRAMES."
+  ;; TODO: strip trailing size to *really* set the font
+  (setf $current-font font))
+
+;;; make sure we update the current font after set-frame-font called
+(advice-add 'set-frame-font :after #'$set-frame-font--update-current)
+
+;;;###autoload
 (defun $set-current-font (font &optional size)
   "Set current font to FONT and (optional) SIZE."
   (let ((font-size (or size $default-font-size)))
