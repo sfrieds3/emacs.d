@@ -93,11 +93,9 @@
 (use-package help+ :defer 5)
 (use-package help-fns+ :defer 5)
 
-;;; doom-themes
 (use-package doom-themes)
-
-;;; sanityinc
 (use-package color-theme-sanityinc-tomorrow)
+(use-package ample-theme)
 
 ;;; modus-theme
 (use-package modus-themes
@@ -298,8 +296,7 @@
   :defer t
   :commands (org-superstar-mode)
   :custom
-  ;; Set different bullets, with one getting a terminal fallback.
-  (org-superstar-headline-bullets-list '("⦿" "❖" "▷" "◉" "•" "⁃" "○"))
+  (org-superstar-headline-bullets-list '("◉" "▷" "❖" "•" "⁃"))
   ;; Stop cycling bullets to emphasize hierarchy of headlines.
   (org-superstar-cycle-headline-bullets nil)
   ;; Hide away leading stars on terminal.

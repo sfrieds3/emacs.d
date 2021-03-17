@@ -13,10 +13,9 @@
 
 ;;; list of preferred fonts
 (defvar $preferred-font
-  '("Iosevka Fixed SS14"
-    "DejaVu Sans Mono"
-    "Noto Mono"
-    "JetBrains Mono"))
+  '("Noto Mono"
+    "Iosevka Fixed SS14"
+    "DejaVu Sans Mono"))
 
 ;;; current font name.. set by $set-current-font
 (defvar $current-font nil)
@@ -32,10 +31,10 @@
 
 ;;;###autoload
 (defun $set-current-font (font &optional size)
-  "Set current font to FONT and (optional) SIZE."
-  (let ((font-size (or size $default-font-size)))
-       (set-frame-font (string-join `(,font ,font-size) " ") nil t)
-       (setf $current-font font)))
+  "Set current font to FONT and SIZE."
+  (let* ((font-size (or size $default-font-size))
+        (new-font (string-join `(,font ,font-size) " ")))
+       (set-frame-font new-font nil t)))
 
 ;;;###autoload
 (defun $set-preferred-font (&optional frame)
