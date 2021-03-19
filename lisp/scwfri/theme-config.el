@@ -13,8 +13,7 @@
 
 ;;; list of preferred fonts
 (defvar $preferred-font
-  '("Noto Sans Mono"
-    "Iosevka Fixed SS14"
+  '("Iosevka Fixed SS14"
     "DejaVu Sans Mono"))
 
 ;;; current font name.. set by $set-current-font
