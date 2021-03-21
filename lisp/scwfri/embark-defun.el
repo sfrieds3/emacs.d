@@ -38,7 +38,7 @@
   "Shrink selectrum to one line when embark-collect-live enabled."
   (when (eq (defvar embark-collect--kind) :live)
     (with-selected-window (active-minibuffer-window)
-      (setq-local (defvar selectrum-num-candidates-displayed) 1)
+      (setq-local selectrum-num-candidates-displayed 1)
       (setq-local selectrum-display-style
                   '(horizontal :before-candidates "["
                                :after-candidates "]"

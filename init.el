@@ -93,7 +93,7 @@
 (use-package help+ :defer 5)
 (use-package help-fns+ :defer 5)
 
-(use-package doom-themes)
+(use-package ir-black-theme)
 (use-package color-theme-sanityinc-tomorrow)
 (use-package ample-theme)
 
@@ -289,7 +289,7 @@
   (set-register ?t (cons 'file "~/code/org/todo.org"))
   (setq org-todo-keywords
         '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
-          (sequence "NEW" "WORK" "IN-DEV" "STAGED" "|" "RELEASED" "WONTFIX"))))
+          (sequence "NEW" "WORK" "IN-DEV" "REOPENED" "|" "STAGED" "RELEASED" "WONTFIX"))))
 
 ;;; org-superstar
 (use-package org-superstar
@@ -382,7 +382,9 @@
          ("C-k" . selectrum-previous-candidate)))
 
 ;;; prescient
-(use-package prescient)
+(use-package prescient
+  :config
+  (prescient-persist-mode))
 (use-package selectrum-prescient
   :after (prescient)
   :commands (selectrum-prescient-mode)
@@ -520,11 +522,15 @@
   :after evil
   :defer t
   :commands (magit-status
-             magit-diff-dwim)
+             magit-diff-dwim
+             magit-blame
+             magit=diff-range)
   :init
   (evil-ex-define-cmd "gs" 'magit-status)
   (evil-ex-define-cmd "gd" 'magit-diff-dwim)
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . magit-status)
+         ("C-c g d" . magit-diff-range)
+         ("C-c g b" . magit-blame)))
 
 ;;; company
 (use-package company
@@ -722,16 +728,6 @@
   (projectile-rails-global-mode)
   :hook
   (ruby-mode-hook . projectile-rails-mode))
-
-;;; dumb-jump
-(use-package dumb-jump
-  :disabled
-  :defer 5
-  :config
-  (add-hook 'xref-backend-functions 'dumb-jump-xref-activate t)
-  ;; Preserve jump list in evil
-  (defun evil-set-jump-args (&rest ns) (evil-set-jump))
-  (advice-add 'dumb-jump-goto-file-line :before #'evil-set-jump-args))
 
 ;;; uniquify
 (use-package uniquify
@@ -1000,13 +996,6 @@ questions.  Else use completion to select the tab to switch to."
 (use-package etags
   :custom
   (tags-revert-without-query 1))
-
-;;; esup
-(use-package esup
-  :defer t
-  :commands (esup)
-  :custom
-  (esup-depth 0))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
