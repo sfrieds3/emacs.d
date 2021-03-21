@@ -142,3 +142,6 @@
 [submodule "themes/ample-theme"]
 	path = themes/ample-theme
 	url = https://github.com/jordonbiondo/ample-theme.git
+[submodule "lisp/external/prescient"]
+	path = lisp/external/prescient
+	url = https://github.com/raxod502/prescient.el.git

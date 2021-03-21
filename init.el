@@ -332,27 +332,6 @@
          ("M-p" . projectile-command-map)
          ("C-c p" . projectile-command-map)))
 
-;;; personal orderless functions
-(use-package orderless-defun)
-
-;;;; orderless
-(use-package orderless
-  :after (orderless-defun)
-  :custom
-  (completion-styles '(orderless))
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  :config
-  (setq orderless-matching-styles '(orderless-flex))
-  (setq orderless-style-dispatchers '($orderless-literal
-                                      $orderless-strict-leading-initialism
-                                      $orderless-initialism
-                                      $orderless-regexp
-                                      $orderless-flex
-                                      $orderless-without-literal))
-  (define-key minibuffer-local-map (kbd "C-l")
-    #'$match-components-literally))
-
 ;;; marginalia
 (use-package marginalia
   :bind (:map minibuffer-local-map
@@ -402,9 +381,42 @@
          ("C-j" . selectrum-next-candidate)
          ("C-k" . selectrum-previous-candidate)))
 
+;;; prescient
+(use-package prescient)
+(use-package selectrum-prescient
+  :after (prescient)
+  :commands (selectrum-prescient-mode)
+  :custom
+  (selectrum-prescient-enable-filtering nil)
+  :init
+  (selectrum-prescient-mode +1))
+
+;;; personal orderless functions
+(use-package orderless-defun)
+
+;;;; orderless
+(use-package orderless
+  :after (orderless-defun)
+  :custom
+  (completion-styles '(orderless))
+  (orderless-skip-highlighting (lambda () selectrum-is-active))
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (orderless-matching-styles '(orderless-flex))
+  (orderless-style-dispatchers '($orderless-literal
+                                 $orderless-strict-leading-initialism
+                                 $orderless-initialism
+                                 $orderless-regexp
+                                 $orderless-flex
+                                 $orderless-without-literal))
+  :config
+  (define-key minibuffer-local-map (kbd "C-l")
+    #'$match-components-literally))
+
 ;;; consult
 (use-package consult
-  :after evil
+  :after (evil)
   :bind (("C-s" . consult-line)
          ;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
