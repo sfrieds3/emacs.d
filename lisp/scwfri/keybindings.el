@@ -37,6 +37,7 @@
 (global-set-key (kbd "C-c r") 'recentf-open-files)
 (global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
 (global-set-key (kbd "C-h L") 'describe-keymap)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
 
 ;;; window management
 (global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)

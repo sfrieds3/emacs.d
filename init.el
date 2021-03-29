@@ -54,6 +54,9 @@
 ;;; allow disabled emacs commands (mainly for narrowing)
 (setq disabled-command-function nil)
 
+;;; do not ask about opening large files
+(setf large-file-warning-threshold nil)
+
 ;;; show garbage collection messages in minbuffer
 (setq garbage-collection-messages t)
 
@@ -81,7 +84,8 @@
   :custom
   (custom-safe-themes t)
   :hook
-  (after-init-hook . $set-preferred-font))
+  (after-init-hook . $set-preferred-font)
+  (after-init-hook . $set-preferred-theme))
 
 (use-package scwfri-config)
 (use-package modeline)
@@ -93,9 +97,21 @@
 (use-package help+ :defer 5)
 (use-package help-fns+ :defer 5)
 
-(use-package ir-black-theme)
+;;; themes
 (use-package color-theme-sanityinc-tomorrow)
 (use-package ample-theme)
+
+;;; ir-black theme
+(use-package ir-black-theme
+  :config
+  (with-eval-after-load "ir-black-theme"
+    (custom-theme-set-faces
+     'ir-black
+     '(highlight ((t (:background "grey"))))
+     '(italic ((t (:slant italic))))
+     '(selectrum-current-candidate ((t (:background "#303030"))))
+     '(cperl-array-face ((t (:inherit font-lock-keyword-face))))
+     '(cperl-hash-face ((t (:inherit font-lock-variable-name-face)))))))
 
 ;;; modus-theme
 (use-package modus-themes
@@ -106,8 +122,6 @@
   (modus-themes-diffs 'deuteranopia)
   :init
   (modus-themes-load-themes)
-  :config
-  (modus-themes-load-vivendi)
   :bind
   ("C-c C-t" . modus-themes-toggle))
 
@@ -153,6 +167,7 @@
          ("\\H" . unhighlight-regexp)
          ("\\c" . global-hl-line-mode)
          ("\\pT" . list-tags)
+         ("\\'" . imenu)
 
          ("C-l" . evil-ex-nohighlight)
          ("C-j" . $evil-scroll-down-keep-pos)
@@ -296,7 +311,7 @@
   :defer t
   :commands (org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("◉" "▷" "❖" "•" "⁃"))
+  (org-superstar-headline-bullets-list '("◉" "▷" "‣" "•" "⁃"))
   ;; Stop cycling bullets to emphasize hierarchy of headlines.
   (org-superstar-cycle-headline-bullets nil)
   ;; Hide away leading stars on terminal.
@@ -530,7 +545,12 @@
   (evil-ex-define-cmd "gd" 'magit-diff-dwim)
   :bind (("C-x g" . magit-status)
          ("C-c g d" . magit-diff-range)
-         ("C-c g b" . magit-blame)))
+         ("C-c g b" . magit-blame))
+  :config
+  (add-to-list 'display-buffer-alist
+               '("magit.*"
+                 (display-buffer-at-bottom)
+                 (window-height . 0.4))))
 
 ;;; company
 (use-package company
@@ -583,6 +603,10 @@
   :config
   (global-hl-line-mode -1)
   (set-face-attribute hl-line-face nil :underline nil))
+
+;;; expand-region
+(use-package expand-region
+  :bind (("C-=" . er/expand-region)))
 
 ;;; nXml-mode
 (use-package nxml-mode
