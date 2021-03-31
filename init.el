@@ -297,16 +297,19 @@
          ("C-c i" . org-id-copy))
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (setq org-hide-leading-stars t)
-  (setq org-src-preserve-indentation nil)
-  (setq org-edit-src-content-indentation 0)
-  (setq org-log-done t)
-  (setq org-agenda-files '("~/code/org"))
-  (setq org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
   (set-register ?t (cons 'file "~/code/org/todo.org"))
-  (setq org-todo-keywords
+  :custom
+  (org-hide-leading-stars t)
+  (org-src-preserve-indentation nil)
+  (org-edit-src-content-indentation 0)
+  (org-log-done t)
+  (org-agenda-files '("~/code/org"))
+  (org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
+  (org-todo-keywords
         '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
-          (sequence "NEW" "WORK" "IN-DEV" "REOPENED" "|" "STAGED" "RELEASED" "WONTFIX"))))
+          (sequence "NEW" "WORK" "IN-DEV" "REOPENED" "|" "STAGED" "RELEASED" "WONTFIX")))
+  :hook
+  (org-mode-hook . org-indent-mode))
 
 ;;; org-superstar
 (use-package org-superstar

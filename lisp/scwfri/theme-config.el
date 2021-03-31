@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+;; define theme here
+(defun $set-preferred-theme ()
+  "Set theme here.. loaded after init."
+  (load-theme 'ir-black))
+
 ;;; default preferred font-sizes
 (defvar $default-font-size
   (cond ((string= (system-name) "mixolydian") "12")
@@ -71,11 +76,6 @@
   (let ((default-directory  (expand-file-name "themes" user-emacs-directory)))
     (normal-top-level-add-to-load-path '("."))
     (normal-top-level-add-subdirs-to-load-path)))
-
-;; define theme here
-(defun $set-preferred-theme ()
-  "Set theme here.. loaded after init."
-  (load-theme 'ir-black))
 
 ;;; override some theme faces automagically
 ;;; imspiration: https://emacs.stackexchange.com/questions/17431/how-do-i-change-portions-of-a-custom-theme
