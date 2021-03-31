@@ -107,8 +107,10 @@
   (with-eval-after-load "ir-black-theme"
     (custom-theme-set-faces
      'ir-black
+     '(cursor ((t (:background "white"))))
      '(highlight ((t (:background "grey"))))
      '(italic ((t (:slant italic))))
+     '(company-tooltip ((t (:background "#96CBFE" :foreground "black"))))
      '(selectrum-current-candidate ((t (:background "#303030"))))
      '(cperl-array-face ((t (:inherit font-lock-keyword-face))))
      '(cperl-hash-face ((t (:inherit font-lock-variable-name-face)))))))
