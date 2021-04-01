@@ -124,9 +124,6 @@
 [submodule "lisp/external/ace-window"]
 	path = lisp/external/ace-window
 	url = https://github.com/abo-abo/ace-window.git
-[submodule "lisp/external/org-superstar-mode"]
-	path = lisp/external/org-superstar-mode
-	url = https://github.com/integral-dw/org-superstar-mode.git
 [submodule "themes/color-theme-sanityinc-tomorrow"]
 	path = themes/color-theme-sanityinc-tomorrow
 	url = https://github.com/purcell/color-theme-sanityinc-tomorrow.git

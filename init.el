@@ -306,27 +306,11 @@
   (org-agenda-files '("~/code/org"))
   (org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
   (org-todo-keywords
-        '((sequence "TODO" "STRT" "WAIT" "|" "DONE")
-          (sequence "NEW" "WORK" "IN-DEV" "REOPENED" "|" "STAGED" "RELEASED" "WONTFIX")))
+        '((sequence "TODO(t)" "STRT(s!)" "WAIT(w@/!)" "|" "DONE(d!)" "CNCL(c@)")
+          (sequence "NEW(n)" "WORK(k!)" "PUSH-DEV(p!)" "REOPENED(r@/!)" "|" "STAGED(S!)" "RELEASED(r!)" "WONTFIX(w@)")))
   :hook
   (org-mode-hook . org-indent-mode))
 
-;;; org-superstar
-(use-package org-superstar
-  :defer t
-  :commands (org-superstar-mode)
-  :custom
-  (org-superstar-headline-bullets-list '("◉" "▷" "‣" "•" "⁃"))
-  ;; Stop cycling bullets to emphasize hierarchy of headlines.
-  (org-superstar-cycle-headline-bullets nil)
-  ;; Hide away leading stars on terminal.
-  (org-superstar-leading-fallback ?\s)
-  :config
-  (set-face-attribute 'org-superstar-item nil :height 1.0)
-  (set-face-attribute 'org-superstar-header-bullet nil :height 1.0)
-  (set-face-attribute 'org-superstar-leading nil :height 1.0)
-  :hook
-  (org-mode-hook . (lambda () (org-superstar-mode 1))))
 
 ;;; undohist
 (use-package undohist
