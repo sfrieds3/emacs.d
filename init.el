@@ -827,19 +827,7 @@
   (even-window-sizes 'height-only)
   (window-sides-vertical nil)
   (switch-to-buffer-in-dedicated-window 'pop)
-  :hook ((help-mode-hook . visual-line-mode)
-         (custom-mode-hook . visual-line-mode))
-  :bind (("s-n" . next-buffer)
-         ("s-p" . previous-buffer)
-         ("s-2" . split-window-below)
-         ("s-3" . split-window-right)
-         ("s-0" . delete-window)
-         ("s-1" . delete-other-windows)
-         ("s-!" . delete-other-windows-vertically) ; s-S-1
-         ("s-5" . delete-frame)
-         ("C-x _" . balance-windows)
-         ("C-x +" . balance-windows-area)
-         ("s-q" . window-toggle-side-windows)))
+  :hook ((help-mode-hook . visual-line-mode)))
 
 ;;; winner-mode
 (use-package winner
@@ -925,12 +913,11 @@ questions.  Else use completion to select the tab to switch to."
   :config
   (which-key-mode))
 
-;;; origami
-(use-package origami
-  :defer 5
-  :commands (global-origami-mode)
-  :init
-  (global-origami-mode 1))
+;;; fold-this
+(use-package fold-this
+  :bind (("C-c C-f" . fold-this-all)
+         ("C-c C-F" . fold-this)
+         ("C-c M-f" . fold-this-unfold-all)))
 
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode

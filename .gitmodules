@@ -139,3 +139,6 @@
 [submodule "lisp/external/expand-region"]
 	path = lisp/external/expand-region
 	url = https://github.com/magnars/expand-region.el.git
+[submodule "lisp/external/fold-this"]
+	path = lisp/external/fold-this
+	url = https://github.com/magnars/fold-this.el.git
