@@ -39,8 +39,8 @@
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 
-;;; transient mark mode off
-(setq transient-mark-mode nil)
+;;; transient mark mode
+(setq transient-mark-mode t)
 
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
@@ -215,7 +215,7 @@
   (ruby-mode-hook . (lambda ()
                       (setq-local evil-shift-width ruby-indent-level)))
   (org-mode-hook . (lambda ()
-                     (setq-local evil-shift-width 1))))
+                     (setq-local evil-shift-width 2))))
 
 ;;; evil-owl
 (use-package evil-owl
@@ -239,6 +239,7 @@
 
 ;;; evil-collection
 (use-package evil-collection
+  :disabled
   :after evil
   :commands (evil-collection-init)
   :init
@@ -793,8 +794,8 @@
                                  (mode-line-format . none))))
           ;; left side window
           ("\\*Help.*"
-           (display-buffer-in-side-window)
-           (window-width . 0.25)       ; See the :hook
+           (display-buffer-at-bottom)
+           (window-width . 0.25)
            (side . left)
            (slot . 0)
            (window-parameters . ((no-other-window . t))))
