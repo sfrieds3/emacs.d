@@ -23,6 +23,10 @@
 (global-set-key (kbd "C-c s f") 'find-dired)
 (global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
 (global-set-key (kbd "C-x 8 s") '$insert-zero-width-space)
+(global-set-key (kbd "C-S-e") '$scroll-up)
+(global-set-key (kbd "C-S-y") '$scroll-down)
+(global-set-key (kbd "C-S-p") '$scroll-down-in-place)
+(global-set-key (kbd "C-S-n") '$scroll-up-in-place)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)

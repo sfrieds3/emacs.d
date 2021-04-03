@@ -88,9 +88,6 @@
 [submodule "lisp/external/plus-minus"]
 	path = lisp/external/plus-minus
 	url = https://github.com/peterwu/plus-minus.git
-[submodule "lisp/external/embark"]
-	path = lisp/external/embark
-	url = https://github.com/oantolin/embark.git
 [submodule "lisp/external/consult"]
 	path = lisp/external/consult
 	url = https://github.com/minad/consult.git

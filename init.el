@@ -51,6 +51,9 @@
 ;;; allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
+;;; overwrite highlighted text
+(delete-selection-mode)
+
 ;;; allow disabled emacs commands (mainly for narrowing)
 (setq disabled-command-function nil)
 
@@ -92,10 +95,9 @@
 (use-package keybindings)
 
 ;;; dependencies
-(use-package dired+ :defer 5)
-(use-package bookmark+ :defer 5)
-(use-package help+ :defer 5)
-(use-package help-fns+ :defer 5)
+(use-package dired
+  :custom
+  (dired-listing-switches "-alh"))
 
 ;;; themes
 (use-package color-theme-sanityinc-tomorrow)
@@ -136,7 +138,7 @@
   :commands (evil-mode)
   :init
   (setf evil-want-keybinding 'nil)
-  (evil-mode 1)
+  (evil-mode nil)
   :custom
   (evil-want-C-u-scroll t)
   (evil-want-Y-yank-to-eol t)
@@ -145,7 +147,6 @@
   (evil-vsplit-window-right t)
   (evil-split-window-below t)
   (evil-shift-round t)
-  (evil-search-module 'evil-search)
   :config
   ;; make evil words work like vim
   (defalias #'forward-evil-word #'forward-evil-symbol)
@@ -217,26 +218,6 @@
   (org-mode-hook . (lambda ()
                      (setq-local evil-shift-width 2))))
 
-;;; evil-owl
-(use-package evil-owl
-  :after evil
-  :commands (evil-owl-mode)
-  :init
-  (evil-owl-mode)
-  :custom
-  (evil-owl-max-string-length 500)
-  (evil-owl-header-format       "%s")
-  (evil-owl-register-format     " %r: %s")
-  (evil-owl-local-mark-format   " %m (%l:%c): %s")
-  (evil-owl-global-mark-format  " %m [%b] (%l:%c): %s")
-  (evil-owl-separator           "\n")
-  :config
-  (add-to-list 'display-buffer-alist
-               '("*evil-owl*"
-                 (display-buffer-in-side-window)
-                 (side . bottom)
-                 (window-height . 0.25))))
-
 ;;; evil-collection
 (use-package evil-collection
   :disabled
@@ -307,7 +288,7 @@
   (org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
   (org-todo-keywords
         '((sequence "TODO(t)" "STRT(s!)" "WAIT(w@/!)" "|" "DONE(d!)" "CNCL(c@)")
-          (sequence "NEW(n)" "WORK(k!)" "PUSH-DEV(p!)" "REOPENED(r@/!)" "|" "STAGED(S!)" "RELEASED(r!)" "WONTFIX(w@)")))
+          (sequence "NEW(n)" "WORK(k!)" "PUSH-DEV(p!)" "REOPENED(r@/!)" "|" "STAGED(S!)" "RELEASED(R!)" "WONTFIX(w@)")))
   :hook
   (org-mode-hook . org-indent-mode))
 
@@ -423,7 +404,8 @@
 ;;; consult
 (use-package consult
   :after (evil)
-  :bind (("C-s" . consult-line)
+  :bind (;;("C-s" . consult-line)
+         ("s-s" . consult-line)
          ;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)

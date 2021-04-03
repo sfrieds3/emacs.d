@@ -196,5 +196,56 @@ vi style of % jumping to matching brace."
   "Disable the current THEME before loading a new one."
   (mapcar #'disable-theme custom-enabled-themes))
 
+;;;###autoload
+(defun narrow-or-widen-dwim (p)
+  "If the buffer is narrowed, it widens.  Otherwise, it narrows intelligently.
+Intelligently means: region, subtree, or defun, whichever applies
+first.
+
+With prefix P, don't widen, just narrow even if buffer is already
+narrowed."
+  (interactive "P")
+  (declare (interactive-only))
+  (cond ((and (buffer-narrowed-p) (not p)) (widen))
+        ((region-active-p)
+         (narrow-to-region (region-beginning) (region-end)))
+        ((derived-mode-p 'org-mode) (org-narrow-to-subtree))
+        (t (narrow-to-defun))))
+
+(global-set-key (kbd "C-x n x") 'narrow-or-widen-dwim)
+
+;;;###autoload
+(defun $unfill-paragraph ()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+;;;###autoload
+(defun $scroll-down-in-place (n)
+  "Scroll down N lines, keeping cursor postion."
+  (interactive "p")
+  (forward-line (- n))
+  (scroll-down n))
+
+;;;###autoload
+(defun $scroll-up-in-place (n)
+  "Scroll up N lines, keeping cursor position."
+  (interactive "p")
+  (forward-line n)
+  (scroll-up n))
+
+;;;###autoload
+(defun $scroll-down (n)
+  "Scroll down N lines."
+  (interactive "p")
+  (scroll-down n))
+
+;;;###autoload
+(defun $scroll-up (n)
+  "Scroll up N lines."
+  (interactive "p")
+  (scroll-up n))
+
 (provide 'scwfri-defun)
 ;;; defun.el ends here
