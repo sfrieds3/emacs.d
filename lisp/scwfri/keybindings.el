@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+;;; registers
+
+(set-register ?t (cons 'file "~/code/org/todo.org"))
+(set-register ?c (cons 'file (expand-file-name "init.el" user-emacs-directory)))
+
 ;;; move between windows with shift-arrow keys
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))

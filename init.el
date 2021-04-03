@@ -298,7 +298,6 @@
          ("C-c i" . org-id-copy))
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (set-register ?t (cons 'file "~/code/org/todo.org"))
   :custom
   (org-hide-leading-stars t)
   (org-src-preserve-indentation nil)
@@ -641,7 +640,6 @@
 
 ;;; slime
 (use-package slime
-  :defer t
   :commands (slime)
   :init
   (setq inferior-lisp-program "/usr/bin/sbcl")
@@ -651,7 +649,7 @@
     "keybindings for use in slime"
     (local-set-key (kbd "C-c e") 'slime-eval-last-expression)
     (local-set-key (kbd "C-c b") 'slime-eval-buffer))
-  (add-hook 'slime-mode-hook #$slime-keybindings)
+  (add-hook 'slime-mode-hook #'$slime-keybindings)
   (add-hook 'slime-repl-mode-hook #'$slime-keybindings)
   (setq slime-contribs '(slime-fancy))
   :hook
@@ -674,7 +672,6 @@
 
 ;;; eldoc mode
 (use-package eldoc-mode
-  :defer t
   :commands (eldoc-mode)
   :hook
   (emacs-lisp-mode-hook . eldoc-mode)
@@ -683,7 +680,6 @@
 
 ;;; markdown-mode
 (use-package markdown-mode
-  :defer t
   :commands (markdown-mode
              gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
@@ -694,7 +690,6 @@
 
 ;;; web-mode
 (use-package web-mode
-  :defer t
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
@@ -709,7 +704,6 @@
 
 ;;; cperl-mode
 (use-package cperl-mode
-  :defer t
   :commands (cperl-mode)
   :init
   (mapc
@@ -725,7 +719,6 @@
 
 ;;; c++-mode
 (use-package c++-mode
-  :defer t
   :commands (c++-mode)
   :custom
   (c-basic-offset 2)
@@ -734,7 +727,6 @@
 
 ;;; projectile-rails
 (use-package projectile-rails
-  :defer t
   :commands (projectile-rails-mode
              projectile-rails-command-map)
   :bind (("C-c r" . projectile-rails-command-map))
