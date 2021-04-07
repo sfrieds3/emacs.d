@@ -27,6 +27,10 @@
 (global-set-key (kbd "C-S-y") '$scroll-down)
 (global-set-key (kbd "C-S-p") '$scroll-down-in-place)
 (global-set-key (kbd "C-S-n") '$scroll-up-in-place)
+(global-set-key (kbd "s-e") '$scroll-up)
+(global-set-key (kbd "s-y") '$scroll-down)
+(global-set-key (kbd "s-k") '$scroll-down-in-place)
+(global-set-key (kbd "s-j") '$scroll-up-in-place)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
