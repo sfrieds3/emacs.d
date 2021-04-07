@@ -53,7 +53,8 @@
 (global-set-key (kbd "C-S-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-S-<down>") 'shrink-window)
 (global-set-key (kbd "C-S-<up>") 'enlarge-window)
-(global-set-key (kbd "C-c D") 'delete-window)
+(global-set-key (kbd "C-c d") 'delete-window)
+(global-set-key (kbd "C-c D") '$kill-and-delete-window)
 (global-set-key (kbd "M-o") 'other-window)
 
 ;;; hippie expand -- also C-M-i for completion mode
