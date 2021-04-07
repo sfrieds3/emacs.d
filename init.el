@@ -326,36 +326,6 @@
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
-;;; custom embark functions
-(use-package embark-defun)
-
-;;; embark
-(use-package embark
-  :after (embark-defun)
-  :bind
-  ("C-," . embark-act)
-  ("C-." . $embark-act-noquit)
-  :config
-  (add-hook 'embark-target-finders #'$current-candidate+category)
-  (setq embark-action-indicator
-        (lambda (map)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator)
-  :hook
-  (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
-  (embark-collect-mode-hook . $embark-shrink-selectrum)
-  (embark-setup-hook . selectrum-set-selected-candidate)
-  (embark-collect-post-revert-hook . $embark-collect-live-shrink-to-fit)
-  (embark-post-action-hook . embark-collect--update-linked)
-  (embark-candidate-collectors-hook . $current-candidates+category))
-
-;;; embark-consult
-(use-package embark-consult
-  :after (embark consult)
-  :hook
-  (embark-collect-mode-hook . embark-consult-preview-minor-mode))
-
 ;;; selectrum
 (use-package selectrum
   :commands (selectrum-mode)
