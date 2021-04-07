@@ -222,6 +222,22 @@ narrowed."
     (fill-paragraph nil)))
 
 ;;;###autoload
+(defun $kill-and-delete-window ()
+  "Kill and delete current window."
+  (interactive)
+  (kill-this-buffer)
+  (delete-window))
+
+;;;###autoload
+(defun $dont-kill-scratch ()
+  "Never kill scratch buffer."
+  (if (not (equal (buffer-name) "*scratch*"))
+      t
+    (message "Not allowed to kill %s, burying instead" (buffer-name))
+    (bury-buffer)
+    nil))
+
+;;;###autoload
 (defun $scroll-down-in-place (n)
   "Scroll down N lines, keeping cursor postion."
   (interactive "p")
