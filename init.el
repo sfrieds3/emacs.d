@@ -269,6 +269,10 @@
    ("C-c g C-a" . +/-:block+)
    ("C-c g C-x" . +/-:block-)))
 
+;;; org-defun
+(use-package org-defun
+  :bind (("s-SPC" . $org-table--mark-field)))
+
 ;;; org-mode
 (use-package org
   :commands (org-mode
@@ -293,6 +297,8 @@
   :hook
   (org-mode-hook . org-indent-mode))
 
+;;; org-table
+(use-package org-table)
 
 ;;; undohist
 (use-package undohist
