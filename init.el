@@ -76,6 +76,7 @@
   :hook
   ;; server postfix for tramp editing
   (find-file-hook . $add-server-postfix)
+  (kill-buffer-query-functions . $dont-kill-scratch)
   :config
   (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
