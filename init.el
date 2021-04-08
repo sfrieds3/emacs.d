@@ -77,6 +77,7 @@
   ;; server postfix for tramp editing
   (find-file-hook . $add-server-postfix)
   (kill-buffer-query-functions . $dont-kill-scratch)
+  (kill-buffer-query-functions . $dont-kill-messages)
   :config
   (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
@@ -212,8 +213,7 @@
   (cperl-mode-hook . (lambda ()
                     (setq-local evil-lookup-func #'cperl-perldoc-at-point)))
   (python-mode-hook . (lambda ()
-                        (setq-local evil-shift-width python-indent)
-                        (setq-local evil-lookup-func #'elpy-doc)))
+                        (setq-local evil-shift-width python-indent)))
   (ruby-mode-hook . (lambda ()
                       (setq-local evil-shift-width ruby-indent-level)))
   (org-mode-hook . (lambda ()
@@ -248,8 +248,8 @@
 ;;; avy
 (use-package avy
   :after evil
-  :bind (("C-;" . avy-goto-char-timer)
-         ("s-," . avy-goto-char-timer)
+  :bind (("C-;" . avy-goto-char-2)
+         ("s-;" . avy-goto-char-timer)
          :map evil-normal-state-map
          ("s" . avy-goto-char-2)))
 
@@ -289,6 +289,7 @@
   (org-src-preserve-indentation nil)
   (org-edit-src-content-indentation 0)
   (org-log-done t)
+  (org-startup-folded t)
   (org-agenda-files '("~/code/org"))
   (org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
   (org-todo-keywords
@@ -321,8 +322,18 @@
          :map evil-normal-state-map
          ("\\pt" . projectile-find-tag)
          :map projectile-mode-map
-         ("M-p" . projectile-command-map)
          ("C-c p" . projectile-command-map)))
+
+;;; project
+(use-package project
+  :config
+  (defun $project-override (dir)
+    (let ((override (locate-dominating-file dir ".project.el")))
+      (if override
+          (cons 'vc override)
+        nil)))
+  :hook
+  (project-find-functions . $project-override))
 
 ;;; marginalia
 (use-package marginalia
@@ -439,21 +450,16 @@
          ("\\b" . consult-buffer)
          ("SPC" . consult-git-grep)
          ("gr" . consult-grep))
-
-
   :commands (consult-register-window
              consult-multi-occur
              consult-register-format)
-
   :init
   ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
   (fset 'multi-occur #'consult-multi-occur)
-
   ;; register preview setting
   (setq register-preview-delay 0)
   (setq register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
-
   :config
   ;; configure preview keys
   (setq consult-config `((consult-theme :preview-key ,(kbd "M-+"))
@@ -463,7 +469,6 @@
                          (consult-find :preview-key ,(kbd "M-+"))
                          (consult-locate :preview-key ,(kbd "M-+"))
                          (consult-grep :preview-key ,(kbd "M-+"))))
-
   ;; configure narrowing key.
   (setq consult-narrow-key (kbd "C-+"))
   ;; make narrowing help available in the minibuffer.
@@ -479,6 +484,15 @@
 ;;; ctags
 (use-package ctags
   :bind (("s-." . ctags-find)))
+
+;;; term/ansi-term
+(use-package term
+  :config
+  (defun $ansi-term()
+    "Launch ansi-term using /bin/bash binary."
+    (interactive)
+    (ansi-term "/bin/bash"))
+  :bind (("C-x T" . $ansi-term)))
 
 ;; magit
 (use-package magit
@@ -506,7 +520,13 @@
              company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
-              ("C-p" . company-select-previous))
+              ("C-p" . company-select-previous)
+              ("C-j" . company-select-next)
+              ("C-k" . company-select-previous)
+              ("<return>" . nil)
+              ("RET" . nil)
+              ("<tab>" . company-complete-selection)
+              ("TAB" . company-complete-selection))
   :hook
   (after-init-hook . global-company-mode)
   :init
@@ -549,8 +569,9 @@
 ;;; highlight current line
 (use-package hl-line
   :config
-  (global-hl-line-mode -1)
-  (set-face-attribute hl-line-face nil :underline nil))
+  (global-hl-line-mode nil)
+  (set-face-attribute hl-line-face nil :underline nil)
+  :bind (("<f9>". hl-line-mode)))
 
 ;;; expand-region
 (use-package expand-region
@@ -581,21 +602,20 @@
   :config
   (global-flycheck-mode))
 
-;;; elpy
-(use-package elpy
-  :defer t
-  :commands (elpy-enable)
-  :init
-  (advice-add 'python-mode :before 'elpy-enable)
-  :config
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
+;;; anaconda
+(use-package anaconda-mode
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/path/to/the/project")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/path/to/the/dependency")
   :hook
-  (elpy-mode-hook . flycheck-mode)
-  (elpy-mode-hook . (lambda () (highlight-indentation-mode -1)))
-  (python-mode-hook . (lambda()
-                        (set (make-local-variable 'company-backends)
-                             (list 'elpy-company-backend 'company-backends)))))
+  (python-mode-hook . anaconda-mode)
+  (python-mode-hook . anaconda-eldoc-mode))
+
+;;; company-anaconda
+(use-package company-anaconda
+  :after (company
+          anaconda-mode)
+  :config
+  (add-to-list 'company-backends 'company-anaconda))
 
 ;;; slime
 (use-package slime
@@ -688,7 +708,7 @@
 (use-package projectile-rails
   :commands (projectile-rails-mode
              projectile-rails-command-map)
-  :bind (("C-c r" . projectile-rails-command-map))
+  :bind (("C-c R" . projectile-rails-command-map))
   :config
   (projectile-rails-global-mode)
   :hook
@@ -948,6 +968,11 @@ questions.  Else use completion to select the tab to switch to."
 (use-package etags
   :custom
   (tags-revert-without-query 1))
+
+;;; visual-regexp
+(use-package visual-regexp
+  :bind (("C-c r" . vr/replace)
+         ("C-c q" . vr/query-replace)))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))

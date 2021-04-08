@@ -238,6 +238,15 @@ narrowed."
     nil))
 
 ;;;###autoload
+(defun $dont-kill-messages ()
+  "Never kill messages bufffer."
+  (if (not (equal (buffer-name) "*Messages*"))
+      t
+    (message "Not allowed to kill %s, burying instead" (buffer-name))
+    (bury-buffer)
+    nil))
+
+;;;###autoload
 (defun $scroll-down-in-place (n)
   "Scroll down N lines, keeping cursor postion."
   (interactive "p")
@@ -262,6 +271,83 @@ narrowed."
   "Scroll up N lines."
   (interactive "p")
   (scroll-up n))
+
+;;;###autoload
+(defun $scroll-up-multiline ()
+  "Scroll up multiple lines."
+  (interactive)
+  (scroll-up (/ (window-body-height) 3)))
+
+;;;###autoload
+(defun $scroll-down-multiline ()
+  "Scroll up multiple lines."
+  (interactive)
+  (scroll-down (/ (window-body-height) 3)))
+
+;;;###autoload
+(defun $toggle-var (var)
+  "Toggle variable VAR."
+  (interactive
+   (let* ((def  (variable-at-point))
+             (def  (and def
+                        (not (numberp def))
+                        (memq (symbol-value def) '(nil t))
+                        (symbol-name def))))
+            (list
+             (completing-read
+              "Toggle value of variable: "
+              obarray (lambda (c)
+                        (unless (symbolp c) (setq c  (intern c)))
+                        (and (boundp c)  (memq (symbol-value c) '(nil t))))
+              'must-confirm nil 'variable-name-history def))))
+  (let ((sym  (intern var)))
+    (set sym (not (symbol-value sym)))
+    (message "`%s' is now `%s'" var (symbol-value sym))))
+
+;;;###autoload
+(defun swap-windows ()
+ "If you have 2 windows, it swaps them.
+from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file" 
+  (interactive) 
+  (cond ((not (= (count-windows) 2)) 
+    (message "You need exactly 2 windows to do this."))
+ (t
+ (let* ((w1 (first (window-list)))
+	 (w2 (second (window-list)))
+	 (b1 (window-buffer w1))
+	 (b2 (window-buffer w2))
+	 (s1 (window-start w1))
+	 (s2 (window-start w2)))
+ (set-window-buffer w1 b2)
+ (set-window-buffer w2 b1)
+ (set-window-start w1 s2)
+ (set-window-start w2 s1)))))
+
+;;;###autoload
+(defun rename-file-and-buffer (new-name)
+ "Renames both current buffer and file it's visiting to NEW-NAME." (interactive "sNew name: ")
+ (let ((name (buffer-name))
+	(filename (buffer-file-name)))
+ (if (not filename)
+	(message "Buffer '%s' is not visiting a file!" name)
+ (if (get-buffer new-name)
+	 (message "A buffer named '%s' already exists!" new-name)
+	(progn 	 (rename-file filename new-name 1) 	 (rename-buffer new-name) 	 (set-visited-file-name new-name) 	 (set-buffer-modified-p nil))))))
+
+;;;##zautoload
+(defun move-buffer-file (dir)
+ "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
+ (let* ((name (buffer-name))
+	 (filename (buffer-file-name))
+	 (dir
+	 (if (string-match dir "\\(?:/\\|\\\\)$")
+	 (substring dir 0 -1) dir))
+	 (newname (concat dir "/" name)))
+
+ (if (not filename)
+	(message "Buffer '%s' is not visiting a file!" name)
+ (progn 	(copy-file filename newname 1) 	(delete-file filename) 	(set-visited-file-name newname) 	(set-buffer-modified-p nil) 	t)))) 
+
 
 (provide 'scwfri-defun)
 ;;; defun.el ends here

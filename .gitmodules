@@ -4,9 +4,6 @@
 [submodule "lisp/dependencies/hydra"]
 	path = lisp/dependencies/hydra
 	url = https://github.com/abo-abo/hydra.git
-[submodule "lisp/dependencies/pyvenv"]
-	path = lisp/dependencies/pyvenv
-	url = https://github.com/jorgenschaefer/pyvenv.git
 [submodule "lisp/dependencies/s"]
 	path = lisp/dependencies/s
 	url = https://github.com/magnars/s.el.git
@@ -16,9 +13,6 @@
 [submodule "lisp/external/company-mode"]
 	path = lisp/external/company-mode
 	url = https://github.com/company-mode/company-mode.git
-[submodule "lisp/external/elpy"]
-	path = lisp/external/elpy
-	url = https://github.com/jorgenschaefer/elpy.git
 [submodule "lisp/external/emacs-which-key"]
 	path = lisp/external/emacs-which-key
 	url = https://github.com/justbur/emacs-which-key.git
@@ -103,9 +97,6 @@
 [submodule "lisp/external/avy"]
 	path = lisp/external/avy
 	url = https://github.com/abo-abo/avy.git
-[submodule "lisp/external/evil-owl"]
-	path = lisp/external/evil-owl
-	url = https://github.com/mamapanda/evil-owl.git
 [submodule "themes/modus-themes"]
 	path = themes/modus-themes
 	url = https://gitlab.com/protesilaos/modus-themes.git
@@ -139,3 +130,12 @@
 [submodule "lisp/external/fold-this"]
 	path = lisp/external/fold-this
 	url = https://github.com/magnars/fold-this.el.git
+[submodule "lisp/external/anaconda-mode"]
+	path = lisp/external/anaconda-mode
+	url = https://github.com/pythonic-emacs/anaconda-mode.git
+[submodule "lisp/external/company-anaconda"]
+	path = lisp/external/company-anaconda
+	url = https://github.com/pythonic-emacs/company-anaconda.git
+[submodule "lisp/dependencies/pythonic"]
+	path = lisp/dependencies/pythonic
+	url = https://github.com/pythonic-emacs/pythonic.git

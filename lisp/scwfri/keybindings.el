@@ -31,6 +31,8 @@
 (global-set-key (kbd "s-y") '$scroll-down)
 (global-set-key (kbd "s-k") '$scroll-down-in-place)
 (global-set-key (kbd "s-j") '$scroll-up-in-place)
+(global-set-key (kbd "M-p") '$scroll-down-multiline)
+(global-set-key (kbd "M-n") '$scroll-up-multiline)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
@@ -51,6 +53,9 @@
 (global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
 (global-set-key (kbd "C-h L") 'describe-keymap)
 (global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "s-s") 'isearch-forward-regexp)
+(global-set-key (kbd "s-r") 'isearch-backward-regexp)
+(global-set-key (kbd "f4") 'call-last-kbd-macro)
 
 ;;; window management
 (global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)
@@ -59,7 +64,6 @@
 (global-set-key (kbd "C-S-<up>") 'enlarge-window)
 (global-set-key (kbd "C-c d") 'delete-window)
 (global-set-key (kbd "C-c D") '$kill-and-delete-window)
-(global-set-key (kbd "M-o") 'other-window)
 
 ;;; hippie expand -- also C-M-i for completion mode
 (global-set-key (kbd "C-.") 'hippie-expand)
@@ -76,6 +80,12 @@
 
 ;;; no C-z
 (global-set-key (kbd "C-z") nil)
+
+;;; modify f and b word motions to be more like vim
+(global-set-key (kbd "M-f") 'forward-to-word)
+(global-set-key (kbd "M-F") 'forward-word)
+(global-set-key (kbd "M-b") 'backward-word)
+(global-set-key (kbd "M-B") 'backward-to-word)
 
 ;;; modify kill-word
 (global-set-key (kbd "C-w") 'backward-kill-word)
