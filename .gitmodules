@@ -16,9 +16,6 @@
 [submodule "lisp/external/emacs-which-key"]
 	path = lisp/external/emacs-which-key
 	url = https://github.com/justbur/emacs-which-key.git
-[submodule "lisp/external/evil"]
-	path = lisp/external/evil
-	url = https://github.com/emacs-evil/evil.git
 [submodule "lisp/external/markdown-mode"]
 	path = lisp/external/markdown-mode
 	url = https://github.com/jrblevin/markdown-mode.git
@@ -34,9 +31,6 @@
 [submodule "lisp/dependencies/dash"]
 	path = lisp/dependencies/dash
 	url = https://github.com/magnars/dash.el.git
-[submodule "lisp/external/evil-collection"]
-	path = lisp/external/evil-collection
-	url = https://github.com/emacs-evil/evil-collection.git
 [submodule "lisp/dependencies/annalist"]
 	path = lisp/dependencies/annalist
 	url = https://github.com/noctuid/annalist.el.git
@@ -46,9 +40,6 @@
 [submodule "lisp/external/projectile"]
 	path = lisp/external/projectile
 	url = https://github.com/bbatsov/projectile.git
-[submodule "lisp/external/evil-matchit"]
-	path = lisp/external/evil-matchit
-	url = https://github.com/redguardtoo/evil-matchit.git
 [submodule "lisp/external/web-mode"]
 	path = lisp/external/web-mode
 	url = https://github.com/fxbois/web-mode.git

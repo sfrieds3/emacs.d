@@ -94,7 +94,7 @@
   (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
 ;;; theme config
-(require theme-config
+(use-package theme-config
   :demand
   :config
   ($set-path)
@@ -141,127 +141,10 @@
   :bind
   ("C-c C-t" . modus-themes-toggle))
 
-;;; personal evil functions
-(use-package evil-defun)
-
-;;; evil
-(use-package evil
-  :after (evil-defun)
-  :commands (evil-mode)
-  :init
-  (setf evil-want-keybinding 'nil)
-  (evil-mode nil)
-  :custom
-  (evil-want-C-u-scroll t)
-  (evil-want-Y-yank-to-eol t)
-  (evil-search-module 'evil-search)
-  (evil-ex-complete-emacs-commands t)
-  (evil-vsplit-window-right t)
-  (evil-split-window-below t)
-  (evil-shift-round t)
-  :config
-  ;; make evil words work like vim
-  (defalias #'forward-evil-word #'forward-evil-symbol)
-  (setq-default evil-symbol-word-search t)
-  (setq-default evil-cross-lines t)
-  (advice-add 'evil-ex-search-word-forward :before 'evil-ex-nohighlight)
-  (advice-add 'evil-ex-search-word-backward :before 'evil-ex-nohighlight)
-  (evil-ex-define-cmd "Q" 'evil-quit)
-  (evil-ex-define-cmd "E" 'evil-edit)
-  (evil-ex-define-cmd "W" 'evil-write)
-  (evil-ex-define-cmd "vs" '$evil-split-right-and-move)
-  (evil-ex-define-cmd "Vs" '$evil-split-right-and-move)
-  :bind (
-         :map evil-normal-state-map
-         ("_w" . $toggle-show-trailing-whitespace)
-         ("_f" . $show-full-file-path)
-
-         ("\\w" . delete-trailing-whitespace)
-         ("\\f" . find-name-dired)
-         ("\\h" . highlight-symbol-at-point)
-         ("\\H" . unhighlight-regexp)
-         ("\\c" . global-hl-line-mode)
-         ("\\pT" . list-tags)
-         ("\\'" . imenu)
-
-         ("C-l" . evil-ex-nohighlight)
-         ("C-j" . $evil-scroll-down-keep-pos)
-         ("C-k" . $evil-scroll-up-keep-pos)
-         ("C-u" . evil-scroll-up)
-
-         ("j" . evil-next-visual-line)
-         ("k" . evil-previous-visual-line)
-         ("]b" . evil-next-buffer)
-         ("[b" . evil-prev-buffer)
-         ("gb" . evil-next-buffer)
-         ("gB" . evil-prev-buffer)
-         ("DEL" . evil-switch-to-windows-last-buffer)
-         ("M-u" . universal-argument)
-
-         ("_P" . $profile-session)
-         ("u" . $simple-undo)
-         ("C-r" . $simple-redo)
-
-         :map evil-insert-state-map
-         ("C-j" . evil-complete-next)
-         ("C-k" . evil-complete-previous)
-
-         :map evil-visual-state-map
-         ("C-u" . evil-scroll-up)
-         ("j" . evil-next-visual-line)
-         ("k" . evil-previous-visual-line)
-         ("gl" . align-regexp)
-         ("TAB" . tab-to-tab-stop)
-         ("C-u" . (lambda ()
-                    (interactive)
-                    (evil-delete (point-at-bol) (point))))
-
-         :map universal-argument-map
-         ("M-u" . universal-argument-more)
-         ("C-u" . nil))
-  :hook
-  (cperl-mode-hook . (lambda ()
-                    (setq-local evil-lookup-func #'cperl-perldoc-at-point)))
-  (python-mode-hook . (lambda ()
-                        (setq-local evil-shift-width python-indent)))
-  (ruby-mode-hook . (lambda ()
-                      (setq-local evil-shift-width ruby-indent-level)))
-  (org-mode-hook . (lambda ()
-                     (setq-local evil-shift-width 2))))
-
-;;; evil-collection
-(use-package evil-collection
-  :disabled
-  :after evil
-  :commands (evil-collection-init)
-  :init
-  (evil-collection-init))
-
-;;; evil-visualstar
-(use-package evil-visualstar
-  :after evil
-  :config
-  (global-evil-visualstar-mode))
-
-;;; evil-surround
-(use-package evil-surround
-  :after evil
-  :config
-  (global-evil-surround-mode 1))
-
-;;; evil-matchit
-(use-package evil-matchit
-  :after evil
-  :config
-  (global-evil-matchit-mode 1))
-
 ;;; avy
 (use-package avy
-  :after evil
   :bind (("C-;" . avy-goto-char-2)
-         ("s-;" . avy-goto-char-timer)
-         :map evil-normal-state-map
-         ("s" . avy-goto-char-2)))
+         ("s-;" . avy-goto-char-timer)))
 
 ;;; plus-minus
 (use-package plus-minus
@@ -321,7 +204,6 @@
 
 ;;; projectile
 (use-package projectile
-  :after evil
   :commands (projectile-mode)
   :init
   (projectile-mode)
@@ -329,8 +211,6 @@
   (projectile-use-git-grep t)
   :bind (("C-c f" . projectile-find-file)
          ("C-c b" . projectile-switch-to-buffer)
-         :map evil-normal-state-map
-         ("\\pt" . projectile-find-tag)
          :map projectile-mode-map
          ("C-c p" . projectile-command-map)))
 
@@ -384,7 +264,6 @@
 
 ;;; consult
 (use-package consult
-  :after (evil)
   :bind (;;("C-s" . consult-line)
          ("s-s" . consult-line)
          ;; C-c bindings (mode-specific-map)
@@ -431,18 +310,7 @@
          :map isearch-mode-map
          ("M-e" . consult-isearch)
          ("M-s e" . consult-isearch)
-         ("M-s l" . consult-line)
-         :map evil-normal-state-map
-         ("\\\\" . consult-imenu)
-         ("\\pi" . consult-imenu)
-         ("\\po" . consult-outline)
-         ("\\pp" . consult-project-imenu)
-         ("\\g" . consult-grep)
-         ("\\pr" . consult-recent-file)
-         ("\\pb" . consult-buffer)
-         ("\\b" . consult-buffer)
-         ("SPC" . consult-git-grep)
-         ("gr" . consult-grep))
+         ("M-s l" . consult-line))
   :commands (consult-register-window
              consult-multi-occur
              consult-register-format)
@@ -489,15 +357,12 @@
 
 ;; magit
 (use-package magit
-  :after evil
   :defer t
   :commands (magit-status
              magit-diff-dwim
              magit-blame
              magit=diff-range)
   :init
-  (evil-ex-define-cmd "gs" 'magit-status)
-  (evil-ex-define-cmd "gd" 'magit-diff-dwim)
   :bind (("C-x g" . magit-status)
          ("C-c g d" . magit-diff-range)
          ("C-c g b" . magit-blame))
@@ -580,9 +445,7 @@
       (mark-whole-buffer)
       (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)
       (nxml-mode)
-      (indent-region begin end)))
-  :config
-  (evil-ex-define-cmd "PrettyXML" '$pretty-xml))
+      (indent-region begin end))))
 
 ;;; flycheck
 (use-package flycheck
@@ -797,7 +660,6 @@
 
 ;;; tab-bar (again, most/all of this taken from prot)
 (use-package tab-bar
-  :after evil
   :custom
   (tab-bar-close-button-show nil)
   (tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
@@ -853,11 +715,8 @@ questions.  Else use completion to select the tab to switch to."
          ("C-x t k" . tab-close)
          ("C-x t c" . tab-new)
          ("C-x t t" . $tab-select-tab-dwim)
-         ("s-t" . $tab-select-tab-dwim)
-         :map evil-normal-state-map
-         ("]t" . tab-next)
-         ("[t" . tab-previous)))
-
+         ("s-t" . $tab-select-tab-dwim)))
+         
 ;;; which-key
 (use-package which-key
   :config
@@ -870,14 +729,8 @@ questions.  Else use completion to select the tab to switch to."
          ("C-c M-f" . fold-this-unfold-all)))
 
 ;;; idle-highlight-mode
-(use-package idle-highlight-mode
-  :after evil
-  ;;:hook
-  ;;(prog-mode-hook . idle-highlight-mode)
-  :bind (:map evil-normal-state-map
-              ("\\ SPC" . idle-highlight-mode)
-              ("_h" . idle-highlight-mode)))
-
+(use-package idle-highlight-mode)
+  
 ;;; hi-lock
 (use-package hi-lock
   :config
@@ -893,7 +746,6 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; hl-todo
 (use-package hl-todo
-  :after evil
   :hook (prog-mode-hook . hl-todo-mode)
   :config
   (setq hl-todo-keyword-faces
@@ -905,9 +757,7 @@ questions.  Else use completion to select the tab to switch to."
               ("C-c t p" . hl-todo-previous)
               ("C-c t n" . hl-todo-next)
               ("C-c t o" . hl-todo-occur)
-              ("C-c t i" . hl-todo-insert)
-              :map evil-normal-state-map
-              ("\\t" . hl-todo-occur)))
+              ("C-c t i" . hl-todo-insert)))
 
 ;;; helpful
 (use-package helpful
