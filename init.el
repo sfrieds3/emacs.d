@@ -602,21 +602,6 @@
   :config
   (global-flycheck-mode))
 
-;;; anaconda
-(use-package anaconda-mode
-  ;; (add-to-list 'python-shell-extra-pythonpaths "/path/to/the/project")
-  ;; (add-to-list 'python-shell-extra-pythonpaths "/path/to/the/dependency")
-  :hook
-  (python-mode-hook . anaconda-mode)
-  (python-mode-hook . anaconda-eldoc-mode))
-
-;;; company-anaconda
-(use-package company-anaconda
-  :after (company
-          anaconda-mode)
-  :config
-  (add-to-list 'company-backends 'company-anaconda))
-
 ;;; slime
 (use-package slime
   :commands (slime)

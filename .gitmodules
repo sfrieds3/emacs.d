@@ -130,12 +130,9 @@
 [submodule "lisp/external/fold-this"]
 	path = lisp/external/fold-this
 	url = https://github.com/magnars/fold-this.el.git
-[submodule "lisp/external/anaconda-mode"]
-	path = lisp/external/anaconda-mode
-	url = https://github.com/pythonic-emacs/anaconda-mode.git
-[submodule "lisp/external/company-anaconda"]
-	path = lisp/external/company-anaconda
-	url = https://github.com/pythonic-emacs/company-anaconda.git
-[submodule "lisp/dependencies/pythonic"]
-	path = lisp/dependencies/pythonic
-	url = https://github.com/pythonic-emacs/pythonic.git
+[submodule "lisp/external/visual-regexp"]
+	path = lisp/external/visual-regexp
+	url = https://github.com/benma/visual-regexp.el.git
+[submodule "lisp/external/vertico"]
+	path = lisp/external/vertico
+	url = https://github.com/minad/vertico.git

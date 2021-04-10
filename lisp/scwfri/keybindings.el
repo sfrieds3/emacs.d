@@ -55,7 +55,7 @@
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "s-s") 'isearch-forward-regexp)
 (global-set-key (kbd "s-r") 'isearch-backward-regexp)
-(global-set-key (kbd "f4") 'call-last-kbd-macro)
+(global-set-key (kbd "<f6>") 'call-last-kbd-macro)
 
 ;;; window management
 (global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)
