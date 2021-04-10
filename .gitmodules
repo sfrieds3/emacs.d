@@ -91,9 +91,6 @@
 [submodule "lisp/external/marginalia"]
 	path = lisp/external/marginalia
 	url = https://github.com/minad/marginalia.git
-[submodule "lisp/external/selectrum"]
-	path = lisp/external/selectrum
-	url = https://github.com/raxod502/selectrum.git
 [submodule "lisp/external/avy"]
 	path = lisp/external/avy
 	url = https://github.com/abo-abo/avy.git
@@ -118,9 +115,6 @@
 [submodule "themes/ample-theme"]
 	path = themes/ample-theme
 	url = https://github.com/jordonbiondo/ample-theme.git
-[submodule "lisp/external/prescient"]
-	path = lisp/external/prescient
-	url = https://github.com/raxod502/prescient.el.git
 [submodule "lisp/external/emacs-async"]
 	path = lisp/external/emacs-async
 	url = https://github.com/jwiegley/emacs-async.git

@@ -24,7 +24,7 @@
 ;;; shared config not in init.el
 (setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
-;;; make scrolling work like it should
+  ;;; make scrolling work like it should
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
@@ -70,9 +70,21 @@
 (setq frame-title-format
       (concat user-login-name "@" (system-name) ":%f [%m]"))
 
+  ;;; Add prompt indicator to `completing-read-multiple'.
+(defun crm-indicator (args)
+  (cons (concat "[CRM] " (car args)) (cdr args)))
+(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;;; Grow and shrink minibuffer
+(setq resize-mini-windows t)
+
+  ;;; Do not allow the cursor in the minibuffer prompt
+(setq minibuffer-prompt-properties
+      '(read-only t cursor-intangible t face minibuffer-prompt))
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
 ;;; personal init files
 (use-package scwfri-defun
-  :after evil
   :hook
   ;; server postfix for tramp editing
   (find-file-hook . $add-server-postfix)
@@ -82,7 +94,7 @@
   (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
 
 ;;; theme config
-(use-package theme-config
+(require theme-config
   :demand
   :config
   ($set-path)
@@ -96,7 +108,6 @@
 (use-package modeline)
 (use-package keybindings)
 
-;;; dependencies
 (use-package dired
   :custom
   (dired-listing-switches "-alh"))
@@ -115,7 +126,6 @@
      '(highlight ((t (:background "grey"))))
      '(italic ((t (:slant italic))))
      '(company-tooltip ((t (:background "#96CBFE" :foreground "black"))))
-     '(selectrum-current-candidate ((t (:background "#303030"))))
      '(cperl-array-face ((t (:inherit font-lock-keyword-face))))
      '(cperl-hash-face ((t (:inherit font-lock-variable-name-face)))))))
 
@@ -344,27 +354,10 @@
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
-;;; selectrum
-(use-package selectrum
-  :commands (selectrum-mode)
+(use-package vertico
+  :commands (vertico-mode)
   :init
-  (selectrum-mode +1)
-  :bind (("C-x C-z" . selectrum-repeat)
-         :map selectrum-minibuffer-map
-         ("C-j" . selectrum-next-candidate)
-         ("C-k" . selectrum-previous-candidate)))
-
-;;; prescient
-(use-package prescient
-  :config
-  (prescient-persist-mode))
-(use-package selectrum-prescient
-  :after (prescient)
-  :commands (selectrum-prescient-mode)
-  :custom
-  (selectrum-prescient-enable-filtering nil)
-  :init
-  (selectrum-prescient-mode +1))
+  (vertico-mode))
 
 ;;; personal orderless functions
 (use-package orderless-defun)
@@ -374,10 +367,10 @@
   :after (orderless-defun)
   :custom
   (completion-styles '(orderless))
-  (orderless-skip-highlighting (lambda () selectrum-is-active))
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  ;;(orderless-skip-highlighting (lambda () selectrum-is-active))
+  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  ;;(selectrum-refine-candidates-function #'orderless-filter)
+  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (orderless-matching-styles '(orderless-flex))
   (orderless-style-dispatchers '($orderless-literal
                                  $orderless-strict-leading-initialism
