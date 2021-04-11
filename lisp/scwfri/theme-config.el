@@ -5,6 +5,9 @@
 
 ;;; Code:
 
+(advice-add 'load-theme :before #'$load-theme--disable-current-theme)
+
+
 ;; define theme here
 (defun $set-preferred-theme ()
   "Set theme here.. loaded after init."

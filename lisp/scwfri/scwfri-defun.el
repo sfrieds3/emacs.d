@@ -41,12 +41,6 @@
       (switch-to-buffer-other-window (current-buffer)))))
 
 ;;;###autoload
-(defun $add-server-postfix ()
-  "Add the name of the connection type and server to the buffer name."
-  (if (string-match "^/ssh:.*?:" (buffer-file-name (current-buffer)))
-      (rename-buffer (concat (buffer-name (current-buffer)) "<" (match-string 0 (buffer-file-name (current-buffer))) ">")) nil))
-
-;;;###autoload
 (defun $toggle-show-trailing-whitespace ()
   "Toggle 'show-trailing-whitespace'."
   (interactive)
@@ -237,6 +231,8 @@ narrowed."
     (bury-buffer)
     nil))
 
+(add-hook 'kill-buffer-query-functions  #'$dont-kill-scratch)
+
 ;;;###autoload
 (defun $dont-kill-messages ()
   "Never kill messages bufffer."
@@ -245,6 +241,8 @@ narrowed."
     (message "Not allowed to kill %s, burying instead" (buffer-name))
     (bury-buffer)
     nil))
+
+(add-hook 'kill-buffer-query-functions  #'$dont-kill-messages)
 
 ;;;###autoload
 (defun $scroll-down-in-place (n)
@@ -334,7 +332,7 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file"
 	 (message "A buffer named '%s' already exists!" new-name)
 	(progn 	 (rename-file filename new-name 1) 	 (rename-buffer new-name) 	 (set-visited-file-name new-name) 	 (set-buffer-modified-p nil))))))
 
-;;;##zautoload
+;;;###autoload
 (defun move-buffer-file (dir)
  "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
  (let* ((name (buffer-name))
@@ -348,6 +346,12 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file"
 	(message "Buffer '%s' is not visiting a file!" name)
  (progn 	(copy-file filename newname 1) 	(delete-file filename) 	(set-visited-file-name newname) 	(set-buffer-modified-p nil) 	t)))) 
 
+;;;###autoload
+(defun $newline-at-end-of-line ()
+  "Move to end of line, enter a newline, and reindent."
+  (interactive)
+  (move-end-of-line 1)
+  (newline-and-indent))
 
 (provide 'scwfri-defun)
 ;;; defun.el ends here

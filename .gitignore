@@ -20,3 +20,4 @@ image-dired/*
 tramp
 var/*
 etc/*
+flycheck_*.el

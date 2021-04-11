@@ -40,7 +40,7 @@
 (setq ring-bell-function #'ignore)
 
 ;;; transient mark mode
-(setq transient-mark-mode t)
+(add-hook 'after-init-hook 'transient-mark-mode)
 
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
@@ -52,7 +52,7 @@
 (setq enable-recursive-minibuffers t)
 
 ;;; overwrite highlighted text
-(delete-selection-mode)
+(add-hook 'after-init-hook 'delete-selection-mode)
 
 ;;; allow disabled emacs commands (mainly for narrowing)
 (setq disabled-command-function nil)
@@ -84,14 +84,9 @@
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 ;;; personal init files
-(use-package scwfri-defun
-  :hook
-  ;; server postfix for tramp editing
-  ;;(find-file-hook . $add-server-postfix)
-  (kill-buffer-query-functions . $dont-kill-scratch)
-  (kill-buffer-query-functions . $dont-kill-messages)
-  :config
-  (advice-add 'load-theme :before #'$load-theme--disable-current-theme))
+(require 'scwfri-defun)
+(require 'tramp-config)
+ 
 
 ;;; theme config
 (use-package theme-config
@@ -110,7 +105,8 @@
 
 (use-package dired
   :custom
-  (dired-listing-switches "-alh"))
+  (dired-listing-switches "-alh")
+  (dired-dwim-target t))
 
 ;;; themes
 (use-package color-theme-sanityinc-tomorrow)
@@ -801,6 +797,11 @@ questions.  Else use completion to select the tab to switch to."
 (use-package visual-regexp
   :bind (("C-c r" . vr/replace)
          ("C-c q" . vr/query-replace)))
+
+;;; rectangle-mark
+(use-package rect
+  :bind (:map rectangle-mark-mode-map
+             ("C-x r I" . string-insert-rectangle)))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))

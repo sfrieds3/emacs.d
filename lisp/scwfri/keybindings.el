@@ -18,21 +18,22 @@
 (global-set-key (kbd "C-x C-,") 'execute-extended-command)
 
 ;;; custom functions
-(global-set-key (kbd "C-c s d") '$dir-grep)
-(global-set-key (kbd "C-c s s") '$file-grep)
-(global-set-key (kbd "C-c s f") 'find-dired)
-(global-set-key (kbd "C-a") '$smarter-move-beginning-of-line)
-(global-set-key (kbd "C-x 8 s") '$insert-zero-width-space)
-(global-set-key (kbd "C-S-e") '$scroll-up)
-(global-set-key (kbd "C-S-y") '$scroll-down)
-(global-set-key (kbd "C-S-p") '$scroll-down-in-place)
-(global-set-key (kbd "C-S-n") '$scroll-up-in-place)
-(global-set-key (kbd "s-e") '$scroll-up)
-(global-set-key (kbd "s-y") '$scroll-down)
-(global-set-key (kbd "s-k") '$scroll-down-in-place)
-(global-set-key (kbd "s-j") '$scroll-up-in-place)
-(global-set-key (kbd "M-p") '$scroll-down-multiline)
-(global-set-key (kbd "M-n") '$scroll-up-multiline)
+(global-set-key (kbd "C-c s d") #'$dir-grep)
+(global-set-key (kbd "C-c s s") #'$file-grep)
+(global-set-key (kbd "C-c s f") #'find-dired)
+(global-set-key (kbd "C-a") #'$smarter-move-beginning-of-line)
+(global-set-key (kbd "C-x 8 s") #'$insert-zero-width-space)
+(global-set-key (kbd "C-S-e") #'$scroll-up)
+(global-set-key (kbd "C-S-y") #'$scroll-down)
+(global-set-key (kbd "C-S-p") #'$scroll-down-in-place)
+(global-set-key (kbd "C-S-n") #'$scroll-up-in-place)
+(global-set-key (kbd "s-e") #'$scroll-up)
+(global-set-key (kbd "s-y") #'$scroll-down)
+(global-set-key (kbd "s-k") #'$scroll-down-in-place)
+(global-set-key (kbd "s-j") #'$scroll-up-in-place)
+(global-set-key (kbd "M-p") #'$scroll-down-multiline)
+(global-set-key (kbd "M-n") #'$scroll-up-multiline)
+(global-set-key (kbd "s-<return>") #'$newline-at-end-of-line)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
@@ -68,9 +69,6 @@
 ;;; hippie expand -- also C-M-i for completion mode
 (global-set-key (kbd "C-.") 'hippie-expand)
 
-;;; string insert region
-(global-set-key (kbd "C-c I") 'string-insert-rectangle)
-
 ;;; indent
 (global-set-key (kbd "C-x TAB") 'indent-code-rigidly)
 (global-set-key (kbd "C-M-<backspace>") '$kill-back-to-indent)
@@ -91,6 +89,7 @@
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-c C-k") 'kill-region)
+(global-set-key (kbd "M-Z") 'zap-up-to-char)
 
 ;;; version control
 (global-set-key (kbd "C-c g \\") 'vc-diff)
