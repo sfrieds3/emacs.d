@@ -87,7 +87,7 @@
 (use-package scwfri-defun
   :hook
   ;; server postfix for tramp editing
-  (find-file-hook . $add-server-postfix)
+  ;;(find-file-hook . $add-server-postfix)
   (kill-buffer-query-functions . $dont-kill-scratch)
   (kill-buffer-query-functions . $dont-kill-messages)
   :config
