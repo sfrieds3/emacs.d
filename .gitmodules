@@ -67,9 +67,6 @@
 [submodule "lisp/external/hl-todo"]
 	path = lisp/external/hl-todo
 	url = https://github.com/tarsius/hl-todo.git
-[submodule "emacs.appimage"]
-	path = emacs.appimage
-	url = https://github.com/scwfri/emacs.appimage.git
 [submodule "lisp/external/plus-minus"]
 	path = lisp/external/plus-minus
 	url = https://github.com/peterwu/plus-minus.git

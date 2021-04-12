@@ -33,7 +33,11 @@
 (global-set-key (kbd "s-j") #'$scroll-up-in-place)
 (global-set-key (kbd "M-p") #'$scroll-down-multiline)
 (global-set-key (kbd "M-n") #'$scroll-up-multiline)
+(global-set-key (kbd "s-p") #'$scroll-down-multiline)
+(global-set-key (kbd "s-n") #'$scroll-up-multiline)
 (global-set-key (kbd "s-<return>") #'$newline-at-end-of-line)
+(global-set-key (kbd "s-[") #'pop-to-mark-command)
+(global-set-key (kbd "s-]") #'$unpop-to-mark-command)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
@@ -57,6 +61,8 @@
 (global-set-key (kbd "s-s") 'isearch-forward-regexp)
 (global-set-key (kbd "s-r") 'isearch-backward-regexp)
 (global-set-key (kbd "<f6>") 'call-last-kbd-macro)
+(global-set-key (kbd "s-/") 'goto-last-change)
+(global-set-key (kbd "s-?") 'goto-last-change-reverse)
 
 ;;; window management
 (global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)
