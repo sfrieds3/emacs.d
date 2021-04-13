@@ -191,7 +191,7 @@ vi style of % jumping to matching brace."
   (mapcar #'disable-theme custom-enabled-themes))
 
 ;;;###autoload
-(defun narrow-or-widen-dwim (p)
+(defun $narrow-or-widen-dwim (p)
   "If the buffer is narrowed, it widens.  Otherwise, it narrows intelligently.
 Intelligently means: region, subtree, or defun, whichever applies
 first.
@@ -303,7 +303,7 @@ narrowed."
     (message "`%s' is now `%s'" var (symbol-value sym))))
 
 ;;;###autoload
-(defun swap-windows ()
+(defun $swap-windows ()
   "If you have 2 windows, it swaps them.
 from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file."
   (interactive)
@@ -322,7 +322,7 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file."
            (set-window-start w2 s1)))))
 
 ;;;###autoload
-(defun rename-file-and-buffer (new-name)
+(defun $rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME." (interactive "sNew name: ")
   (let ((name (buffer-name))
 	(filename (buffer-file-name)))
@@ -337,7 +337,7 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file."
           (set-buffer-modified-p nil))))))
 
 ;;;###autoload
-(defun move-buffer-file (dir)
+(defun $move-buffer-file (dir)
   "Move both current buffer and file it's visiting to DIR."
   (interactive "DNew directory: ")
   (let* ((name (buffer-name))
@@ -369,5 +369,25 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file."
     (setq mark-ring (nbutlast mark-ring))
     (goto-char (marker-position (car (last mark-ring))))))
 
+;;;###autoload
+(defun $indirect-region (beg end name)
+  "Open new named indirect buffer NAME, narrowed to region [BEG, END]."
+  (interactive "r\nsname of narrowed buffer: ")
+  (let ((new-buff
+         (make-indirect-buffer (current-buffer)
+                               (generate-new-buffer-name name)
+                               t)))
+    (switch-to-buffer new-buff nil t)
+    (narrow-to-region beg end)))
+
+;;;###autoload
+(defun $isearch-highlight-phrase ()
+  "Invoke `highligh-phrase' from within isearch."
+  (interactive)
+  (let ((case-fold-search isearch-case-fold-search))
+    (highlight-phrase (if isearch-regexp
+                          isearch-string
+                        (regexp-quote isearch-string)))))
+
 (provide 'scwfri-defun)
-;;; defun.el ends here
+;;; scwfri-defun.el ends here

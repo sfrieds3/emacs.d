@@ -63,6 +63,10 @@
 (global-set-key (kbd "<f6>") 'call-last-kbd-macro)
 (global-set-key (kbd "s-/") 'goto-last-change)
 (global-set-key (kbd "s-?") 'goto-last-change-reverse)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
 
 ;;; window management
 (global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)

@@ -83,11 +83,10 @@
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-;;; personal init files
-(require 'scwfri-defun)
-(require 'tramp-config)
- 
-
+;;; scwfri-defun
+(use-package scwfri-defun
+  :bind (:map isearch-mode-map
+              ("C-q" . $isearch-highlight-phrase)))
 ;;; theme config
 (use-package theme-config
   :demand
@@ -102,6 +101,7 @@
 (use-package scwfri-config)
 (use-package modeline)
 (use-package keybindings)
+(use-package tramp-config)
 
 (use-package dired
   :custom
@@ -141,6 +141,11 @@
 (use-package avy
   :bind (("C-;" . avy-goto-char-2)
          ("s-;" . avy-goto-char-timer)))
+
+;;; hideshow
+(use-package hideshow
+  :bind ("C-c h" . hs-toggle-hiding)
+  :commands hs-toggle-hiding)
 
 ;;; plus-minus
 (use-package plus-minus
@@ -561,14 +566,14 @@
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
 
-;;; ace-window
 (use-package ace-window
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :bind (("M-o" . ace-window)
          ("M-O" . ace-delete-window)
-         ("s-o" . ace-window)
-         ("s-O" . ace-delete-window)))
+         ("<f7> <f7>" . ace-window)
+         ("<f7> 0" . ace-delete-window)
+         ("<f7> -" . ace-swap-window)))
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
@@ -798,10 +803,22 @@ questions.  Else use completion to select the tab to switch to."
   :bind (("C-c r" . vr/replace)
          ("C-c q" . vr/query-replace)))
 
+;;; isearch
+(use-package isearch
+  :bind (:map isearch-mode-map
+              ("C-e" . consult-isearch)))
 ;;; rectangle-mark
 (use-package rect
   :bind (:map rectangle-mark-mode-map
              ("C-x r I" . string-insert-rectangle)))
+
+;;; deft
+(use-package deft
+  :bind ("<f7>" . deft)
+  :commands (deft)
+  :custom
+  (deft-directory "~/code/org")
+  (deft-extensions '("md" "org")))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))

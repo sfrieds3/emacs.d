@@ -118,3 +118,6 @@
 [submodule "lisp/external/vertico"]
 	path = lisp/external/vertico
 	url = https://github.com/minad/vertico.git
+[submodule "lisp/external/deft"]
+	path = lisp/external/deft
+	url = https://github.com/jrblevin/deft.git
