@@ -21,3 +21,4 @@ tramp
 var/*
 etc/*
 flycheck_*.el
+emacs.appimage/*
