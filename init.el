@@ -24,7 +24,7 @@
 ;;; shared config not in init.el
 (setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
-  ;;; make scrolling work like it should
+;;; make scrolling work like it should
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
@@ -73,15 +73,18 @@
 (setq frame-title-format
       (concat user-login-name "@" (system-name) ":%f [%m]"))
 
-  ;;; Add prompt indicator to `completing-read-multiple'.
-(defun crm-indicator (args)
-  (cons (concat "[CRM] " (car args)) (cdr args)))
-(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+;;; set completing-read-multiple separator to '#'
+(setf crm-separator "#")
 
-  ;;; Grow and shrink minibuffer
+;;; Add prompt indicator to `completing-read-multiple'.
+(defun $crm-indicator (args)
+  (cons (concat "[CRM]"(car args) crm-separator) (cdr args)))
+(advice-add #'completing-read-multiple :filter-args #'$crm-indicator)
+
+;;; Grow and shrink minibuffer
 (setq resize-mini-windows t)
 
-  ;;; Do not allow the cursor in the minibuffer prompt
+;;; Do not allow the cursor in the minibuffer prompt
 (setq minibuffer-prompt-properties
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
