@@ -63,6 +63,9 @@
 ;;; show garbage collection messages in minbuffer
 (setq garbage-collection-messages t)
 
+;;; disable insert keys automatically for read-only buffers
+(setq view-read-only t)
+
 ;;; debug on error -- off for now
 (setq debug-on-error nil)
 
