@@ -391,6 +391,7 @@
               ("C-p" . company-select-previous)
               ("C-j" . company-select-next)
               ("C-k" . company-select-previous)
+              ("C-w" . backward-kill-word)
               ("<return>" . nil)
               ("RET" . nil)
               ("<tab>" . company-complete-selection)
@@ -544,6 +545,7 @@
   :custom
   (cperl-invalid-face nil)
   (cperl-highlight-variables-indiscriminately t)
+  (cperl-indent-level 4)
   :config
   (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
 
