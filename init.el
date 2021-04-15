@@ -91,6 +91,7 @@
 
 ;;; scwfri-defun
 (use-package scwfri-defun
+  :demand
   :bind (:map isearch-mode-map
               ("C-q" . $isearch-highlight-phrase)))
 ;;; theme config
