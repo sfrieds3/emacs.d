@@ -151,7 +151,9 @@
 ;;; hideshow
 (use-package hideshow
   :bind ("C-c h" . hs-toggle-hiding)
-  :commands hs-toggle-hiding)
+  :commands hs-toggle-hiding
+  :hook
+  (prog-mode-hook . hs-minor-mode))
 
 ;;; plus-minus
 (use-package plus-minus
@@ -274,7 +276,7 @@
   :bind (;;("C-s" . consult-line)
          ("s-s" . consult-line)
          ;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
+         ("C-c z" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-c b" . consult-bookmark)
          ("C-c k" . consult-kmacro)
