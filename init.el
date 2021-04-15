@@ -438,7 +438,7 @@
   :config
   (global-hl-line-mode nil)
   (set-face-attribute hl-line-face nil :underline nil)
-  :bind (("<f9>". hl-line-mode)))
+  :bind (("<f9> l". hl-line-mode)))
 
 ;;; expand-region
 (use-package expand-region
@@ -579,9 +579,9 @@
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :bind (("M-o" . ace-window)
          ("M-O" . ace-delete-window)
-         ("<f7> <f7>" . ace-window)
-         ("<f7> 0" . ace-delete-window)
-         ("<f7> -" . ace-swap-window)))
+         ("<f9> <f9>" . ace-window)
+         ("<f9> 0" . ace-delete-window)
+         ("<f9> -" . ace-swap-window)))
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
@@ -825,7 +825,7 @@ questions.  Else use completion to select the tab to switch to."
   :bind ("<f7>" . deft)
   :commands (deft)
   :custom
-  (deft-directory "~/code/org")
+  (deft-directory "~/ref")
   (deft-extensions '("md" "org")))
 
 ;;; load local settings
