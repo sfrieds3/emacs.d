@@ -121,3 +121,6 @@
 [submodule "lisp/external/deft"]
 	path = lisp/external/deft
 	url = https://github.com/jrblevin/deft.git
+[submodule "lisp/external/undo-fu-session"]
+	path = lisp/external/undo-fu-session
+	url = https://github.com/emacsmirror/undo-fu-session.git

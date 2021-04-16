@@ -204,10 +204,11 @@
 ;;; org-table
 (use-package org-table)
 
-;;; undohist
-(use-package undohist
-  :config
-  (undohist-initialize))
+;;; undo-fu-session
+(use-package undo-fu-session
+  :commands (global-undo-fu-session-mode)
+  :init
+  (global-undo-fu-session-mode))
 
 ;;; goto-chg
 (use-package goto-chg)
