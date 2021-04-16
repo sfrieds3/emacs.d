@@ -25,15 +25,14 @@
 (setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
 ;;; make scrolling work like it should
-(setq scroll-step 1)
-(setq scroll-conservatively 10000)
+(setq scroll-conservatively 100)
 (setq auto-window-vscroll nil)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 (setq mouse-wheel-progressive-speed nil)
 (setq mouse-wheel-follow-mouse 't)
 
 ;; cursor blinks n times
-(setq blink-cursor-blinks 25)
+(setq blink-cursor-blinks 0)
 
 ;;; inhibit visual bells
 (setq visible-bell nil)
@@ -78,7 +77,8 @@
 
 ;;; Add prompt indicator to `completing-read-multiple'.
 (defun $crm-indicator (args)
-  (cons (concat "[CRM]"(car args) crm-separator) (cdr args)))
+  "Add indicator when in CRM prompt and reading ARGS."
+  (cons (concat "[CRM] " (car args) crm-separator) (cdr args)))
 (advice-add #'completing-read-multiple :filter-args #'$crm-indicator)
 
 ;;; Grow and shrink minibuffer
@@ -244,9 +244,9 @@
   :hook
   (prog-mode-hook . corfu-mode)
   (eshell-mode-hook . corfu-mode)
-  :config
-  (setq tab-always-indent 'complete)
-  (setq corfu-cycle t))
+  :custom
+  (tab-always-indent 'complete)
+  (corfu-cycle t))
 
 ;;; personal orderless functions
 (use-package orderless-defun)
@@ -355,14 +355,19 @@
 (use-package ctags
   :bind (("s-." . ctags-find)))
 
-;;; term/ansi-term
 (use-package term
   :config
-  (defun $ansi-term()
-    "Launch ansi-term using /bin/bash binary."
+  (defun $ansi-term-dwim()
+    "Launch or switch to ansi-term. 
+Switch to ansi-term buffer if already open,
+else start ansi-term using /bin/bash binary."
     (interactive)
-    (ansi-term "/bin/bash"))
-  :bind (("C-x T" . $ansi-term)))
+    (let ((abuf "*ansi-term*"))
+      (cond
+       ((try-completion abuf (mapcar #'buffer-name (buffer-list)))
+        (switch-to-buffer abuf))
+       (t (ansi-term "/bin/bash")))))
+  :bind (("C-x T" . $ansi-term-dwim)))
 
 ;; magit
 (use-package magit
@@ -555,8 +560,12 @@
   (cperl-invalid-face nil)
   (cperl-highlight-variables-indiscriminately t)
   (cperl-indent-level 4)
+  (cperl-close-paren-offset (- cperl-indent-level))
+  (cperl-indent-parens-as-block t)
   :config
-  (modify-syntax-entry ?: "-" cperl-mode-syntax-table))
+  (modify-syntax-entry ?: "-" cperl-mode-syntax-table)
+  :bind ((:map cperl-mode-map
+               ("<tab>" . indent-for-tab-command))))
 
 ;;; c++-mode
 (use-package c++-mode
@@ -564,7 +573,9 @@
   :custom
   (c-basic-offset 2)
   :config
-  (c-set-offset 'substatement-open 0))
+  (c-set-offset 'substatement-open 0)
+  :bind ((:map c-mode-base-map
+               ("<tab>" . indent-for-tab-command))))
 
 ;;; projectile-rails
 (use-package projectile-rails
@@ -831,7 +842,7 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; deft
 (use-package deft
-  :bind ("<f7>" . deft)
+  :bind ("C-c \\" . deft)
   :commands (deft)
   :custom
   (deft-directory "~/ref")
