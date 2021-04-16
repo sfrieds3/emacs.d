@@ -67,9 +67,6 @@
 [submodule "lisp/external/hl-todo"]
 	path = lisp/external/hl-todo
 	url = https://github.com/tarsius/hl-todo.git
-[submodule "lisp/external/plus-minus"]
-	path = lisp/external/plus-minus
-	url = https://github.com/peterwu/plus-minus.git
 [submodule "lisp/external/consult"]
 	path = lisp/external/consult
 	url = https://github.com/minad/consult.git
@@ -109,9 +106,6 @@
 [submodule "lisp/external/expand-region"]
 	path = lisp/external/expand-region
 	url = https://github.com/magnars/expand-region.el.git
-[submodule "lisp/external/fold-this"]
-	path = lisp/external/fold-this
-	url = https://github.com/magnars/fold-this.el.git
 [submodule "lisp/external/visual-regexp"]
 	path = lisp/external/visual-regexp
 	url = https://github.com/benma/visual-regexp.el.git
@@ -124,3 +118,9 @@
 [submodule "lisp/external/undo-fu-session"]
 	path = lisp/external/undo-fu-session
 	url = https://github.com/emacsmirror/undo-fu-session.git
+[submodule "lisp/external/corfu"]
+	path = lisp/external/corfu
+	url = https://github.com/minad/corfu.git
+[submodule "lisp/external/yaml-mode"]
+	path = lisp/external/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git

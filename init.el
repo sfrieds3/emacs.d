@@ -156,22 +156,6 @@
   :hook
   (prog-mode-hook . hs-minor-mode))
 
-;;; plus-minus
-(use-package plus-minus
-  :commands (+/-:forward+
-             +/-:forward-
-             +/-:backward+
-             +/-:backward-
-             +/-:block+
-             +/-:block-)
-  :bind
-  (("C-c C-a"   . +/-:forward+)
-   ("C-c C-x"   . +/-:forward-)
-   ("C-c M-a"   . +/-:backward+)
-   ("C-c M-x"   . +/-:backward-)
-   ("C-c g C-a" . +/-:block+)
-   ("C-c g C-x" . +/-:block-)))
-
 ;;; org-defun
 (use-package org-defun
   :bind (("s-SPC" . $org-table--mark-field)))
@@ -245,10 +229,24 @@
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
+;;; vertico
 (use-package vertico
   :commands (vertico-mode)
   :init
   (vertico-mode))
+
+;;; corfu
+(use-package corfu
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+              ("C-n" . corfu-next)
+              ("C-p" . corfu-previous))
+  :hook
+  (prog-mode-hook . corfu-mode)
+  (eshell-mode-hook . corfu-mode)
+  :config
+  (setq tab-always-indent 'complete)
+  (setq corfu-cycle t))
 
 ;;; personal orderless functions
 (use-package orderless-defun)
@@ -385,6 +383,7 @@
 
 ;;; company
 (use-package company
+  :disabled
   :commands (global-company-mode
              company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
@@ -509,6 +508,15 @@
   (emacs-lisp-mode-hook . eldoc-mode)
   (lisp-interaction-mode-hook . eldoc-mode)
   (ielm-mode-hook . eldoc-mode))
+
+;;; indent-tools
+(use-package indent-tools
+  :bind (("C-c >" . indent-tools-hydra/body)))
+
+;;; yaml-mode
+(use-package yaml-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
 ;;; markdown-mode
 (use-package markdown-mode
@@ -729,21 +737,15 @@ questions.  Else use completion to select the tab to switch to."
          ("C-x t c" . tab-new)
          ("C-x t t" . $tab-select-tab-dwim)
          ("s-t" . $tab-select-tab-dwim)))
-         
+
 ;;; which-key
 (use-package which-key
   :config
   (which-key-mode))
 
-;;; fold-this
-(use-package fold-this
-  :bind (("C-c C-f" . fold-this-all)
-         ("C-c C-F" . fold-this)
-         ("C-c M-f" . fold-this-unfold-all)))
-
 ;;; idle-highlight-mode
 (use-package idle-highlight-mode)
-  
+
 ;;; hi-lock
 (use-package hi-lock
   :config
@@ -779,10 +781,13 @@ questions.  Else use completion to select the tab to switch to."
          ("C-h v" . helpful-variable)
          ("C-h k" . helpful-key)))
 
+;;; savehist
+(use-package savehist
+  :init
+  (savehist-mode))
+
 ;;; no-littering
 (use-package no-littering
-  :init
-  (savehist-mode 1)
   :config
   (recentf-mode t)
   (add-to-list 'recentf-exclude "*/.ido.last")
