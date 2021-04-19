@@ -357,13 +357,20 @@
 
 (use-package term
   :config
-  (defun $ansi-term-dwim()
-    "Launch or switch to ansi-term. 
+  (defun $ansi-term-dwim (arg)
+    "Launch or switch to ansi-term.
 Switch to ansi-term buffer if already open,
-else start ansi-term using /bin/bash binary."
-    (interactive)
+else start ansi-term using /bin/bash binary.
+If already in ansi-term buffer, switch to previous buffer.
+When called with prefix arg, create a new ansi-term
+no matter what."
+    (interactive "P")
     (let ((abuf "*ansi-term*"))
       (cond
+       (arg
+        (ansi-term "/bin/bash"))
+       ((string= abuf (buffer-name))
+        (previous-buffer))
        ((try-completion abuf (mapcar #'buffer-name (buffer-list)))
         (switch-to-buffer abuf))
        (t (ansi-term "/bin/bash")))))
