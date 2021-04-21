@@ -24,8 +24,8 @@
 ;;; shared config not in init.el
 (setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
-;;; make scrolling work like it should
-(setq scroll-conservatively 100)
+;;; make scrolling more logical
+(setq scroll-conservatively 50)
 (setq auto-window-vscroll nil)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 (setq mouse-wheel-progressive-speed nil)
@@ -38,8 +38,8 @@
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 
-;;; transient mark mode
-(add-hook 'after-init-hook 'transient-mark-mode)
+;;; transient-mark-mode off (see scwfri-defun section) 
+(setf transient-mark-mode nil)
 
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
@@ -92,8 +92,24 @@
 ;;; scwfri-defun
 (use-package scwfri-defun
   :demand
-  :bind (:map isearch-mode-map
-              ("C-q" . $isearch-highlight-phrase)))
+  :config
+  (dolist (command '(mark-word
+                     mark-sexp
+                     mark-paragraph
+                     mark-defun
+                     mark-page
+                     mark-whole-buffer
+                     rectangle-mark-mode))
+    ($remap-mark-command command))
+  (with-eval-after-load 'org
+    ($remap-mark-command 'org-mark-element org-mode-map)
+    ($remap-mark-command 'org-mark-subtree org-mode-map))
+
+  :bind (("M-i" . (lambda () (interactive) (activate-mark)))
+         ("M-S-i" . tab-to-tab-stop)
+         :map isearch-mode-map
+         ("C-q" . $isearch-highlight-phrase)))
+
 ;;; theme config
 (use-package theme-config
   :demand
@@ -180,8 +196,8 @@
   (org-agenda-files '("~/code/org"))
   (org-agenda-text-search-extra-files (directory-files-recursively "~/code" "*.md|*.org"))
   (org-todo-keywords
-        '((sequence "TODO(t)" "STRT(s!)" "WAIT(w@/!)" "|" "DONE(d!)" "CNCL(c@)")
-          (sequence "NEW(n)" "WORK(k!)" "PUSH-DEV(p!)" "REOPENED(r@/!)" "|" "STAGED(S!)" "RELEASED(R!)" "WONTFIX(w@)")))
+   '((sequence "TODO(t)" "STRT(s!)" "WAIT(w@/!)" "|" "DONE(d!)" "CNCL(c@)")
+     (sequence "NEW(n)" "WORK(k!)" "PUSH-DEV(p!)" "REOPENED(r@/!)" "|" "STAGED(S!)" "RELEASED(R!)" "WONTFIX(w@)")))
   :hook
   (org-mode-hook . org-indent-mode))
 
@@ -420,7 +436,7 @@ no matter what."
   :config
   (defun $python-compile-hook ()
     (set (make-local-variable 'compile-command)
-          (format "pep8 --ignore=E501,E261,E262,E265,E266 --format=pylint %s" (buffer-name))))
+         (format "pep8 --ignore=E501,E261,E262,E265,E266 --format=pylint %s" (buffer-name))))
 
   (defun $perl-compile-hook ()
     (set (make-local-variable 'compile-command)
@@ -617,64 +633,64 @@ no matter what."
 (use-package window
   :custom
   (display-buffer-alist
-        '(;; top side window
-          ("\\*\\(Flymake\\|Package-Lint\\|vc-git :\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))
-          ("\\*Messages.*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 1)
-           (window-parameters . ((no-other-window . t))))
-          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 2)
-           (window-parameters . ((no-other-window . t))))
-          ;; bottom side window
-          ("\\*\\(Embark\\)?.*Completions.*"
-           (display-buffer-in-side-window)
-           (side . bottom)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t)
-                                 (mode-line-format . none))))
-          ;; left side window
-          ("\\*Help.*"
-           (display-buffer-at-bottom)
-           (window-width . 0.25)
-           (side . left)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))
-          ;; right side window
-          ("\\*Faces\\*"
-           (display-buffer-in-side-window)
-           (window-width . 0.25)
-           (side . right)
-           (slot . 0)
-           (window-parameters
-            . ((mode-line-format
-                . (" "
-                   mode-line-buffer-identification)))))
-          ("\\*Custom.*"
-           (display-buffer-in-side-window)
-           (window-width . 0.3)
-           (side . right)
-           (slot . 1)
-           (window-parameters . ((no-other-window . t))))
-          ;; bottom buffer (NOT side window)
-          ("\\*\\vc-\\(incoming\\|outgoing\\).*"
-           (display-buffer-at-bottom))
-          ("\\*\\(Output\\|Register Preview\\).*"
-           (display-buffer-at-bottom)
-           (window-parameters . ((no-other-window . t))))
-          ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\|compilation\\|Occur\\).*"
-           (display-buffer-reuse-mode-window display-buffer-at-bottom)
-           (window-height . 0.25))))
+   '(;; top side window
+     ("\\*\\(Flymake\\|Package-Lint\\|vc-git :\\).*"
+      (display-buffer-in-side-window)
+      (window-height . 0.16)
+      (side . top)
+      (slot . 0)
+      (window-parameters . ((no-other-window . t))))
+     ("\\*Messages.*"
+      (display-buffer-in-side-window)
+      (window-height . 0.16)
+      (side . top)
+      (slot . 1)
+      (window-parameters . ((no-other-window . t))))
+     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.16)
+      (side . top)
+      (slot . 2)
+      (window-parameters . ((no-other-window . t))))
+     ;; bottom side window
+     ("\\*\\(Embark\\)?.*Completions.*"
+      (display-buffer-in-side-window)
+      (side . bottom)
+      (slot . 0)
+      (window-parameters . ((no-other-window . t)
+                            (mode-line-format . none))))
+     ;; left side window
+     ("\\*Help.*"
+      (display-buffer-at-bottom)
+      (window-width . 0.25)
+      (side . left)
+      (slot . 0)
+      (window-parameters . ((no-other-window . t))))
+     ;; right side window
+     ("\\*Faces\\*"
+      (display-buffer-in-side-window)
+      (window-width . 0.25)
+      (side . right)
+      (slot . 0)
+      (window-parameters
+       . ((mode-line-format
+           . (" "
+              mode-line-buffer-identification)))))
+     ("\\*Custom.*"
+      (display-buffer-in-side-window)
+      (window-width . 0.3)
+      (side . right)
+      (slot . 1)
+      (window-parameters . ((no-other-window . t))))
+     ;; bottom buffer (NOT side window)
+     ("\\*\\vc-\\(incoming\\|outgoing\\).*"
+      (display-buffer-at-bottom))
+     ("\\*\\(Output\\|Register Preview\\).*"
+      (display-buffer-at-bottom)
+      (window-parameters . ((no-other-window . t))))
+     ("\\*.*\\([^E]eshell\\|shell\\|v?term\\|xref\\|compilation\\|Occur\\).*"
+      (display-buffer-reuse-mode-window display-buffer-at-bottom)
+      (window-height . 0.25))))
   (window-combination-resize t)
   (even-window-sizes 'height-only)
   (window-sides-vertical nil)
@@ -845,7 +861,7 @@ questions.  Else use completion to select the tab to switch to."
 ;;; rectangle-mark
 (use-package rect
   :bind (:map rectangle-mark-mode-map
-             ("C-x r I" . string-insert-rectangle)))
+              ("C-x r I" . string-insert-rectangle)))
 
 ;;; deft
 (use-package deft
@@ -859,6 +875,25 @@ questions.  Else use completion to select the tab to switch to."
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
   (when (file-exists-p local-settings)
     (load-file local-settings)))
+
+;;;###autoload
+(defun $remap-mark-command (command &optional map)
+  "Remap a mark-* COMMAND to temporarily activate Transient Mark mode.
+Remap command for specific map by specifying MAP arg.
+Source: https://spwhitton.name/blog/entry/transient-mark-mode/."
+  (let* ((cmd (symbol-name command))
+         (fun (intern (concat "$" cmd)))
+         (doc (concat "Call `"
+                      cmd
+                      "' and temporarily activate Transient Mark mode.")))
+    (fset fun `(lambda ()
+                 ,doc
+                 (interactive)
+                 (call-interactively #',command)
+                 (activate-mark)))
+    (if map
+        (define-key map (vector 'remap command) fun)
+      (global-set-key (vector 'remap command) fun))))
 
 (provide 'init.el)
 ;;; init.el ends here

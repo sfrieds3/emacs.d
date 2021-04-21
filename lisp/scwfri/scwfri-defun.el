@@ -390,5 +390,22 @@ from: https://sites.google.com/site/steveyegge2/my-dot-emacs-file."
                           isearch-string
                         (regexp-quote isearch-string)))))
 
+(defun $remap-mark-command (command &optional map)
+  "Remap a mark-* COMMAND to temporarily activate Transient Mark mode.
+If a MAP is passed, update for that map."
+  (let* ((cmd (symbol-name command))
+         (fun (intern (concat "$" cmd)))
+         (doc (concat "Call `"
+                      cmd
+                      "' and temporarily activate Transient Mark mode.")))
+    (fset fun `(lambda ()
+                 ,doc
+                 (interactive)
+                 (call-interactively #',command)
+                 (activate-mark)))
+    (if map
+        (define-key map (vector 'remap command) fun)
+      (global-set-key (vector 'remap command) fun))))
+
 (provide 'scwfri-defun)
 ;;; scwfri-defun.el ends here
