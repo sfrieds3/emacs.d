@@ -30,7 +30,7 @@
 (setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 
 ;;; make scrolling more logical
-(setq scroll-conservatively 50)
+(setq scroll-conservatively 25)
 (setq auto-window-vscroll nil)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 (setq mouse-wheel-progressive-speed nil)
@@ -43,7 +43,7 @@
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 
-;;; transient-mark-mode off (see scwfri-defun section) 
+;;; transient-mark-mode off (see scwfri-defun section)
 (setf transient-mark-mode nil)
 
 ;;; spaces by default instead of tabs!
@@ -625,7 +625,12 @@ no matter what."
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
 
+;;; ace-window
 (use-package ace-window
+  :config
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :bind (("M-o" . ace-window)
@@ -633,6 +638,7 @@ no matter what."
          ("<f9> <f9>" . ace-window)
          ("<f9> 0" . ace-delete-window)
          ("<f9> -" . ace-swap-window)))
+
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
