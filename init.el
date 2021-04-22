@@ -866,7 +866,8 @@ questions.  Else use completion to select the tab to switch to."
 ;;; rectangle-mark
 (use-package rect
   :bind (:map rectangle-mark-mode-map
-              ("C-x r I" . string-insert-rectangle)))
+              ("C-x r I" . string-insert-rectangle)
+              ("C-x r R" . replace-rectangle)))
 
 ;;; deft
 (use-package deft
