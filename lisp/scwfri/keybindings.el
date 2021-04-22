@@ -47,6 +47,7 @@
 (global-set-key (kbd "C-c SPC l") 'goto-line)
 (global-set-key (kbd "C-c SPC b e") 'eval-buffer)
 (global-set-key (kbd "C-c SPC b r") '$revert-buffer-noconfirm)
+(global-set-key (kbd "C-c SPC j") 'join-line)
 
 ;;; general customizations
 (global-set-key (kbd "C-c [") 'previous-error)
