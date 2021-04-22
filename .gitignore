@@ -4,13 +4,11 @@ backups/*
 auto-save-list/*
 recentf
 savehist
-ido.last
 elpy/*
 .cache/*
 projectile-bookmarks.eld
 undo-fu-session/*
 \#*\#
-smex-items
 eshell/*
 elpa/*
 undohist/*
@@ -22,3 +20,4 @@ var/*
 etc/*
 flycheck_*.el
 emacs.appimage/*
+site-lisp/*

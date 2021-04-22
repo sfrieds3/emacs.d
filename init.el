@@ -10,6 +10,11 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
+;;; add everything in site-lisp/ dir to load path
+(let ((default-directory  (expand-file-name "site-lisp" user-emacs-directory)))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
+
 ;;; use-package to manage packages
 (eval-when-compile
   (require 'use-package)
