@@ -225,6 +225,7 @@
   (projectile-mode)
   :custom
   (projectile-use-git-grep t)
+  (projectile-tags-command (s-replace-regexp "^ctags" "/usr/bin/ctags" projectile-tags-command))
   :bind (("C-c f" . projectile-find-file)
          ("C-c b" . projectile-switch-to-buffer)
          :map projectile-mode-map
@@ -499,6 +500,7 @@ no matter what."
   :custom
   (flycheck-standard-error-navigation nil)
   (flycheck-emacs-lisp-load-path 'inherit)
+  (flycheck-python-pycompile-executable "python3")
   :config
   (global-flycheck-mode))
 
@@ -575,6 +577,14 @@ no matter what."
          "\\.mustache\\'"
          "\\.djhtml\\'"))
 
+;;; python-mode
+(use-package python-mode
+  :commands (python-mode)
+  :custom
+  (python-shell-interpreter "python3")
+  :init
+  (eldoc-mode 1))
+
 ;;; cperl-mode
 (use-package cperl-mode
   :commands (cperl-mode)
@@ -638,7 +648,6 @@ no matter what."
          ("<f9> <f9>" . ace-window)
          ("<f9> 0" . ace-delete-window)
          ("<f9> -" . ace-swap-window)))
-
 
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
