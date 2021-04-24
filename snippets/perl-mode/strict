@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: strict
 # key: strict
+# contributor: Spenser Truex
 # --
 use warnings;
 use strict;
