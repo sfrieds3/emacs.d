@@ -130,6 +130,7 @@
 (use-package modeline)
 (use-package keybindings)
 (use-package tramp-config)
+(use-package s)
 
 (use-package dired
   :custom
@@ -209,11 +210,13 @@
 ;;; org-table
 (use-package org-table)
 
-;;; undo-fu-session
-(use-package undo-fu-session
-  :commands (global-undo-fu-session-mode)
+;;; undo-tree
+(use-package undo-tree
+  :commands (global-undo-tree-mode)
   :init
-  (global-undo-fu-session-mode))
+  (global-undo-tree-mode)
+  :custom
+  (undo-tree-auto-save-history t))
 
 ;;; goto-chg
 (use-package goto-chg)
@@ -225,7 +228,8 @@
   (projectile-mode)
   :custom
   (projectile-use-git-grep t)
-  (projectile-tags-command (s-replace-regexp "^ctags" "/usr/bin/ctags" projectile-tags-command))
+  :config
+  (setf projectile-tags-command (s-replace-regexp "^ctags" "/usr/bin/ctags" projectile-tags-command))
   :bind (("C-c f" . projectile-find-file)
          ("C-c b" . projectile-switch-to-buffer)
          :map projectile-mode-map
@@ -891,6 +895,11 @@ questions.  Else use completion to select the tab to switch to."
   :custom
   (deft-directory "~/ref")
   (deft-extensions '("md" "org")))
+
+;;; ws-butler
+(use-package ws-butler
+  :hook
+  (prog-mode-hook . ws-butler-mode))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))

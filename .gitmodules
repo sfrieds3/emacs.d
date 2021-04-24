@@ -124,3 +124,9 @@
 [submodule "lisp/external/yaml-mode"]
 	path = lisp/external/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
+[submodule "lisp/external/ws-butler"]
+	path = lisp/external/ws-butler
+	url = https://github.com/lewang/ws-butler.git
+[submodule "lisp/external/undo-tree"]
+	path = lisp/external/undo-tree
+	url = https://gitlab.com/tsc25/undo-tree.git
