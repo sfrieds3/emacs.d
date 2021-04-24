@@ -10,7 +10,7 @@
 ;; define theme here
 (defun $set-preferred-theme ()
   "Set theme here.. loaded after init."
-  (load-theme 'sanityinc-tomorrow-bright))
+  (load-theme 'default-black))
 
 ;;; default preferred font-sizes
 (defvar $default-font-size
