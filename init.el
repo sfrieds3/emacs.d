@@ -906,24 +906,5 @@ questions.  Else use completion to select the tab to switch to."
   (when (file-exists-p local-settings)
     (load-file local-settings)))
 
-;;;###autoload
-(defun $remap-mark-command (command &optional map)
-  "Remap a mark-* COMMAND to temporarily activate Transient Mark mode.
-Remap command for specific map by specifying MAP arg.
-Source: https://spwhitton.name/blog/entry/transient-mark-mode/."
-  (let* ((cmd (symbol-name command))
-         (fun (intern (concat "$" cmd)))
-         (doc (concat "Call `"
-                      cmd
-                      "' and temporarily activate Transient Mark mode.")))
-    (fset fun `(lambda ()
-                 ,doc
-                 (interactive)
-                 (call-interactively #',command)
-                 (activate-mark)))
-    (if map
-        (define-key map (vector 'remap command) fun)
-      (global-set-key (vector 'remap command) fun))))
-
 (provide 'init.el)
 ;;; init.el ends here

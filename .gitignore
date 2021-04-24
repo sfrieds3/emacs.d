@@ -21,3 +21,4 @@ etc/*
 flycheck_*.el
 emacs.appimage/*
 site-lisp/*
+!site-lisp/.gitkeep
