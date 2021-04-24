@@ -132,6 +132,15 @@
 (use-package tramp-config)
 (use-package s)
 
+;;; auto-revert everything
+(use-package autorevert
+  :commands (global-auto-revert-mode)
+  :init
+  (global-auto-revert-mode 1)
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil))
+
 (use-package dired
   :custom
   (dired-listing-switches "-alh")
@@ -900,6 +909,15 @@ questions.  Else use completion to select the tab to switch to."
 (use-package ws-butler
   :hook
   (prog-mode-hook . ws-butler-mode))
+
+;;; yasnippet
+(use-package yasnippet
+  :commands (yas-global-mode)
+  :init
+  (yas-global-mode)
+  :config
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
+  (yas-reload-all))
 
 ;;; load local settings
 (let ((local-settings (expand-file-name "local-settings.el" user-emacs-directory)))
