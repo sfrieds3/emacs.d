@@ -3,5 +3,5 @@
 # key: org
 # --
 #+TITLE: $1
-#+OPTIONS: toc:nil num:nil
+#+OPTIONS: toc:nil num:nil ^:nil
 #+STARTUP: showall noindent inlineimages
