@@ -660,20 +660,6 @@ no matter what."
   ;; dont change names of special buffers
   (uniquify-ignore-buffers-re "^\\*"))
 
-;;; ace-window
-(use-package ace-window
-  :config
-  (custom-set-faces
-   '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-  :custom
-  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  :bind (("M-o" . ace-window)
-         ("M-O" . ace-delete-window)
-         ("<f9> <f9>" . ace-window)
-         ("<f9> 0" . ace-delete-window)
-         ("<f9> -" . ace-swap-window)))
-
 ;;; display-buffer (most/all of this taken from prot)
 (use-package window
   :custom
