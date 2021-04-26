@@ -16,7 +16,7 @@
 (defvar $default-font-size
   (cond ((string= (system-name) "mixolydian") "10")
         ((string= (system-name) "phrygian") "14")
-        (t "15")))
+        (t "12")))
 
 ;;; list of preferred fonts
 (defvar $preferred-font

@@ -120,10 +120,11 @@
   :demand
   :config
   ($set-path)
+  ($set-preferred-font)
   :custom
   (custom-safe-themes t)
+  (fringe-mode 0)
   :hook
-  (after-init-hook . $set-preferred-font)
   (after-init-hook . $set-preferred-theme))
 
 (use-package scwfri-config)
@@ -148,7 +149,6 @@
 
 ;;; themes
 (use-package color-theme-sanityinc-tomorrow)
-(use-package ample-theme)
 
 ;;; ir-black theme
 (use-package ir-black-theme
@@ -177,7 +177,7 @@
 
 ;;; avy
 (use-package avy
-  :bind (("C-;" . avy-goto-char-2)
+  :bind (("C-;" . avy-goto-word-1)
          ("s-;" . avy-goto-char-timer)))
 
 ;;; hideshow
@@ -726,7 +726,9 @@ no matter what."
   (even-window-sizes 'height-only)
   (window-sides-vertical nil)
   (switch-to-buffer-in-dedicated-window 'pop)
-  :hook ((help-mode-hook . visual-line-mode)))
+  :hook
+  (help-mode-hook . visual-line-mode)
+  :bind (("M-o" . other-window)))
 
 ;;; winner-mode
 (use-package winner

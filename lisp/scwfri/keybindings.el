@@ -40,6 +40,9 @@
 (global-set-key (kbd "s-]") #'$unpop-to-mark-command)
 (global-set-key (kbd "<C-return>") #'$open-line-below)
 (global-set-key (kbd "<C-S-return>") #'$open-line-above)
+(global-set-key (kbd "M-j") #'$join-next-line)
+(global-set-key (kbd "C-S-<down>") #'$move-line-down)
+(global-set-key (kbd "C-S-<up>") #'$move-line-up)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
@@ -74,10 +77,6 @@
 (global-set-key (kbd "C-S-d") 'delete-region)
 
 ;;; window management
-(global-set-key (kbd "C-S-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "C-S-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-S-<down>") 'shrink-window)
-(global-set-key (kbd "C-S-<up>") 'enlarge-window)
 (global-set-key (kbd "C-c d") 'delete-window)
 (global-set-key (kbd "C-c D") '$kill-and-delete-window)
 
