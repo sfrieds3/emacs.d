@@ -112,9 +112,6 @@
 [submodule "lisp/external/undo-fu-session"]
 	path = lisp/external/undo-fu-session
 	url = https://github.com/emacsmirror/undo-fu-session.git
-[submodule "lisp/external/corfu"]
-	path = lisp/external/corfu
-	url = https://github.com/minad/corfu.git
 [submodule "lisp/external/yaml-mode"]
 	path = lisp/external/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git

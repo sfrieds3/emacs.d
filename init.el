@@ -282,19 +282,6 @@
   :init
   (vertico-mode))
 
-;;; corfu
-(use-package corfu
-  ;; Optionally use TAB for cycling, default is `corfu-complete'.
-  :bind (:map corfu-map
-              ("C-n" . corfu-next)
-              ("C-p" . corfu-previous))
-  :hook
-  (prog-mode-hook . corfu-mode)
-  (eshell-mode-hook . corfu-mode)
-  :custom
-  (tab-always-indent 'complete)
-  (corfu-cycle t))
-
 ;;; personal orderless functions
 (use-package orderless-defun)
 
@@ -442,7 +429,6 @@ no matter what."
 
 ;;; company
 (use-package company
-  :disabled
   :commands (global-company-mode
              company-mode company-indent-or-complete-common)
   :bind (:map company-active-map
