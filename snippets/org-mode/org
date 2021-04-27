@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: org
-# key: org
-# --
-#+TITLE: $1
-#+OPTIONS: toc:nil num:nil ^:nil
-#+STARTUP: showall noindent inlineimages
