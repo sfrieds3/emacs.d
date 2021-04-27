@@ -7,9 +7,6 @@
 [submodule "lisp/dependencies/s"]
 	path = lisp/dependencies/s
 	url = https://github.com/magnars/s.el.git
-[submodule "lisp/dependencies/yasnippet"]
-	path = lisp/dependencies/yasnippet
-	url = https://github.com/joaotavora/yasnippet.git
 [submodule "lisp/external/company-mode"]
 	path = lisp/external/company-mode
 	url = https://github.com/company-mode/company-mode.git
@@ -121,3 +118,6 @@
 [submodule "lisp/external/undo-tree"]
 	path = lisp/external/undo-tree
 	url = https://gitlab.com/tsc25/undo-tree.git
+[submodule "lisp/external/yasnippet"]
+	path = lisp/external/yasnippet
+	url = https://github.com/joaotavora/yasnippet.git
