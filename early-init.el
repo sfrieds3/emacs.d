@@ -7,9 +7,9 @@
 ;;; code:
 
 (setq inhibit-startup-screen t)
-(if(fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp menu-bar-mode) (menu-bar-mode -1))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
 (setq package-enable-at-startup nil)
 (setq frame-inhibit-implied-resize t)
 
