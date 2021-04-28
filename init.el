@@ -95,21 +95,23 @@
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 ;;; scwfri-defun
+;;; scwfri-defun
 (use-package scwfri-defun
   :demand
   :config
-  (dolist (command '(mark-word
-                     mark-sexp
-                     mark-paragraph
-                     mark-defun
-                     mark-page
-                     mark-whole-buffer
-                     rectangle-mark-mode))
-    ($remap-mark-command command))
+  ;; remap some commands to use transient-mark-mode
+  (defvar $remap-commands '(mark-word
+                            mark-sexp
+                            mark-paragraph
+                            mark-defun
+                            mark-page
+                            mark-whole-buffer
+                            rectangle-mark-mode))
+  (mapc (lambda (command) ($remap-mark-command command))
+        $remap-commands)
   (with-eval-after-load 'org
     ($remap-mark-command 'org-mark-element org-mode-map)
     ($remap-mark-command 'org-mark-subtree org-mode-map))
-
   :bind (("M-i" . (lambda () (interactive) (activate-mark)))
          ("M-S-i" . tab-to-tab-stop)
          :map isearch-mode-map
@@ -196,10 +198,10 @@
   :commands (org-mode
              org-capture)
   :defer t
-  :bind (("C-c l" . org-store-link)
+  :bind (("C-c L" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
-         ("C-c i" . org-id-copy))
+         ("C-c I" . org-id-copy))
   :config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   :custom
@@ -225,6 +227,12 @@
   :init
   (global-undo-tree-mode)
   :config
+  ;; do not save info for these files
+  (defvar $undo-tree-incompatible-major-modes '(nxml-mode
+                                                text-mode))
+  (mapc (lambda (x) (add-to-list 'undo-tree-incompatible-major-modes x))
+        $undo-tree-incompatible-major-modes)
+
   ;; Keep region when undoing in region
   (defadvice undo-tree-undo (around keep-region activate)
     (if (use-region-p)
@@ -305,10 +313,13 @@
   (define-key minibuffer-local-map (kbd "C-l")
     #'$match-components-literally))
 
+(use-package consult-imenu
+  :bind (("C-c i" . consult-imenu)))
+(use-package consult-xref)
+(use-package consult-register)
 ;;; consult
 (use-package consult
-  :bind (;;("C-s" . consult-line)
-         ("s-s" . consult-line)
+  :bind (("C-c l" . consult-line)
          ;; C-c bindings (mode-specific-map)
          ("C-c z" . consult-history)
          ("C-c m" . consult-mode-command)
@@ -616,6 +627,11 @@ no matter what."
   :bind ((:map cperl-mode-map
                ("<tab>" . indent-for-tab-command))))
 
+;;; ruby-mode
+(use-package ruby-mode
+  :custom
+  (ruby-deep-indent-paren nil))
+
 ;;; c++-mode
 (use-package c++-mode
   :commands (c++-mode)
@@ -681,8 +697,7 @@ no matter what."
       (display-buffer-at-bottom)
       (window-width . 0.25)
       (side . left)
-      (slot . 0)
-      (window-parameters . ((no-other-window . t))))
+      (slot . 0))
      ;; right side window
      ("\\*Faces\\*"
       (display-buffer-in-side-window)
