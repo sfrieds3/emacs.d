@@ -91,9 +91,6 @@
 [submodule "themes/color-theme-sanityinc-tomorrow"]
 	path = themes/color-theme-sanityinc-tomorrow
 	url = https://github.com/purcell/color-theme-sanityinc-tomorrow.git
-[submodule "lisp/external/emacs-async"]
-	path = lisp/external/emacs-async
-	url = https://github.com/jwiegley/emacs-async.git
 [submodule "lisp/external/expand-region"]
 	path = lisp/external/expand-region
 	url = https://github.com/magnars/expand-region.el.git
