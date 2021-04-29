@@ -542,5 +542,10 @@ If a MAP is passed, update for that map."
     (forward-line -2)
     (move-to-column col)))
 
+(defun $pulse-line (&rest _)
+  "Pulse the current line."
+  (interactive)
+  (pulse-momentary-highlight-one-line (point)))
+
 (provide 'scwfri-defun)
 ;;; scwfri-defun.el ends here

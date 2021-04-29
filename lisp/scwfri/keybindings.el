@@ -45,6 +45,8 @@
 (global-set-key (kbd "M-j") #'$join-next-line)
 (global-set-key (kbd "C-S-<down>") #'$move-line-down)
 (global-set-key (kbd "C-S-<up>") #'$move-line-up)
+(global-set-key (kbd "<f12>") #'$pulse-line)
+(global-set-key (kbd "C-c C-c") #'$pulse-line)
 
 ;;; SPC commands
 (global-set-key (kbd "C-c SPC l") '$select-line)
@@ -77,6 +79,10 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-<tab>") 'indent-region)
 (global-set-key (kbd "C-S-d") 'delete-region)
+(global-set-key (kbd "M-u") 'upcase-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key (kbd "M-<space>") #'cycle-spacing)
 
 ;;; window management
 (global-set-key (kbd "C-c d") 'delete-window)
