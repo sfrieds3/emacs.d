@@ -29,7 +29,11 @@
  '(term-color-blue ((nil (:foreground "#2fafff"))))
  '(term-color-magenta ((nil (:foreground "#feacd0"))))
  '(term-color-cyan ((nil (:foreground "#00d3d0"))))
- '(term-color-white ((nil (:foreground "#bfbfbf")))))
+ '(term-color-white ((nil (:foreground "#bfbfbf"))))
+
+  ;; cperl
+ '(cperl-array-face ((t (:inherit font-lock-keyword-face))))
+ '(cperl-hash-face ((t (:inherit font-lock-variable-name-face)))))
 
 (provide-theme 'default-black)
 ;;; default-black-theme ends here

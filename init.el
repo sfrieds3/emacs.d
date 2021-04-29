@@ -43,8 +43,8 @@
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 
-;;; transient-mark-mode off (see scwfri-defun section)
-(setf transient-mark-mode nil)
+;;; transient-mark-mode
+(setf transient-mark-mode t)
 
 ;;; spaces by default instead of tabs!
 (setq-default indent-tabs-mode nil)
@@ -94,7 +94,6 @@
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-;;; scwfri-defun
 ;;; scwfri-defun
 (use-package scwfri-defun
   :demand
