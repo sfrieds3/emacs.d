@@ -391,6 +391,7 @@
 (use-package ctags
   :bind (("s-." . ctags-find)))
 
+;;; ansi-term
 (use-package term
   :config
   (defun $ansi-term-dwim (arg)
@@ -410,7 +411,8 @@ no matter what."
        ((try-completion abuf (mapcar #'buffer-name (buffer-list)))
         (switch-to-buffer abuf))
        (t (ansi-term "/bin/bash")))))
-  :bind (("C-x T" . $ansi-term-dwim)))
+  :bind (("C-x T" . $ansi-term-dwim)
+         ("C-`" . $ansi-term-dwim)))
 
 ;; magit
 (use-package magit
