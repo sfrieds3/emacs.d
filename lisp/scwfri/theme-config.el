@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(advice-add 'load-theme :before #'$load-theme--disable-current-theme)
+;;(advice-add 'load-theme :before #'$load-theme--disable-current-theme)
 
 ;; define theme here
 (defun $set-preferred-theme ()
@@ -79,34 +79,6 @@
   (let ((default-directory  (expand-file-name "themes" user-emacs-directory)))
     (normal-top-level-add-to-load-path '("."))
     (normal-top-level-add-subdirs-to-load-path)))
-
-;;; override some theme faces automagically
-;;; imspiration: https://emacs.stackexchange.com/questions/17431/how-do-i-change-portions-of-a-custom-theme
-;;(defadvice load-theme (after theme-set-overrides activate)
-;;  "Set override faces for different custom themes."
-;;  (dolist (theme-settings theme-overrides)
-;;    (let ((theme (car theme-settings))
-;;          (faces (cadr theme-settings)))
-;;      (if (member theme custom-enabled-themes)
-;;          (dolist (face faces)
-;;            (custom-theme-set-faces theme face))))))
-;;
-;;(defgroup scwfri-theme-overrides ()
-;;  "Custom theme overrides."
-;;  :group 'themes)
-;;
-;;(defcustom theme-overrides nil
-;;  "Association list of override faces to set for different custom themes."
-;;  :type '(sexp)
-;;  :group 'scwfri-theme-overrides)
-;;
-;;(defun $alist-set (alist-symbol key value)
-;;  "Set VALUE of a KEY in ALIST-SYMBOL."
-;;  (set alist-symbol
-;;        (cons (list key value) (assq-delete-all key (eval alist-symbol)))))
-;;
-;;($alist-set 'theme-overrides 'ir-black '((cperl-array-face ((t (:inherit font-lock-keyword-face))))
-;;                                        (cperl-hash-face ((t (:inherit font-lock-variable-name-face))))))
 
 (provide 'theme-config)
 ;;; theme-config.el ends here
