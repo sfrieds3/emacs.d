@@ -75,7 +75,7 @@
 
 ;;; filename in titlebar
 (setq frame-title-format
-      (concat user-login-name "@" (system-name) ":%f [%m]"))
+      (concat user-login-name "@" system-name ":%f [%m]"))
 
 ;;; set completing-read-multiple separator to '#'
 (setf crm-separator "#")
@@ -271,11 +271,15 @@
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
-;;; vertico
-(use-package vertico
-  :commands (vertico-mode)
+;;; selectrum
+(use-package selectrum
+  :commands (selectrum-mode)
   :init
-  (vertico-mode))
+  (selectrum-mode +1)
+  :bind (("C-x C-z" . selectrum-repeat)
+         :map selectrum-minibuffer-map
+         ("C-j" . selectrum-next-candidate)
+         ("C-k" . selectrum-previous-candidate)))
 
 ;;; personal orderless functions
 (use-package orderless-defun)
@@ -285,10 +289,10 @@
   :after (orderless-defun)
   :custom
   (completion-styles '(orderless))
-  ;;(orderless-skip-highlighting (lambda () selectrum-is-active))
-  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  ;;(selectrum-refine-candidates-function #'orderless-filter)
-  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (orderless-skip-highlighting (lambda () selectrum-is-active))
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (orderless-matching-styles '(orderless-flex))
   (orderless-style-dispatchers '($orderless-literal
                                  $orderless-strict-leading-initialism

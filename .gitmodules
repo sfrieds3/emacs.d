@@ -94,9 +94,6 @@
 [submodule "lisp/external/visual-regexp"]
 	path = lisp/external/visual-regexp
 	url = https://github.com/benma/visual-regexp.el.git
-[submodule "lisp/external/vertico"]
-	path = lisp/external/vertico
-	url = https://github.com/minad/vertico.git
 [submodule "lisp/external/deft"]
 	path = lisp/external/deft
 	url = https://github.com/jrblevin/deft.git
@@ -115,3 +112,6 @@
 [submodule "lisp/external/yasnippet"]
 	path = lisp/external/yasnippet
 	url = https://github.com/joaotavora/yasnippet.git
+[submodule "lisp/external/selectrum"]
+	path = lisp/external/selectrum
+	url = https://github.com/raxod502/selectrum.git
