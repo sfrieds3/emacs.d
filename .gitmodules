@@ -28,9 +28,6 @@
 [submodule "lisp/dependencies/dash"]
 	path = lisp/dependencies/dash
 	url = https://github.com/magnars/dash.el.git
-[submodule "lisp/dependencies/annalist"]
-	path = lisp/dependencies/annalist
-	url = https://github.com/noctuid/annalist.el.git
 [submodule "lisp/meta/use-package"]
 	path = lisp/meta/use-package
 	url = https://github.com/jwiegley/use-package.git
