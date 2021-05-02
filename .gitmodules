@@ -76,9 +76,6 @@
 [submodule "lisp/external/avy"]
 	path = lisp/external/avy
 	url = https://github.com/abo-abo/avy.git
-[submodule "themes/modus-themes"]
-	path = themes/modus-themes
-	url = https://gitlab.com/protesilaos/modus-themes.git
 [submodule "lisp/dependencies/with-editor"]
 	path = lisp/dependencies/with-editor
 	url = https://github.com/magit/with-editor.git

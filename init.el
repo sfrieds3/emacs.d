@@ -164,18 +164,6 @@
      '(cperl-array-face ((t (:inherit font-lock-keyword-face))))
      '(cperl-hash-face ((t (:inherit font-lock-variable-name-face)))))))
 
-;;; modus-theme
-(use-package modus-themes
-  :commands (modus-themes-load-themes)
-  :custom
-  (modus-themes-slanted-constructs t)
-  (modus-themes-bold-constructs nil)
-  (modus-themes-diffs 'deuteranopia)
-  :init
-  (modus-themes-load-themes)
-  :bind
-  ("C-c C-t" . modus-themes-toggle))
-
 ;;; avy
 (use-package avy
   :bind (("C-;" . avy-goto-word-1)
