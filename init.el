@@ -269,10 +269,61 @@
   :commands (marginalia-mode)
   :init
   (marginalia-mode)
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light))
+  :config
+  (defun marginalia-annotate-file (cand)
+  "Annotate file CAND with its size, modification time and other attributes.
+These annotations are skipped for remote paths."
+  (if (or (marginalia--remote-p cand)
+          (when-let (win (active-minibuffer-window))
+            (with-current-buffer (window-buffer win)
+              (marginalia--remote-p (minibuffer-contents-no-properties)))))
+      (marginalia--fields ("*Remote*" :face 'marginalia-documentation))
+    (when-let ((attributes
+                (file-attributes
+                 (substitute-in-file-name (marginalia--full-candidate cand))
+                 'string)))
+      (marginalia--fields
+       ((format-time-string
+         "%b %d %H:%M"
+         (file-attribute-modification-time attributes))
+        :face 'marginalia-date)
+       ((file-size-human-readable (file-attribute-size attributes))
+        :width 6 :face 'marginalia-size)
+       ((file-attribute-modes attributes)
+        :face 'marginalia-file-modes))))))
+
+(use-package icomplete
+  :demand t
+  :bind (:map icomplete-minibuffer-map
+              ("RET" . icomplete-force-complete-and-exit)
+              ("<down>" . icomplete-forward-completions)
+              ("C-n" . icomplete-forward-completions)
+	      ("<up>" . icomplete-backward-completions)
+	      ("C-p" . icomplete-backward-completions)
+              ("C-M-i" . minibuffer-complete))
+  :hook
+  (icomplete-minibuffer-setup . visual-line-mode)
+  :custom
+  (icomplete-show-matches-on-no-input t)
+  (icomplete-prospects-height 1)
+  (icomplete-separator " ⋮ ")
+  (icomplete-hide-common-prefix nil)
+  :config
+  (advice-add 'icomplete-vertical-minibuffer-teardown
+              :after #'visual-line-mode))
+
+(use-package icomplete-vertical
+  :commands (icomplete-vertical-mode)
+  :init
+  (icomplete-mode)
+  (icomplete-vertical-mode)
+  :bind (:map icomplete-minibuffer-map
+              ("C-v" . icomplete-vertical-toggle)))
 
 ;;; selectrum
 (use-package selectrum
+  :disabled
   :commands (selectrum-mode)
   :init
   (selectrum-mode +1)
@@ -289,10 +340,10 @@
   :after (orderless-defun)
   :custom
   (completion-styles '(orderless))
-  (orderless-skip-highlighting (lambda () selectrum-is-active))
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  ;;(orderless-skip-highlighting (lambda () selectrum-is-active))
+  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  ;;(selectrum-refine-candidates-function #'orderless-filter)
+  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (orderless-matching-styles '(orderless-flex))
   (orderless-style-dispatchers '($orderless-literal
                                  $orderless-strict-leading-initialism
