@@ -2,5 +2,4 @@
 # name: pprint
 # key: pp
 # --
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
+pp.pprint($1)

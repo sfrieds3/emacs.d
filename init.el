@@ -185,7 +185,7 @@
   :commands (org-mode
              org-capture)
   :defer t
-  :bind (("C-c L" . org-store-link)
+  :bind (("C-c N" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c I" . org-id-copy))
@@ -301,7 +301,8 @@ These annotations are skipped for remote paths."
               ("C-n" . icomplete-forward-completions)
 	      ("<up>" . icomplete-backward-completions)
 	      ("C-p" . icomplete-backward-completions)
-              ("C-M-i" . minibuffer-complete))
+              ("C-M-i" . minibuffer-complete)
+	      ("<tab>" . icomplete-force-complete))
   :hook
   (icomplete-minibuffer-setup . visual-line-mode)
   :custom
@@ -321,17 +322,6 @@ These annotations are skipped for remote paths."
   :bind (:map icomplete-minibuffer-map
               ("C-v" . icomplete-vertical-toggle)))
 
-;;; selectrum
-(use-package selectrum
-  :disabled
-  :commands (selectrum-mode)
-  :init
-  (selectrum-mode +1)
-  :bind (("C-x C-z" . selectrum-repeat)
-         :map selectrum-minibuffer-map
-         ("C-j" . selectrum-next-candidate)
-         ("C-k" . selectrum-previous-candidate)))
-
 ;;; personal orderless functions
 (use-package orderless-defun)
 
@@ -340,10 +330,6 @@ These annotations are skipped for remote paths."
   :after (orderless-defun)
   :custom
   (completion-styles '(orderless))
-  ;;(orderless-skip-highlighting (lambda () selectrum-is-active))
-  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  ;;(selectrum-refine-candidates-function #'orderless-filter)
-  ;;(selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (orderless-matching-styles '(orderless-flex))
   (orderless-style-dispatchers '($orderless-literal
                                  $orderless-strict-leading-initialism
@@ -359,9 +345,11 @@ These annotations are skipped for remote paths."
   :bind (("C-c i" . consult-imenu)))
 (use-package consult-xref)
 (use-package consult-register)
+(use-package consult-icomplete)
 ;;; consult
 (use-package consult
   :bind (("C-c l" . consult-line)
+	 ("C-c L" . $consult-line-symbol-at-point)
          ;; C-c bindings (mode-specific-map)
          ("C-c z" . consult-history)
          ("C-c m" . consult-mode-command)
@@ -418,6 +406,10 @@ These annotations are skipped for remote paths."
   (setq register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
+  (defun $consult-line-symbol-at-point ()
+    "Consult-line with current symbol as starting point."
+    (interactive)
+    (consult-line (thing-at-point 'symbol)))
   ;; configure preview keys
   (setq consult-config `((consult-theme :preview-key ,(kbd "M-+"))
                          (consult-buffer :preview-key ,(kbd "M-+"))
@@ -609,10 +601,6 @@ no matter what."
   (emacs-lisp-mode-hook . eldoc-mode)
   (lisp-interaction-mode-hook . eldoc-mode)
   (ielm-mode-hook . eldoc-mode))
-
-;;; indent-tools
-(use-package indent-tools
-  :bind (("C-c >" . indent-tools-hydra/body)))
 
 ;;; yaml-mode
 (use-package yaml-mode
@@ -888,7 +876,6 @@ questions.  Else use completion to select the tab to switch to."
 
 ;;; helpful
 (use-package helpful
-  :defer t
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
          ("C-h k" . helpful-key)))

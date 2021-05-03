@@ -9,6 +9,7 @@
 (custom-theme-set-faces
  'default-black
  '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "White" :inverse-video nil :box nil :strike-t*hrough nil :overline nil :underline nil :slant normal :weight normal :width normal :height 105))))
+ '(italic ((t (:slant italic))))
  '(highlight ((((class color) (min-colors 88) (background dark)) (:background "#464740"))))
  '(region ((nil (:background "#464740"))))
  '(hl-line ((nil (:background "#222222"))))

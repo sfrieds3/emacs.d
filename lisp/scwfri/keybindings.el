@@ -83,6 +83,7 @@
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
 (global-set-key (kbd "M-<space>") #'cycle-spacing)
+(global-set-key (kbd "M-<backspace>") #'kill-whole-line)
 
 ;;; window management
 (global-set-key (kbd "C-c d") 'delete-window)
